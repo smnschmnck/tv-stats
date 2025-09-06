@@ -1,4 +1,7 @@
+"use cache";
+
 import { SeasonData } from "@/types/omdbApi/tvSeason";
+import { cacheLife } from "next/dist/server/use-cache/cache-life";
 import { env } from "process";
 
 export const Season = async ({
@@ -8,6 +11,8 @@ export const Season = async ({
   imdbId: string;
   seasonNumber: number;
 }) => {
+  cacheLife("hours");
+
   const res = await fetch(
     `http://www.omdbapi.com/?i=${imdbId}&season=${seasonNumber}&apikey=${env.OMDB_SECRET_ACCESS_KEY}`
   );
