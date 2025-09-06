@@ -1,6 +1,6 @@
 "use cache";
 import { env } from "@/env";
-import { PopularTvShowListResponse } from "@/types/tmdbApi/popular";
+import { TvShowListResponse } from "@/types/tmdbApi/tvShow";
 import { unstable_cacheLife as cacheLife } from "next/cache";
 
 export const PopularShows = async () => {
@@ -21,7 +21,7 @@ export const PopularShows = async () => {
     return <p>something went wrong</p>;
   }
 
-  const shows = (await res.json()) as PopularTvShowListResponse;
+  const shows = (await res.json()) as TvShowListResponse;
 
   return (
     <div className="flex flex-wrap items-center justify-center bg-zinc-50 w-full px-20">

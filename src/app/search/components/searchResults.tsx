@@ -1,0 +1,44 @@
+"use cache";
+
+import { env } from "@/env";
+import { TvShowListResponse } from "@/types/tmdbApi/tvShow";
+import { cacheLife } from "next/dist/server/use-cache/cache-life";
+
+export const SearchResults = async ({
+  query,
+}: {
+  query: string | undefined;
+}) => {
+  cacheLife("hours");
+
+  if (!query) {
+    return (
+      <div className="w-full h-full flex justify-center items-center">
+        <h1 className="font-bold text-2xl">No search query provided</h1>
+      </div>
+    );
+  }
+
+  const res = await fetch(
+    `https://api.themoviedb.org/3/search/tv?query=${query}&include_adult=true&language=en-US&page=1`,
+    {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${env.TMDB_SECRET_ACCESS_KEY}`,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    return (
+      <div className="w-full h-full flex justify-center items-center">
+        <h1 className="font-bold text-2xl">Something went wrong</h1>
+      </div>
+    );
+  }
+
+  const searchResponse = (await res.json()) as TvShowListResponse;
+
+  return <div>{searchResponse.results.map((r) => r.name)}</div>;
+};

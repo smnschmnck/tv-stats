@@ -53,13 +53,13 @@ const Hero = () => {
   );
 };
 
-const Home = () => {
+const Page = () => {
   return (
     <main className="w-full h-full flex items-center gap-16 flex-col pt-4">
       <Hero />
       <div className="w-full h-full bg-zinc-50 flex items-center py-10 flex-col gap-8 border-t border-t-zinc-100">
         <h2 className="font-bold text-xl">Popular TV Shows</h2>
-        <Suspense>
+        <Suspense fallback={<p>Loading...</p>}>
           <PopularShows />
         </Suspense>
       </div>
@@ -67,4 +67,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Page;

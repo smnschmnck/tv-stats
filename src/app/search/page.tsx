@@ -1,4 +1,9 @@
-const SearchResults = async ({
+import { Suspense } from "react";
+import { SearchResults } from "./components/searchResults";
+
+export const experimental_ppr = true;
+
+const Page = async ({
   searchParams,
 }: {
   searchParams: Promise<{ q?: string }>;
@@ -6,15 +11,11 @@ const SearchResults = async ({
   const params = await searchParams;
   const query = params.q;
 
-  if (!query) {
-    return (
-      <div className="w-full h-full flex justify-center items-center">
-        <h1 className="font-bold text-2xl">No search query provided</h1>
-      </div>
-    );
-  }
-
-  return <div></div>;
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <SearchResults query={query} />
+    </Suspense>
+  );
 };
 
-export default SearchResults;
+export default Page;

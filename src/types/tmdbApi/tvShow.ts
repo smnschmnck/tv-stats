@@ -1,11 +1,11 @@
-export type PopularTvShowListResponse = {
+export type TvShowListResponse = {
   page: number;
-  results: PopularTvShow[];
+  results: TvShow[];
   total_pages: number;
   total_results: number;
 };
 
-export type PopularTvShow = {
+export type TvShow = {
   adult: boolean;
   backdrop_path: string;
   genre_ids: number[];
