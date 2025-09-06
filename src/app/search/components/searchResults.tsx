@@ -42,7 +42,7 @@ export const SearchResults = async ({
   const shows = (await res.json()) as TvShowListResponse;
 
   return (
-    <div className="flex flex-wrap items-center justify-center w-full px-20">
+    <div className="flex flex-wrap items-center w-full justify-center">
       {shows.results.map((show) => (
         <TvShowLink key={show.id} show={show} />
       ))}

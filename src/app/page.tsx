@@ -1,18 +1,8 @@
-import { Search } from "lucide-react";
-import { redirect } from "next/navigation";
+import { SearchBar } from "@/components/searchBar";
 import { Suspense } from "react";
-import { PopularShows } from "./components/PopularShows";
+import { PopularShows } from "./components/popularShows";
 
 export const experimental_ppr = true;
-
-async function searchAction(formData: FormData) {
-  "use server";
-
-  const query = formData.get("q") as string;
-  if (query?.trim()) {
-    redirect(`/search?q=${encodeURIComponent(query.trim())}`);
-  }
-}
 
 const Hero = () => {
   return (
@@ -26,28 +16,7 @@ const Hero = () => {
         </p>
       </div>
       <div className="w-full px-8">
-        <form
-          action={searchAction}
-          className="flex items-center justify-between px-3 h-16 bg-zinc-100 border border-zinc-200 rounded-full w-full focus-within:ring-2 ring-blue-500"
-        >
-          <div className="flex items-center w-full px-4 gap-2 h-full">
-            <div className="text-zinc-500">
-              <Search size={20} />
-            </div>
-            <input
-              name="q"
-              autoComplete="off"
-              className="w-full h-full font-medium placeholder:text-zinc-500 outline-none"
-              placeholder="Breaking Bad"
-            />
-          </div>
-          <button
-            type="submit"
-            className="bg-black text-white font-medium rounded-full h-11 px-8"
-          >
-            Search
-          </button>
-        </form>
+        <SearchBar />
       </div>
     </div>
   );

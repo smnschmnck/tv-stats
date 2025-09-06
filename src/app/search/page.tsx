@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { SearchResults } from "./components/searchResults";
+import { SearchBar } from "@/components/searchBar";
 
 export const experimental_ppr = true;
 
@@ -20,9 +21,14 @@ const Page = async ({
   const query = params.q;
 
   return (
-    <Suspense fallback={<Loader />}>
-      <SearchResults query={query} />
-    </Suspense>
+    <div className="px-20 w-full h-full flex flex-col gap-20 items-center pt-8">
+      <div className="w-full px-36">
+        <SearchBar defaultValue={query} />
+      </div>
+      <Suspense fallback={<Loader />}>
+        <SearchResults query={query} />
+      </Suspense>
+    </div>
   );
 };
 
