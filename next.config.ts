@@ -6,7 +6,7 @@ const jiti = createJiti(fileURLToPath(import.meta.url));
 jiti("./src/env");
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  experimental: { ppr: "incremental" },
 };
 
 export default nextConfig;
