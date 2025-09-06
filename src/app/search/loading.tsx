@@ -1,5 +1,3 @@
-const Loading = () => {
-  return <p>Loading...</p>;
-};
+import { FullScreenSpinner } from "@/components/ui/spinner";
 
-export default Loading;
+export default FullScreenSpinner;

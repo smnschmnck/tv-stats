@@ -43,6 +43,11 @@ export const SearchResults = async ({
 
   return (
     <div className="flex flex-wrap items-center w-full justify-center">
+      {shows.total_results <= 0 && (
+        <p className="font-bold text-xl pt-32">
+          No shows matching {`'${query}'`} found
+        </p>
+      )}
       {shows.results.map((show) => (
         <TvShowLink key={show.id} show={show} />
       ))}
