@@ -28,7 +28,7 @@ const Hero = () => {
       <div className="w-full px-8">
         <form
           action={searchAction}
-          className="flex items-center justify-between px-3 h-16 bg-zinc-100 border border-zinc-200 rounded-full w-full focus-within:ring ring-blue-500"
+          className="flex items-center justify-between px-3 h-16 bg-zinc-100 border border-zinc-200 rounded-full w-full focus-within:ring-2 ring-blue-500"
         >
           <div className="flex items-center w-full px-4 gap-2 h-full">
             <div className="text-zinc-500">
@@ -36,6 +36,7 @@ const Hero = () => {
             </div>
             <input
               name="q"
+              autoComplete="off"
               className="w-full h-full font-medium placeholder:text-zinc-500 outline-none"
               placeholder="Breaking Bad"
             />
@@ -56,7 +57,7 @@ const Home = () => {
   return (
     <main className="w-full h-full flex items-center gap-16 flex-col pt-4">
       <Hero />
-      <div className="w-full h-full bg-zinc-50 flex items-center py-10 flex-col gap-8">
+      <div className="w-full h-full bg-zinc-50 flex items-center py-10 flex-col gap-8 border-t border-t-zinc-100">
         <h2 className="font-bold text-xl">Popular TV Shows</h2>
         <Suspense>
           <PopularShows />

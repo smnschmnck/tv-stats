@@ -21,9 +21,9 @@ export const metadata: Metadata = {
 
 const Header = () => {
   return (
-    <header className="min-h-24 w-full px-12 flex items-center gap-2">
-      <Clapperboard />
-      <Link className="font-bold" href="/">
+    <header className="min-h-24 w-full px-12 items-center flex">
+      <Link className="font-bold flex items-center gap-2 select-none" href="/">
+        <Clapperboard />
         TV Stats
       </Link>
     </header>

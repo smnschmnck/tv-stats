@@ -7,16 +7,14 @@ const SearchResults = async ({
   const query = params.q;
 
   if (!query) {
-    return <div>No search query provided</div>;
+    return (
+      <div className="w-full h-full flex justify-center items-center">
+        <h1 className="font-bold text-2xl">No search query provided</h1>
+      </div>
+    );
   }
 
-  return (
-    <div>
-      <h1>Search Results for: {query}</h1>
-      {/* Add your search results logic here */}
-      <p>Searching for: {query}</p>
-    </div>
-  );
+  return <div></div>;
 };
 
 export default SearchResults;
