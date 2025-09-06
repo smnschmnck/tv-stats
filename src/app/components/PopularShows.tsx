@@ -1,4 +1,5 @@
 "use cache";
+import { env } from "@/env";
 import { PopularTvShowListResponse } from "@/types/tmdbApi/popular";
 import { unstable_cacheLife as cacheLife } from "next/cache";
 
@@ -11,8 +12,7 @@ export const PopularShows = async () => {
       method: "GET",
       headers: {
         accept: "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzMzUzODNhYjQ0NGI5Zjc2NjBkMjE5ZTY3NDMzZTQ0ZSIsIm5iZiI6MTc1NzE3NDI2Ny4wMzUsInN1YiI6IjY4YmM1OWZhNDUzZjI4OThhNjFiYzNjNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Z_j5TEwQO936r193z_trWfJT7y4TIZJDVcvzzYTVl9Y",
+        Authorization: `Bearer ${env.TMDB_SECRET_ACCESS_KEY}`,
       },
     }
   );
