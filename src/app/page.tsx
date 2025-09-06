@@ -9,13 +9,13 @@ const Hero = () => {
     <div className="flex flex-col gap-8">
       <div className="text-center flex flex-col gap-2">
         <h1 className="font-bold text-4xl">
-          Never Waste a Night on a Bad Show Again
+          Spend Every Night on a Great Show
         </h1>
         <p className="font-medium text-zinc-500">
           Check IMDb ratings at a glance and find the series worth your time.
         </p>
       </div>
-      <div className="w-full px-20">
+      <div className="w-full px-8">
         <form className="flex items-center justify-between px-3 h-16 bg-zinc-100 border border-zinc-200 rounded-full w-full focus-within:ring ring-blue-500">
           <div className="flex items-center w-full px-4 gap-2 h-full">
             <div className="text-zinc-500">
@@ -66,11 +66,12 @@ const PopularShows = async () => {
   const shows = (await res.json()) as PopularTvShowListResponse;
 
   return (
-    <div className="flex flex-wrap gap-4 items-center justify-center bg-zinc-50 w-full px-20">
+    <div className="flex flex-wrap items-center justify-center bg-zinc-50 w-full px-20">
       {shows.results.map((show) => (
-        <div
+        <a
+          href="https://imdb.com"
           key={show.id}
-          className="flex flex-col gap-1 items-start h-70 overflow-hidden"
+          className="flex flex-col gap-1 items-start h-76 overflow-hidden px-8 py-5 rounded-2xl hover:bg-zinc-200 transition"
         >
           <img
             className="w-32 rounded-xl"
@@ -80,7 +81,7 @@ const PopularShows = async () => {
           <p className="w-32 text-center font-medium line-clamp-3">
             {show.name}
           </p>
-        </div>
+        </a>
       ))}
     </div>
   );
@@ -92,7 +93,7 @@ export default function Home() {
       <Header />
       <main className="w-full h-full flex items-center gap-16 flex-col pt-4">
         <Hero />
-        <div className="w-full h-full bg-zinc-50 flex items-center p-10 flex-col gap-8">
+        <div className="w-full h-full bg-zinc-50 flex items-center py-10 flex-col gap-8">
           <h2 className="font-bold text-xl">Popular TV Shows</h2>
           <PopularShows />
         </div>
