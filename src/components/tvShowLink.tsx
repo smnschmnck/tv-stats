@@ -1,10 +1,11 @@
 import { TvShow } from "@/types/tmdbApi/tvShow";
 import { Clapperboard } from "lucide-react";
+import Link from "next/link";
 
 export const TvShowLink = ({ show }: { show: TvShow }) => {
   return (
-    <a
-      href="https://imdb.com"
+    <Link
+      href={`/show/${show.id}`}
       key={show.id}
       className="flex flex-col gap-1 items-start h-76 overflow-hidden px-8 py-5 rounded-2xl hover:bg-zinc-200 transition"
     >
@@ -21,6 +22,6 @@ export const TvShowLink = ({ show }: { show: TvShow }) => {
         </div>
       )}
       <p className="w-32 text-center font-medium line-clamp-3">{show.name}</p>
-    </a>
+    </Link>
   );
 };

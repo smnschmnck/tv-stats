@@ -1,6 +1,7 @@
 import { SearchBar } from "@/components/searchBar";
 import { Suspense } from "react";
 import { PopularShows } from "./components/popularShows";
+import FullScreenSpinner from "./search/loading";
 
 export const experimental_ppr = true;
 
@@ -28,7 +29,7 @@ const Page = () => {
       <Hero />
       <div className="w-full h-full bg-zinc-50 flex items-center py-10 flex-col gap-8 border-t border-t-zinc-100">
         <h2 className="font-bold text-xl">Popular TV Shows</h2>
-        <Suspense fallback={<p>Loading...</p>}>
+        <Suspense fallback={<FullScreenSpinner />}>
           <PopularShows />
         </Suspense>
       </div>
