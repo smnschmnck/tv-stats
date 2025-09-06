@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Clapperboard } from "lucide-react";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,6 +19,17 @@ export const metadata: Metadata = {
   description: "View tv show ratings at a glance",
 };
 
+const Header = () => {
+  return (
+    <header className="min-h-24 w-full px-12 flex items-center gap-2">
+      <Clapperboard />
+      <Link className="font-bold" href="/">
+        TV Stats
+      </Link>
+    </header>
+  );
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -27,7 +40,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-full w-full`}
       >
-        {children}
+        <div className="flex h-full w-full flex-col">
+          <Header />
+          {children}
+        </div>
       </body>
     </html>
   );

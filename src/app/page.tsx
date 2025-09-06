@@ -1,9 +1,18 @@
-import { Clapperboard, Search } from "lucide-react";
-import Link from "next/link";
+import { Search } from "lucide-react";
+import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { PopularShows } from "./components/PopularShows";
 
 export const experimental_ppr = true;
+
+async function searchAction(formData: FormData) {
+  "use server";
+
+  const query = formData.get("q") as string;
+  if (query?.trim()) {
+    redirect(`/search?q=${encodeURIComponent(query.trim())}`);
+  }
+}
 
 const Hero = () => {
   return (
@@ -17,17 +26,24 @@ const Hero = () => {
         </p>
       </div>
       <div className="w-full px-8">
-        <form className="flex items-center justify-between px-3 h-16 bg-zinc-100 border border-zinc-200 rounded-full w-full focus-within:ring ring-blue-500">
+        <form
+          action={searchAction}
+          className="flex items-center justify-between px-3 h-16 bg-zinc-100 border border-zinc-200 rounded-full w-full focus-within:ring ring-blue-500"
+        >
           <div className="flex items-center w-full px-4 gap-2 h-full">
             <div className="text-zinc-500">
               <Search size={20} />
             </div>
             <input
+              name="q"
               className="w-full h-full font-medium placeholder:text-zinc-500 outline-none"
               placeholder="Breaking Bad"
             />
           </div>
-          <button className="bg-black text-white font-medium rounded-full h-11 px-8">
+          <button
+            type="submit"
+            className="bg-black text-white font-medium rounded-full h-11 px-8"
+          >
             Search
           </button>
         </form>
@@ -36,30 +52,18 @@ const Hero = () => {
   );
 };
 
-const Header = () => {
+const Home = () => {
   return (
-    <header className="min-h-24 w-full px-12 flex items-center gap-2">
-      <Clapperboard />
-      <Link className="font-bold" href="/">
-        TV Stats
-      </Link>
-    </header>
+    <main className="w-full h-full flex items-center gap-16 flex-col pt-4">
+      <Hero />
+      <div className="w-full h-full bg-zinc-50 flex items-center py-10 flex-col gap-8">
+        <h2 className="font-bold text-xl">Popular TV Shows</h2>
+        <Suspense>
+          <PopularShows />
+        </Suspense>
+      </div>
+    </main>
   );
 };
 
-export default function Home() {
-  return (
-    <div className="flex h-full w-full flex-col">
-      <Header />
-      <main className="w-full h-full flex items-center gap-16 flex-col pt-4">
-        <Hero />
-        <div className="w-full h-full bg-zinc-50 flex items-center py-10 flex-col gap-8">
-          <h2 className="font-bold text-xl">Popular TV Shows</h2>
-          <Suspense>
-            <PopularShows />
-          </Suspense>
-        </div>
-      </main>
-    </div>
-  );
-}
+export default Home;
