@@ -1,6 +1,8 @@
 import { env } from "@/env";
 import { MovieSeriesData } from "@/types/omdbApi/tvShow";
 import { ExternalIds } from "@/types/tmdbApi/tvShow";
+import { Season } from "./components/season";
+import { Suspense } from "react";
 
 const Page = async ({ params }: { params: Promise<{ showId: string }> }) => {
   const { showId } = await params;
@@ -21,9 +23,10 @@ const Page = async ({ params }: { params: Promise<{ showId: string }> }) => {
   }
 
   const externalIds = (await externalIdRes.json()) as ExternalIds;
+  const imdbId = externalIds.imdb_id;
 
   const showRes = await fetch(
-    `http://www.omdbapi.com/?i=${externalIds.imdb_id}&apikey=${env.OMDB_SECRET_ACCESS_KEY}`
+    `http://www.omdbapi.com/?i=${imdbId}&apikey=${env.OMDB_SECRET_ACCESS_KEY}`
   );
 
   if (!showRes.ok) {
@@ -32,7 +35,20 @@ const Page = async ({ params }: { params: Promise<{ showId: string }> }) => {
 
   const show = (await showRes.json()) as MovieSeriesData;
 
-  return <pre>My Show imdb: {JSON.stringify(show, null, 2)}</pre>;
+  const seasons = Array.from(
+    { length: Number(show.totalSeasons) },
+    (_, i) => i + 1
+  );
+
+  return (
+    <div className="flex p-12 gap-4">
+      {seasons.map((season) => (
+        <Suspense key={season} fallback={<p>loading...</p>}>
+          <Season seasonNumber={season} imdbId={imdbId} />
+        </Suspense>
+      ))}
+    </div>
+  );
 };
 
 export default Page;
