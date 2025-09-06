@@ -66,15 +66,20 @@ const PopularShows = async () => {
   const shows = (await res.json()) as PopularTvShowListResponse;
 
   return (
-    <div className="flex flex-wrap gap-4 items-center">
+    <div className="flex flex-wrap gap-4 items-center justify-center bg-zinc-50 w-full px-20">
       {shows.results.map((show) => (
-        <div key={show.id} className="flex flex-col gap-1 items-start h-full">
+        <div
+          key={show.id}
+          className="flex flex-col gap-1 items-start h-70 overflow-hidden"
+        >
           <img
             className="w-32 rounded-xl"
             src={`https://image.tmdb.org/t/p/w500/${show.poster_path}`}
             alt={`${show.name} poster`}
           />
-          <p className="w-32 text-center font-medium">{show.name}</p>
+          <p className="w-32 text-center font-medium line-clamp-3">
+            {show.name}
+          </p>
         </div>
       ))}
     </div>
@@ -87,7 +92,7 @@ export default function Home() {
       <Header />
       <main className="w-full h-full flex items-center gap-16 flex-col pt-4">
         <Hero />
-        <div className="h-full w-full bg-zinc-50 flex items-center p-10 flex-col gap-8">
+        <div className="w-full h-full bg-zinc-50 flex items-center p-10 flex-col gap-8">
           <h2 className="font-bold text-xl">Popular TV Shows</h2>
           <PopularShows />
         </div>
