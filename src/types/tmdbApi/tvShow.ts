@@ -15,7 +15,7 @@ export type TvShow = {
   original_name: string;
   overview: string;
   popularity: number;
-  poster_path: string;
+  poster_path: string | null;
   first_air_date: string;
   name: string;
   vote_average: number;

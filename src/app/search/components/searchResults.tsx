@@ -1,5 +1,6 @@
 "use cache";
 
+import { TvShowLink } from "@/components/tvShowLink";
 import { env } from "@/env";
 import { TvShowListResponse } from "@/types/tmdbApi/tvShow";
 import { cacheLife } from "next/dist/server/use-cache/cache-life";
@@ -38,7 +39,13 @@ export const SearchResults = async ({
     );
   }
 
-  const searchResponse = (await res.json()) as TvShowListResponse;
+  const shows = (await res.json()) as TvShowListResponse;
 
-  return <div>{searchResponse.results.map((r) => r.name)}</div>;
+  return (
+    <div className="flex flex-wrap items-center justify-center w-full px-20">
+      {shows.results.map((show) => (
+        <TvShowLink key={show.id} show={show} />
+      ))}
+    </div>
+  );
 };

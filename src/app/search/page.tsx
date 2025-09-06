@@ -3,6 +3,14 @@ import { SearchResults } from "./components/searchResults";
 
 export const experimental_ppr = true;
 
+const Loader = () => {
+  return (
+    <div className="w-full h-full flex justify-center items-center">
+      <div className="h-6 w-6 rounded-full border-black border-t-zinc-500 border-2 animate-spin"></div>
+    </div>
+  );
+};
+
 const Page = async ({
   searchParams,
 }: {
@@ -12,7 +20,7 @@ const Page = async ({
   const query = params.q;
 
   return (
-    <Suspense fallback={<p>Loading...</p>}>
+    <Suspense fallback={<Loader />}>
       <SearchResults query={query} />
     </Suspense>
   );
