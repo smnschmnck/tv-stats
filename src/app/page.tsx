@@ -13,7 +13,7 @@ const Hero = () => {
           Spend Every Night on a Great Show
         </h1>
         <p className="font-medium text-zinc-500">
-          Check IMDb ratings at a glance and find the series worth your time.
+          Check IMDb ratings at a glance and find the series worth your time
         </p>
       </div>
       <div className="w-full px-8">

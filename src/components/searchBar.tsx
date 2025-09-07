@@ -14,7 +14,7 @@ export const SearchBar = ({ defaultValue }: { defaultValue?: string }) => {
   return (
     <form
       action={searchAction}
-      className="flex items-center justify-between px-3 h-16 bg-zinc-100 border border-zinc-200 rounded-full w-full focus-within:ring-2 ring-blue-500"
+      className="flex items-center justify-between px-3 h-16 bg-zinc-100 border border-zinc-200 rounded-full w-full focus-within:ring-2 ring-blue-500 hover:shadow-lg shadow-zinc-100 transition"
     >
       <div className="flex items-center w-full px-4 gap-2 h-full">
         <div className="text-zinc-500">
@@ -30,7 +30,7 @@ export const SearchBar = ({ defaultValue }: { defaultValue?: string }) => {
       </div>
       <button
         type="submit"
-        className="bg-black text-white font-medium rounded-full h-11 px-8"
+        className="bg-black text-white font-medium rounded-full h-11 px-8 hover:bg-zinc-700 transition"
       >
         Search
       </button>
