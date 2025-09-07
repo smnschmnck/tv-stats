@@ -42,15 +42,21 @@ export const SearchResults = async ({
   const shows = (await res.json()) as TvShowListResponse;
 
   return (
-    <div className="flex flex-wrap items-center w-full justify-center gap-8">
-      {shows.total_results <= 0 && (
-        <p className="font-bold text-xl pt-32">
-          No shows matching {`'${query}'`} found
-        </p>
-      )}
-      {shows.results.map((show) => (
-        <TvShowLink key={show.id} show={show} />
-      ))}
+    <div className="flex flex-col gap-8">
+      <div className="flex w-full justify-between items-center">
+        <h1 className="text-xl font-bold">Search results for {`'${query}'`}</h1>
+        <p className="font-medium">{shows.total_results} shows found</p>
+      </div>
+      <div className="flex flex-wrap items-center w-full justify-center gap-8">
+        {shows.total_results <= 0 && (
+          <p className="font-bold text-xl pt-32">
+            No shows matching {`'${query}'`} found
+          </p>
+        )}
+        {shows.results.map((show) => (
+          <TvShowLink key={show.id} show={show} />
+        ))}
+      </div>
     </div>
   );
 };

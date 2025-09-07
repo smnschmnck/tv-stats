@@ -15,9 +15,9 @@ const Header = () => {
           <SearchBarSmall />
         </Suspense>
       </div>
-      <div className="text-zinc-500">
+      <button className="text-zinc-500 p-2 rounded-full hover:bg-zinc-100 transition">
         <Settings />
-      </div>
+      </button>
     </header>
   );
 };

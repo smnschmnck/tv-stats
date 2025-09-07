@@ -13,7 +13,7 @@ const Page = async ({
   const query = params.q;
 
   return (
-    <div className="px-8 md:px-20 w-full h-full items-center pt-4">
+    <div className="px-8 md:px-16 pt-4 h-full w-full">
       <Suspense fallback={<FullScreenSpinner />}>
         <SearchResults query={query} />
       </Suspense>
