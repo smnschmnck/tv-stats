@@ -27,11 +27,14 @@ const Page = () => {
   return (
     <main className="w-full h-full flex items-center gap-16 flex-col pt-4">
       <Hero />
-      <div className="w-full h-full bg-zinc-50 flex items-center py-10 flex-col gap-8 border-t border-t-zinc-100">
-        <h2 className="font-bold text-xl">Popular TV Shows</h2>
-        <Suspense fallback={<FullScreenSpinner />}>
-          <PopularShows />
-        </Suspense>
+      <div>
+        <div className="min-h-12 w-full bg-zinc-50 rounded-t-[100%]" />
+        <div className="w-full h-full bg-zinc-50 flex items-center pb-10 flex-col gap-8">
+          <h2 className="font-bold text-xl">Popular TV Shows</h2>
+          <Suspense fallback={<FullScreenSpinner />}>
+            <PopularShows />
+          </Suspense>
+        </div>
       </div>
     </main>
   );
