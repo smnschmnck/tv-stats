@@ -10,13 +10,13 @@ export const ShowInfo = async ({ showId }: { showId: string }) => {
   cacheLife("hours");
 
   return (
-    <div className="px-12 pb-8 flex gap-8 w-full flex-col md:flex-row">
-      <div className="flex flex-col gap-2 w-full md:w-72 min-w-72 min-h-128 bg-zinc-50 p-8 rounded-xl border-zinc-100 border h-fit">
+    <div className="md:px-12 px-8 pb-8 flex gap-8 w-full flex-col md:flex-row">
+      <div className="flex flex-col gap-2 w-full md:w-72 min-w-72 min-h-128 bg-zinc-50 md:p-8 p-4 rounded-xl border-zinc-100 border h-fit">
         <Suspense fallback={<FullScreenSpinner />}>
           <ShowDetails showId={showId} />
         </Suspense>
       </div>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 md:p-8 p-4 bg-zinc-50 border border-zinc-100 rounded-xl w-full overflow-x-auto">
         <h2 className="font-bold text-lg">Ratings</h2>
         <Suspense fallback={<FullScreenSpinner />}>
           <Ratings showId={showId} />
