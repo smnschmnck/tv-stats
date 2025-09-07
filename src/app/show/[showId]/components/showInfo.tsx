@@ -1,88 +1,19 @@
-"use cache";
-
-import { env } from "@/env";
-import { MovieSeriesData } from "@/types/omdbApi/tvShow";
-import { ExternalIds } from "@/types/tmdbApi/tvShow";
 import { Suspense } from "react";
-import { Season } from "./season";
-import { cacheLife } from "next/dist/server/use-cache/cache-life";
-import { TVShowDetails } from "@/types/tmdbApi/tvShowDetails";
+import FullScreenSpinner from "../loading";
+import { Ratings } from "./ratings";
+import { ShowDetails } from "./showDetails";
 
 export const ShowInfo = async ({ showId }: { showId: string }) => {
-  cacheLife("hours");
-
-  const detailsRes = await fetch(
-    `https://api.themoviedb.org/3/tv/${showId}?language=en-US`,
-    {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${env.TMDB_SECRET_ACCESS_KEY}`,
-      },
-    }
-  );
-
-  if (!detailsRes.ok) {
-    return <p>Show not found</p>;
-  }
-
-  const showDetails = (await detailsRes.json()) as TVShowDetails;
-
-  const externalIdRes = await fetch(
-    `https://api.themoviedb.org/3/tv/${showId}/external_ids`,
-    {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${env.TMDB_SECRET_ACCESS_KEY}`,
-      },
-    }
-  );
-
-  if (!externalIdRes.ok) {
-    return <p>Show not found</p>;
-  }
-
-  const externalIds = (await externalIdRes.json()) as ExternalIds;
-  const imdbId = externalIds.imdb_id;
-
-  const showRes = await fetch(
-    `http://www.omdbapi.com/?i=${imdbId}&apikey=${env.OMDB_SECRET_ACCESS_KEY}`
-  );
-
-  if (!showRes.ok) {
-    return <p>No ratings for show yet</p>;
-  }
-
-  const show = (await showRes.json()) as MovieSeriesData;
-
-  const seasons = Array.from(
-    { length: Number(show.totalSeasons) },
-    (_, i) => i + 1
-  );
-
   return (
     <div className="px-12 pb-8 flex gap-8 w-full">
-      <div className="flex flex-col gap-2 w-72 bg-zinc-50 p-8 rounded-xl border-zinc-100 border h-fit">
-        <h1 className="text-lg font-bold">{show.Title}</h1>
-        {!!showDetails.poster_path && (
-          <div>
-            <img
-              className="rounded-xl"
-              src={`https://image.tmdb.org/t/p/w500/${showDetails.poster_path}`}
-              alt="poster"
-            />
-          </div>
-        )}
-        <p>{showDetails.overview}</p>
+      <div className="flex flex-col gap-2 w-72 min-w-72 min-h-128 bg-zinc-50 p-8 rounded-xl border-zinc-100 border h-fit">
+        <Suspense fallback={<FullScreenSpinner />}>
+          <ShowDetails showId={showId} />
+        </Suspense>
       </div>
-      <div className="flex gap-4 w-full overflow-x-auto">
-        {seasons.map((season) => (
-          <Suspense key={season} fallback={<p>loading...</p>}>
-            <Season seasonNumber={season} imdbId={imdbId} />
-          </Suspense>
-        ))}
-      </div>
+      <Suspense fallback={<FullScreenSpinner />}>
+        <Ratings showId={showId} />
+      </Suspense>
     </div>
   );
 };
