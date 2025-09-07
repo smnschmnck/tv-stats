@@ -14,8 +14,8 @@ const Page = async ({
   const query = params.q;
 
   return (
-    <div className="px-20 w-full h-full flex flex-col gap-20 items-center pt-4">
-      <div className="w-full px-36">
+    <div className="px-8 md:px-20 w-full h-full flex flex-col gap-20 items-center pt-4">
+      <div className="w-full lg:px-36 md:px-18 sm:px-8 xs:px-4">
         <SearchBar defaultValue={query} />
       </div>
       <Suspense fallback={<FullScreenSpinner />}>

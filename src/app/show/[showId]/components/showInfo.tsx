@@ -5,15 +5,18 @@ import { ShowDetails } from "./showDetails";
 
 export const ShowInfo = async ({ showId }: { showId: string }) => {
   return (
-    <div className="px-12 pb-8 flex gap-8 w-full">
-      <div className="flex flex-col gap-2 w-72 min-w-72 min-h-128 bg-zinc-50 p-8 rounded-xl border-zinc-100 border h-fit">
+    <div className="px-12 pb-8 flex gap-8 w-full flex-col md:flex-row">
+      <div className="flex flex-col gap-2 w-full md:w-72 min-w-72 min-h-128 bg-zinc-50 p-8 rounded-xl border-zinc-100 border h-fit">
         <Suspense fallback={<FullScreenSpinner />}>
           <ShowDetails showId={showId} />
         </Suspense>
       </div>
-      <Suspense fallback={<FullScreenSpinner />}>
-        <Ratings showId={showId} />
-      </Suspense>
+      <div className="flex flex-col gap-4">
+        <h2 className="font-bold text-lg">Ratings</h2>
+        <Suspense fallback={<FullScreenSpinner />}>
+          <Ratings showId={showId} />
+        </Suspense>
+      </div>
     </div>
   );
 };

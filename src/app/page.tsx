@@ -7,7 +7,7 @@ export const experimental_ppr = true;
 
 const Hero = () => {
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 px-8">
       <div className="text-center flex flex-col gap-2">
         <h1 className="font-bold text-4xl">
           Spend Every Night on a Great Show
@@ -16,7 +16,7 @@ const Hero = () => {
           Check IMDb ratings at a glance and find the series worth your time
         </p>
       </div>
-      <div className="w-full px-8">
+      <div className="w-full sm:px-8">
         <SearchBar />
       </div>
     </div>

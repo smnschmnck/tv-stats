@@ -29,7 +29,7 @@ export const ShowDetails = async ({ showId }: { showId: string }) => {
       {!!showDetails.poster_path && (
         <div>
           <img
-            className="rounded-xl"
+            className="rounded-xl w-72"
             src={`https://image.tmdb.org/t/p/w500/${showDetails.poster_path}`}
             alt="poster"
           />

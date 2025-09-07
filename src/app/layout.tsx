@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 
 const Header = () => {
   return (
-    <header className="min-h-24 w-full px-12 items-center flex fixed bg-white/75 backdrop-blur-md">
+    <header className="min-h-24 w-full md:px-12 px-8 items-center flex fixed bg-white/75 backdrop-blur-md">
       <Link className="font-bold flex items-center gap-2 select-none" href="/">
         <Clapperboard />
         TV Stats
