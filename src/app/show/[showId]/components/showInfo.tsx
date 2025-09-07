@@ -62,18 +62,19 @@ export const ShowInfo = async ({ showId }: { showId: string }) => {
   );
 
   return (
-    <div className="p-12 flex gap-12 w-full">
-      <div className="flex flex-col gap-4">
+    <div className="px-12 flex gap-8 w-full">
+      <div className="flex flex-col gap-2 w-72 bg-zinc-50 p-8 rounded-xl border-zinc-100 border h-fit">
         <h1 className="text-lg font-bold">{show.Title}</h1>
         {!!showDetails.poster_path && (
           <div>
             <img
-              className="w-48 rounded-xl"
+              className="rounded-xl"
               src={`https://image.tmdb.org/t/p/w500/${showDetails.poster_path}`}
               alt="poster"
             />
           </div>
         )}
+        <p>{showDetails.overview}</p>
       </div>
       <div className="flex gap-4 w-full overflow-x-auto">
         {seasons.map((season) => (
