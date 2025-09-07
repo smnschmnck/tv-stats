@@ -1,6 +1,7 @@
-import { SearchBarSmall } from "@/components/searchBar";
+import { SearchBarSmall } from "@/components/searchBarSmall";
 import { Clapperboard, Settings } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
 
 const Header = () => {
   return (
@@ -10,7 +11,9 @@ const Header = () => {
         <span className="md:block hidden">TV Stats</span>
       </Link>
       <div className="w-128">
-        <SearchBarSmall />
+        <Suspense>
+          <SearchBarSmall />
+        </Suspense>
       </div>
       <div className="text-zinc-500">
         <Settings />
