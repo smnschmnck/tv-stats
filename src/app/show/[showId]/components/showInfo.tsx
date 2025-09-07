@@ -62,7 +62,7 @@ export const ShowInfo = async ({ showId }: { showId: string }) => {
   );
 
   return (
-    <div className="px-12 flex gap-8 w-full">
+    <div className="px-12 pb-8 flex gap-8 w-full">
       <div className="flex flex-col gap-2 w-72 bg-zinc-50 p-8 rounded-xl border-zinc-100 border h-fit">
         <h1 className="text-lg font-bold">{show.Title}</h1>
         {!!showDetails.poster_path && (

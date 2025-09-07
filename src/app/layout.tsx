@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 
 const Header = () => {
   return (
-    <header className="min-h-24 w-full px-12 items-center flex">
+    <header className="min-h-24 w-full px-12 items-center flex fixed bg-white/75 backdrop-blur-md">
       <Link className="font-bold flex items-center gap-2 select-none" href="/">
         <Clapperboard />
         TV Stats
@@ -42,7 +42,7 @@ export default function RootLayout({
       >
         <div className="flex h-full w-full flex-col">
           <Header />
-          {children}
+          <div className="w-full h-full pt-24">{children}</div>
         </div>
       </body>
     </html>

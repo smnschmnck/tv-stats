@@ -83,7 +83,8 @@ export const Season = async ({
   const season = (await res.json()) as SeasonData;
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 items-center">
+      <h6 className="font-bold">{seasonNumber}</h6>
       {season.Episodes.map((episode) => (
         <Rating key={episode.imdbID} rating={episode.imdbRating} />
       ))}
