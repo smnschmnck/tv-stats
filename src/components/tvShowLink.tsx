@@ -7,17 +7,17 @@ export const TvShowLink = ({ show }: { show: TvShow }) => {
     <Link
       href={`/show/${show.id}`}
       key={show.id}
-      className="flex flex-col gap-1 items-start h-76 overflow-hidden px-8 py-5 rounded-2xl hover:bg-zinc-200 transition"
+      className="group flex flex-col gap-1 items-start h-76 overflow-hidden"
     >
       {!!show.poster_path && (
         <img
-          className="w-32 rounded-xl"
+          className="w-32 rounded-xl transition group-hover:opacity-60"
           src={`https://image.tmdb.org/t/p/w500/${show.poster_path}`}
           alt={`${show.name} poster`}
         />
       )}
       {!show.poster_path && (
-        <div className="flex justify-center items-center w-32 aspect-2/3 rounded-xl bg-zinc-700 text-zinc-500">
+        <div className="flex justify-center items-center w-32 aspect-2/3 rounded-xl bg-zinc-700 text-zinc-500 group-hover:bg-zinc-600 transition">
           <Clapperboard />
         </div>
       )}

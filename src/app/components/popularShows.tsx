@@ -25,7 +25,7 @@ export const PopularShows = async () => {
   const shows = (await res.json()) as TvShowListResponse;
 
   return (
-    <div className="flex flex-wrap items-center justify-center bg-zinc-50 w-full px-20">
+    <div className="flex flex-wrap items-center justify-center bg-zinc-50 w-full px-20 gap-8">
       {shows.results.map((show) => (
         <TvShowLink key={show.id} show={show} />
       ))}

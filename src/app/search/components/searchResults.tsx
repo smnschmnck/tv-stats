@@ -42,7 +42,7 @@ export const SearchResults = async ({
   const shows = (await res.json()) as TvShowListResponse;
 
   return (
-    <div className="flex flex-wrap items-center w-full justify-center">
+    <div className="flex flex-wrap items-center w-full justify-center gap-8">
       {shows.total_results <= 0 && (
         <p className="font-bold text-xl pt-32">
           No shows matching {`'${query}'`} found
