@@ -1,11 +1,12 @@
 "use cache";
 
+import { db } from "@/db/drizzle";
+import { episodes, ratings } from "@/db/schema";
 import { env } from "@/env";
-import { Suspense } from "react";
-import { Season } from "./season";
 import { ExternalIds } from "@/types/tmdbApi/tvShow";
-import { MovieSeriesData } from "@/types/omdbApi/tvShow";
+import { asc, eq } from "drizzle-orm";
 import { cacheLife } from "next/dist/server/use-cache/cache-life";
+import { Season } from "./season";
 
 export const Ratings = async ({ showId }: { showId: string }) => {
   cacheLife("hours");
@@ -28,28 +29,34 @@ export const Ratings = async ({ showId }: { showId: string }) => {
   const externalIds = (await externalIdRes.json()) as ExternalIds;
   const imdbId = externalIds.imdb_id;
 
-  const showRes = await fetch(
-    `http://www.omdbapi.com/?i=${imdbId}&apikey=${env.OMDB_SECRET_ACCESS_KEY}`
-  );
+  const eps = await db
+    .select({
+      season: episodes.seasonNumber,
+      episode: episodes.episodeNumber,
+      tconst: episodes.tconst,
+      rating: ratings.averageRating,
+    })
+    .from(episodes)
+    .innerJoin(ratings, eq(episodes.tconst, ratings.tconst))
+    .where(eq(episodes.parentTconst, imdbId))
+    .orderBy(asc(episodes.seasonNumber), asc(episodes.episodeNumber));
 
-  if (!showRes.ok) {
-    return <p>Could not get ratings this show</p>;
-  }
-
-  const show = (await showRes.json()) as MovieSeriesData;
-
-  const seasons = Array.from(
-    { length: Number(show.totalSeasons) },
-    (_, i) => i + 1
-  );
+  const seasons = Map.groupBy(eps, (e) => e.season);
 
   return (
     <div className="flex gap-4 w-full overflow-x-auto">
-      {seasons.map((season) => (
-        <Suspense key={season} fallback={<p>loading...</p>}>
-          <Season seasonNumber={season} imdbId={imdbId} />
-        </Suspense>
-      ))}
+      {seasons
+        .entries()
+        .map(
+          ([seasonNumber, episodes]) =>
+            seasonNumber && (
+              <Season
+                key={seasonNumber}
+                seasonNumber={seasonNumber}
+                episodes={episodes}
+              />
+            )
+        )}
     </div>
   );
 };
