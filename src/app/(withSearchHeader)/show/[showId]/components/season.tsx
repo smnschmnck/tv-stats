@@ -1,15 +1,10 @@
-"use cache";
-
-import { env } from "@/env";
-import { SeasonData } from "@/types/omdbApi/tvSeason";
-import { cacheLife } from "next/dist/server/use-cache/cache-life";
 import { twMerge } from "tailwind-merge";
 
 const BaseRating = ({
   rating,
   className,
 }: {
-  rating: string;
+  rating: number;
   className?: string;
 }) => {
   return (
@@ -24,69 +19,57 @@ const BaseRating = ({
   );
 };
 
-const Rating = ({ rating }: { rating: string }) => {
-  if (rating === "N/A") {
-    return <BaseRating rating="?" className="text-black" />;
-  }
-
-  const numRating = parseFloat(rating);
-
-  if (numRating >= 9) {
+const Rating = ({ rating }: { rating: number }) => {
+  if (rating >= 9) {
     return <BaseRating rating={rating} className="bg-green-700" />;
   }
-  if (numRating >= 8) {
+  if (rating >= 8) {
     return <BaseRating rating={rating} className="bg-green-400" />;
   }
-  if (numRating >= 7) {
+  if (rating >= 7) {
     return <BaseRating rating={rating} className="bg-yellow-400" />;
   }
-  if (numRating >= 6) {
+  if (rating >= 6) {
     return <BaseRating rating={rating} className="bg-red-400" />;
   }
-  if (numRating >= 5) {
+  if (rating >= 5) {
     return <BaseRating rating={rating} className="bg-red-600" />;
   }
-  if (numRating >= 4) {
+  if (rating >= 4) {
     return <BaseRating rating={rating} className="bg-pink-600" />;
   }
-  if (numRating >= 3) {
+  if (rating >= 3) {
     return <BaseRating rating={rating} className="bg-fuchsia-600" />;
   }
-  if (numRating >= 2) {
+  if (rating >= 2) {
     return <BaseRating rating={rating} className="bg-violet-500" />;
   }
-  if (numRating >= 1) {
+  if (rating >= 1) {
     return <BaseRating rating={rating} className="bg-blue-500" />;
   }
-  if (numRating >= 0) {
+  if (rating >= 0) {
     return <BaseRating rating={rating} className="bg-blue-600" />;
   }
 };
 
+type Episode = {
+  tconst: string;
+  episode: number | null;
+  rating: number;
+};
+
 export const Season = async ({
   seasonNumber,
-  imdbId,
+  episodes,
 }: {
-  imdbId: string;
   seasonNumber: number;
+  episodes: Episode[];
 }) => {
-  cacheLife("hours");
-
-  const res = await fetch(
-    `http://www.omdbapi.com/?i=${imdbId}&season=${seasonNumber}&apikey=${env.OMDB_SECRET_ACCESS_KEY}`
-  );
-
-  if (!res.ok) {
-    return null;
-  }
-
-  const season = (await res.json()) as SeasonData;
-
   return (
     <div className="flex flex-col gap-2 items-center">
       <h6 className="font-bold">{seasonNumber}</h6>
-      {season.Episodes.map((episode) => (
-        <Rating key={episode.imdbID} rating={episode.imdbRating} />
+      {episodes.map((episode) => (
+        <Rating key={episode.tconst} rating={episode.rating} />
       ))}
     </div>
   );

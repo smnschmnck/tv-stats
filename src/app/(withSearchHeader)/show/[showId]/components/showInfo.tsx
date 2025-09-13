@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import FullScreenSpinner from "../loading";
 import { Ratings } from "./ratings";
 import { ShowDetails } from "./showDetails";
-import { cacheLife } from "next/dist/server/use-cache/cache-life";
+import { unstable_cacheLife as cacheLife } from "next/cache";
 
 export const ShowInfo = async ({ showId }: { showId: string }) => {
   cacheLife("hours");
