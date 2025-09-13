@@ -5,8 +5,8 @@ import { episodes, ratings } from "@/db/schema";
 import { env } from "@/env";
 import { ExternalIds } from "@/types/tmdbApi/tvShow";
 import { asc, eq } from "drizzle-orm";
-import { cacheLife } from "next/dist/server/use-cache/cache-life";
 import { Season } from "./season";
+import { unstable_cacheLife as cacheLife } from "next/cache";
 
 export const Ratings = async ({ showId }: { showId: string }) => {
   cacheLife("hours");
@@ -41,22 +41,21 @@ export const Ratings = async ({ showId }: { showId: string }) => {
     .where(eq(episodes.parentTconst, imdbId))
     .orderBy(asc(episodes.seasonNumber), asc(episodes.episodeNumber));
 
-  const seasons = Map.groupBy(eps, (e) => e.season);
+  const seasonsMap = Map.groupBy(eps, (e) => e.season);
+  const seasons = Array.from(seasonsMap.entries());
 
   return (
     <div className="flex gap-4 w-full overflow-x-auto">
-      {seasons
-        .entries()
-        .map(
-          ([seasonNumber, episodes]) =>
-            seasonNumber && (
-              <Season
-                key={seasonNumber}
-                seasonNumber={seasonNumber}
-                episodes={episodes}
-              />
-            )
-        )}
+      {seasons.map(
+        ([seasonNumber, episodes]) =>
+          seasonNumber && (
+            <Season
+              key={seasonNumber}
+              seasonNumber={seasonNumber}
+              episodes={episodes}
+            />
+          )
+      )}
     </div>
   );
 };
