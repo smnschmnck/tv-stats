@@ -16,7 +16,7 @@ export const ShowInfo = async ({ showId }: { showId: string }) => {
           <ShowDetails showId={showId} />
         </Suspense>
       </div>
-      <div className="flex w-full flex-col gap-4 overflow-x-auto rounded-xl border border-zinc-100 bg-zinc-50 p-4 md:p-8">
+      <div className="flex w-full flex-col gap-4 overflow-x-auto rounded-xl border border-zinc-100 bg-zinc-50 p-4 md:w-fit md:p-8">
         <h2 className="text-lg font-bold">Ratings</h2>
         <Suspense fallback={<FullScreenSpinner />}>
           <Ratings showId={showId} />
