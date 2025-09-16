@@ -16,7 +16,7 @@ export default function RootLayout({
           </Suspense>
         </div>
       </BaseHeader>
-      <div className="w-full h-full pt-24">{children}</div>
+      <div className="h-full w-full pt-24">{children}</div>
     </div>
   );
 }

@@ -4,10 +4,10 @@ import { ReactNode } from "react";
 
 export const BaseHeader = ({ children }: { children?: ReactNode }) => {
   return (
-    <header className="min-h-24 w-full z-10 md:px-12 px-8 items-center justify-between flex fixed bg-white">
-      <Link className="font-bold flex items-center gap-2 select-none" href="/">
+    <header className="fixed z-10 flex min-h-24 w-full items-center justify-between bg-white px-8 md:px-12">
+      <Link className="flex items-center gap-2 font-bold select-none" href="/">
         <Clapperboard />
-        <span className="md:block hidden">TV Stats</span>
+        <span className="hidden md:block">TV Stats</span>
       </Link>
       {children}
       <div />

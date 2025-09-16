@@ -8,8 +8,8 @@ export const experimental_ppr = true;
 const Hero = () => {
   return (
     <div className="flex flex-col gap-8 px-8">
-      <div className="text-center flex flex-col gap-2">
-        <h1 className="font-bold text-4xl">
+      <div className="flex flex-col gap-2 text-center">
+        <h1 className="text-4xl font-bold">
           Spend Every Night on a Great Show
         </h1>
         <p className="font-medium text-zinc-500">
@@ -25,12 +25,12 @@ const Hero = () => {
 
 const Page = () => {
   return (
-    <main className="w-full h-full flex items-center gap-16 flex-col pt-4">
+    <main className="flex h-full w-full flex-col items-center gap-16 pt-4">
       <Hero />
       <div>
-        <div className="min-h-12 w-full bg-zinc-50 rounded-t-[100%]" />
-        <div className="w-full h-full bg-zinc-50 flex items-center pb-10 flex-col gap-8">
-          <h2 className="font-bold text-xl">Popular TV Shows</h2>
+        <div className="min-h-12 w-full rounded-t-[100%] bg-zinc-50" />
+        <div className="flex h-full w-full flex-col items-center gap-8 bg-zinc-50 pb-10">
+          <h2 className="text-xl font-bold">Popular TV Shows</h2>
           <Suspense fallback={<FullScreenSpinner />}>
             <PopularShows />
           </Suspense>

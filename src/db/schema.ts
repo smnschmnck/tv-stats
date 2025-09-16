@@ -16,7 +16,7 @@ export const ratings = sqliteTable(
   (table) => [
     index("avg_rating_idx").on(table.averageRating),
     index("num_votes_idx").on(table.numVotes),
-  ]
+  ],
 );
 
 export const episodes = sqliteTable(
@@ -36,7 +36,7 @@ export const episodes = sqliteTable(
     index("parent_season_episode_idx").on(
       table.parentTconst,
       table.seasonNumber,
-      table.episodeNumber
+      table.episodeNumber,
     ),
-  ]
+  ],
 );

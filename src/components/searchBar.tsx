@@ -5,23 +5,23 @@ export const SearchBar = ({ defaultValue }: { defaultValue?: string }) => {
   return (
     <form
       action={searchAction}
-      className="flex items-center justify-between px-3 h-16 bg-zinc-100 border border-zinc-200 rounded-full w-full focus-within:ring-2 ring-blue-500 hover:shadow-lg shadow-zinc-100 transition"
+      className="flex h-16 w-full items-center justify-between rounded-full border border-zinc-200 bg-zinc-100 px-3 shadow-zinc-100 ring-blue-500 transition focus-within:ring-2 hover:shadow-lg"
     >
-      <div className="flex items-center w-full px-4 gap-2 h-full">
+      <div className="flex h-full w-full items-center gap-2 px-4">
         <div className="text-zinc-500">
           <Search size={20} />
         </div>
         <input
           name="q"
           autoComplete="off"
-          className="w-full h-full font-medium placeholder:text-zinc-500 outline-none"
+          className="h-full w-full font-medium outline-none placeholder:text-zinc-500"
           placeholder="Breaking Bad"
           defaultValue={defaultValue}
         />
       </div>
       <button
         type="submit"
-        className="bg-black text-white font-medium rounded-full h-11 px-8 hover:bg-zinc-700 transition"
+        className="h-11 rounded-full bg-black px-8 font-medium text-white transition hover:bg-zinc-700"
       >
         Search
       </button>

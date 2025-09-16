@@ -1,10 +1,10 @@
 export const Spinner = () => (
-  <div className="h-6 w-6 rounded-full border-black border-t-zinc-500 border-2 animate-spin"></div>
+  <div className="h-6 w-6 animate-spin rounded-full border-2 border-black border-t-zinc-500"></div>
 );
 
 export const FullScreenSpinner = () => {
   return (
-    <div className="w-full h-full flex justify-center items-center">
+    <div className="flex h-full w-full items-center justify-center">
       <Spinner />
     </div>
   );

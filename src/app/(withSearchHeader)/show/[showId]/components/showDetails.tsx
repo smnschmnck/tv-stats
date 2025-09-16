@@ -15,7 +15,7 @@ export const ShowDetails = async ({ showId }: { showId: string }) => {
         accept: "application/json",
         Authorization: `Bearer ${env.TMDB_SECRET_ACCESS_KEY}`,
       },
-    }
+    },
   );
 
   if (!detailsRes.ok) {
@@ -29,7 +29,7 @@ export const ShowDetails = async ({ showId }: { showId: string }) => {
       {!!showDetails.poster_path && (
         <div>
           <img
-            className="rounded-xl w-72"
+            className="w-72 rounded-xl"
             src={`https://image.tmdb.org/t/p/w500/${showDetails.poster_path}`}
             alt="poster"
           />

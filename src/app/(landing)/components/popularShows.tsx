@@ -15,7 +15,7 @@ export const PopularShows = async () => {
         accept: "application/json",
         Authorization: `Bearer ${env.TMDB_SECRET_ACCESS_KEY}`,
       },
-    }
+    },
   );
 
   if (!res.ok) {
@@ -25,7 +25,7 @@ export const PopularShows = async () => {
   const shows = (await res.json()) as TvShowListResponse;
 
   return (
-    <div className="flex flex-wrap items-center justify-center bg-zinc-50 w-full px-8 md:px-20 gap-8">
+    <div className="flex w-full flex-wrap items-center justify-center gap-8 bg-zinc-50 px-8 md:px-20">
       {shows.results.map((show) => (
         <TvShowLink key={show.id} show={show} />
       ))}

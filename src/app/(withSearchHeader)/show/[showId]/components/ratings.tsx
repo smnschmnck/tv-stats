@@ -19,7 +19,7 @@ export const Ratings = async ({ showId }: { showId: string }) => {
         accept: "application/json",
         Authorization: `Bearer ${env.TMDB_SECRET_ACCESS_KEY}`,
       },
-    }
+    },
   );
 
   if (!externalIdRes.ok) {
@@ -45,7 +45,7 @@ export const Ratings = async ({ showId }: { showId: string }) => {
   const seasons = Array.from(seasonsMap.entries());
 
   return (
-    <div className="flex gap-4 w-full overflow-x-auto">
+    <div className="flex w-full gap-4 overflow-x-auto">
       {seasons.map(
         ([seasonNumber, episodes]) =>
           seasonNumber && (
@@ -54,7 +54,7 @@ export const Ratings = async ({ showId }: { showId: string }) => {
               seasonNumber={seasonNumber}
               episodes={episodes}
             />
-          )
+          ),
       )}
     </div>
   );

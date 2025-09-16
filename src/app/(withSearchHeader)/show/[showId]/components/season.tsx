@@ -10,8 +10,8 @@ const BaseRating = ({
   return (
     <div
       className={twMerge(
-        "h-10 w-10 rounded-md bg-zinc-100 text-white flex justify-center items-center font-medium",
-        className
+        "flex h-10 w-10 items-center justify-center rounded-md bg-zinc-100 font-medium text-white",
+        className,
       )}
     >
       <span>{rating}</span>
@@ -66,7 +66,7 @@ export const Season = async ({
   episodes: Episode[];
 }) => {
   return (
-    <div className="flex flex-col gap-2 items-center">
+    <div className="flex flex-col items-center gap-2">
       <h6 className="font-bold">{seasonNumber}</h6>
       {episodes.map((episode) => (
         <Rating key={episode.tconst} rating={episode.rating} />

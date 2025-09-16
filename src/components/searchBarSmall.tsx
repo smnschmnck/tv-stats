@@ -12,20 +12,20 @@ export const SearchBarSmall = () => {
   return (
     <form
       action={searchAction}
-      className="flex items-center justify-between px-1.5 h-11 border bg-white border-zinc-200 rounded-full w-full focus-within:ring-2 ring-blue-500"
+      className="flex h-11 w-full items-center justify-between rounded-full border border-zinc-200 bg-white px-1.5 ring-blue-500 focus-within:ring-2"
     >
-      <div className="flex items-center w-full px-3 gap-2 h-full">
+      <div className="flex h-full w-full items-center gap-2 px-3">
         <input
           name="q"
           autoComplete="off"
-          className="w-full h-full font-medium placeholder:text-zinc-500 outline-none"
+          className="h-full w-full font-medium outline-none placeholder:text-zinc-500"
           placeholder="Search"
           defaultValue={query ?? ""}
         />
       </div>
       <button
         type="submit"
-        className="bg-black flex justify-center items-center text-white font-medium rounded-full min-h-8 min-w-8 max-h-8 max-w-8 hover:bg-zinc-700 transition"
+        className="flex max-h-8 min-h-8 max-w-8 min-w-8 items-center justify-center rounded-full bg-black font-medium text-white transition hover:bg-zinc-700"
       >
         <Search size={16} strokeWidth={2} />
       </button>
