@@ -1,6 +1,11 @@
 {
-  "HomePage": {
-    "title": "Hello world!",
-    "test": "bla"
+  "IndexPage": {
+    "hero": {
+      "title": "Spend Every Night on a Great Show",
+      "subtitle": "Check IMDb ratings at a glance and find the series worth your time"
+    },
+    "popularShows": {
+      "title": "Popular TV Shows"
+    }
   }
 }
