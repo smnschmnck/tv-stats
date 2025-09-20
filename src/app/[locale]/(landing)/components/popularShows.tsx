@@ -1,4 +1,5 @@
 "use cache";
+import { SomethingWentWrong } from "@/components/somethingWentWrong";
 import { TvShowLink } from "@/components/tvShowLink";
 import { env } from "@/env";
 import { TvShowListResponse } from "@/types/tmdbApi/tvShow";
@@ -19,7 +20,7 @@ export const PopularShows = async () => {
   );
 
   if (!res.ok) {
-    return <p>something went wrong</p>;
+    return <SomethingWentWrong />;
   }
 
   const shows = (await res.json()) as TvShowListResponse;

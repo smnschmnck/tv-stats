@@ -7,5 +7,14 @@
     "popularShows": {
       "title": "Popular TV Shows"
     }
+  },
+  "common": {
+    "somethingWentWrong": "Something went wrong"
+  },
+  "search": {
+    "noQueryProvided": "No search query provided",
+    "noResults": "No shows matching '{query}' found",
+    "resultsFor": "Search results for '{query}'",
+    "showsFound": "{count, plural, =1 {# show} other {# shows}} found"
   }
 }
