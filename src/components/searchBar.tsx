@@ -1,4 +1,4 @@
-import { searchAction } from "@/app/actions";
+import { searchAction } from "@/app/[locale]/actions";
 import { Search } from "lucide-react";
 
 export const SearchBar = ({ defaultValue }: { defaultValue?: string }) => {

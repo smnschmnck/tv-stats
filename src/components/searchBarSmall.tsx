@@ -1,6 +1,6 @@
 "use client";
 
-import { searchAction } from "@/app/actions";
+import { searchAction } from "@/app/[locale]/actions";
 import { Search } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 

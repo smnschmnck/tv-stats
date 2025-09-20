@@ -1,14 +1,16 @@
 import type { NextConfig } from "next";
 import { fileURLToPath } from "node:url";
 import createJiti from "jiti";
+import createNextIntlPlugin from "next-intl/plugin";
 const jiti = createJiti(fileURLToPath(import.meta.url));
 
 jiti("./src/env");
 
 const nextConfig: NextConfig = {
   experimental: {
-    cacheComponents: true,
+    useCache: true,
   },
 };
 
-export default nextConfig;
+const withNextIntl = createNextIntlPlugin();
+export default withNextIntl(nextConfig);

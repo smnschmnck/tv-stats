@@ -1,7 +1,7 @@
 import { SearchBar } from "@/components/searchBar";
+import { FullScreenSpinner } from "@/components/ui/spinner";
 import { Suspense } from "react";
 import { PopularShows } from "./components/popularShows";
-import { FullScreenSpinner } from "@/components/ui/spinner";
 
 export const experimental_ppr = true;
 
