@@ -1,15 +1,23 @@
 import { TvShowLink } from "@/components/tvShowLink";
 import { TvShowListResponse } from "@/types/tmdbApi/tvShow";
+import { getLocale } from "@/utils/i18n";
 import { tmdbFetch } from "@/utils/tmdbFetch";
 import { unstable_cacheLife as cacheLife } from "next/cache";
 
-const getSearchResults = async (query: string | undefined) => {
+const getSearchResults = async ({
+  query,
+  locale,
+}: {
+  query: string | undefined;
+  locale: string;
+}) => {
   "use cache";
   cacheLife("hours");
 
-  const res = await tmdbFetch(
-    `/search/tv?query=${query}&include_adult=true&language=en-US&page=1`,
-  );
+  const res = await tmdbFetch(`/search/tv?query=${query}&include_adult=true`, {
+    locale,
+    page: "1",
+  });
 
   if (!res.ok) {
     return;
@@ -23,6 +31,7 @@ export const SearchResults = async ({
 }: {
   query: string | undefined;
 }) => {
+  const locale = await getLocale();
   if (!query) {
     return (
       <div className="flex h-full w-full items-center justify-center">
@@ -31,7 +40,7 @@ export const SearchResults = async ({
     );
   }
 
-  const shows = await getSearchResults(query);
+  const shows = await getSearchResults({ query, locale });
 
   if (!shows) {
     return (

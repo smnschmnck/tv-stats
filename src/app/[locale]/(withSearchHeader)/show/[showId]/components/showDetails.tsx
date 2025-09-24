@@ -1,12 +1,19 @@
 import { TVShowDetails } from "@/types/tmdbApi/tvShowDetails";
+import { getLocale } from "@/utils/i18n";
 import { tmdbFetch } from "@/utils/tmdbFetch";
 import { unstable_cacheLife as cacheLife } from "next/cache";
 
-const getShowDetails = async (showId: string) => {
+const getShowDetails = async ({
+  showId,
+  locale,
+}: {
+  locale: string;
+  showId: string;
+}) => {
   "use cache";
   cacheLife("hours");
 
-  const res = await tmdbFetch(`/tv/${showId}?language=en-US`);
+  const res = await tmdbFetch(`/tv/${showId}`, { locale });
 
   if (!res.ok) {
     return;
@@ -16,7 +23,9 @@ const getShowDetails = async (showId: string) => {
 };
 
 export const ShowDetails = async ({ showId }: { showId: string }) => {
-  const showDetails = await getShowDetails(showId);
+  const locale = await getLocale();
+
+  const showDetails = await getShowDetails({ showId, locale });
 
   if (!showDetails) {
     return <p>Show not found</p>;
