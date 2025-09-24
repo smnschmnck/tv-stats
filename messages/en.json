@@ -16,5 +16,20 @@
     "noResults": "No shows matching '{query}' found",
     "resultsFor": "Search results for '{query}'",
     "showsFound": "{count, plural, =1 {# show} other {# shows}} found"
+  },
+  "show": {
+    "notFound": "Show not found",
+    "ratings": {
+      "header": "Ratings"
+    }
+  },
+  "components": {
+    "searchBar": {
+      "button": "Search",
+      "placeholder": "Search here"
+    },
+    "searchBarSmall": {
+      "placeholder": "Search"
+    }
   }
 }

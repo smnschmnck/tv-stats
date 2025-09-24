@@ -1,6 +1,7 @@
 import { TVShowDetails } from "@/types/tmdbApi/tvShowDetails";
 import { getLocale } from "@/utils/i18n";
 import { tmdbFetch } from "@/utils/tmdbFetch";
+import { getTranslations } from "next-intl/server";
 import { unstable_cacheLife as cacheLife } from "next/cache";
 
 const getShowDetails = async ({
@@ -23,12 +24,13 @@ const getShowDetails = async ({
 };
 
 export const ShowDetails = async ({ showId }: { showId: string }) => {
+  const t = await getTranslations("show");
   const locale = await getLocale();
 
   const showDetails = await getShowDetails({ showId, locale });
 
   if (!showDetails) {
-    return <p>Show not found</p>;
+    return <p>{t("notFound")}</p>;
   }
 
   return (

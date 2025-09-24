@@ -2,9 +2,11 @@
 
 import { searchAction } from "@/app/[locale]/actions";
 import { Search } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 
 export const SearchBarSmall = () => {
+  const t = useTranslations("components.searchBarSmall");
   const searchParams = useSearchParams();
 
   const query = searchParams.get("q");
@@ -19,7 +21,7 @@ export const SearchBarSmall = () => {
           name="q"
           autoComplete="off"
           className="h-full w-full font-medium outline-none placeholder:text-zinc-500"
-          placeholder="Search"
+          placeholder={t("placeholder")}
           defaultValue={query ?? ""}
         />
       </div>

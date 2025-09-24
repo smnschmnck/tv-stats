@@ -1,7 +1,14 @@
 import { searchAction } from "@/app/[locale]/actions";
 import { Search } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
-export const SearchBar = ({ defaultValue }: { defaultValue?: string }) => {
+export const SearchBar = async ({
+  defaultValue,
+}: {
+  defaultValue?: string;
+}) => {
+  const t = await getTranslations("components.searchBar");
+
   return (
     <form
       action={searchAction}
@@ -15,7 +22,7 @@ export const SearchBar = ({ defaultValue }: { defaultValue?: string }) => {
           name="q"
           autoComplete="off"
           className="h-full w-full font-medium outline-none placeholder:text-zinc-500"
-          placeholder="Breaking Bad"
+          placeholder={t("placeholder")}
           defaultValue={defaultValue}
         />
       </div>
@@ -23,7 +30,7 @@ export const SearchBar = ({ defaultValue }: { defaultValue?: string }) => {
         type="submit"
         className="h-11 rounded-full bg-black px-8 font-medium text-white transition hover:bg-zinc-700"
       >
-        Search
+        {t("button")}
       </button>
     </form>
   );

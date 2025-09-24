@@ -5,6 +5,7 @@ import { tmdbFetch } from "@/utils/tmdbFetch";
 import { asc, eq } from "drizzle-orm";
 import { unstable_cacheLife as cacheLife } from "next/cache";
 import { Season } from "./season";
+import { getTranslations } from "next-intl/server";
 
 const getExternalId = async (showId: string) => {
   "use cache";
@@ -37,10 +38,11 @@ const getEpisodeRatings = async (imdbId: string) => {
 };
 
 export const Ratings = async ({ showId }: { showId: string }) => {
+  const t = await getTranslations("show");
   const externalIds = await getExternalId(showId);
 
   if (!externalIds) {
-    return <p>Show not found</p>;
+    return <p>{t("notFound")}</p>;
   }
 
   const imdbId = externalIds.imdb_id;
