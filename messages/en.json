@@ -13,8 +13,8 @@
   },
   "search": {
     "noQueryProvided": "No search query provided",
-    "noResults": "No shows matching '{query}' found",
-    "resultsFor": "Search results for '{query}'",
+    "noResults": "No shows matching \"{query}\" found",
+    "resultsFor": "Search results for \"{query}\"",
     "showsFound": "{count, plural, =1 {# show} other {# shows}} found"
   },
   "show": {
