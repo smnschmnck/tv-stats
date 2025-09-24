@@ -1,14 +1,9 @@
-"use cache";
-
 import { Suspense } from "react";
 import FullScreenSpinner from "../loading";
 import { Ratings } from "./ratings";
 import { ShowDetails } from "./showDetails";
-import { unstable_cacheLife as cacheLife } from "next/cache";
 
 export const ShowInfo = async ({ showId }: { showId: string }) => {
-  cacheLife("hours");
-
   return (
     <div className="flex w-full flex-col gap-8 px-8 pb-8 md:flex-row md:px-12">
       <div className="flex h-fit min-h-128 w-full min-w-72 flex-col gap-2 rounded-xl border border-zinc-100 bg-zinc-50 p-4 md:w-72 md:p-8">

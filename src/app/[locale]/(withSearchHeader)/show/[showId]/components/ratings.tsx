@@ -1,35 +1,29 @@
-"use cache";
-
 import { db } from "@/db/drizzle";
 import { episodes, ratings } from "@/db/schema";
-import { env } from "@/env";
 import { ExternalIds } from "@/types/tmdbApi/tvShow";
+import { tmdbFetch } from "@/utils/tmdbFetch";
 import { asc, eq } from "drizzle-orm";
-import { Season } from "./season";
 import { unstable_cacheLife as cacheLife } from "next/cache";
+import { Season } from "./season";
 
-export const Ratings = async ({ showId }: { showId: string }) => {
+const getExternalId = async (showId: string) => {
+  "use cache";
   cacheLife("hours");
 
-  const externalIdRes = await fetch(
-    `https://api.themoviedb.org/3/tv/${showId}/external_ids`,
-    {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${env.TMDB_SECRET_ACCESS_KEY}`,
-      },
-    },
-  );
+  const res = await tmdbFetch(`/tv/${showId}/external_ids`);
 
-  if (!externalIdRes.ok) {
-    return <p>Show not found</p>;
+  if (!res.ok) {
+    return;
   }
 
-  const externalIds = (await externalIdRes.json()) as ExternalIds;
-  const imdbId = externalIds.imdb_id;
+  return (await res.json()) as ExternalIds;
+};
 
-  const eps = await db
+const getEpisodeRatings = async (imdbId: string) => {
+  "use cache";
+  cacheLife("hours");
+
+  return await db
     .select({
       season: episodes.seasonNumber,
       episode: episodes.episodeNumber,
@@ -40,6 +34,18 @@ export const Ratings = async ({ showId }: { showId: string }) => {
     .innerJoin(ratings, eq(episodes.tconst, ratings.tconst))
     .where(eq(episodes.parentTconst, imdbId))
     .orderBy(asc(episodes.seasonNumber), asc(episodes.episodeNumber));
+};
+
+export const Ratings = async ({ showId }: { showId: string }) => {
+  const externalIds = await getExternalId(showId);
+
+  if (!externalIds) {
+    return <p>Show not found</p>;
+  }
+
+  const imdbId = externalIds.imdb_id;
+
+  const eps = await getEpisodeRatings(imdbId);
 
   const seasonsMap = Map.groupBy(eps, (e) => e.season);
   const seasons = Array.from(seasonsMap.entries());

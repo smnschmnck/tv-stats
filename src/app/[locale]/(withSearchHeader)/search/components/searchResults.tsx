@@ -1,17 +1,28 @@
-"use cache";
-
 import { TvShowLink } from "@/components/tvShowLink";
-import { env } from "@/env";
 import { TvShowListResponse } from "@/types/tmdbApi/tvShow";
-import { cacheLife } from "next/dist/server/use-cache/cache-life";
+import { tmdbFetch } from "@/utils/tmdbFetch";
+import { unstable_cacheLife as cacheLife } from "next/cache";
+
+const getSearchResults = async (query: string | undefined) => {
+  "use cache";
+  cacheLife("hours");
+
+  const res = await tmdbFetch(
+    `/search/tv?query=${query}&include_adult=true&language=en-US&page=1`,
+  );
+
+  if (!res.ok) {
+    return;
+  }
+
+  return (await res.json()) as TvShowListResponse;
+};
 
 export const SearchResults = async ({
   query,
 }: {
   query: string | undefined;
 }) => {
-  cacheLife("hours");
-
   if (!query) {
     return (
       <div className="flex h-full w-full items-center justify-center">
@@ -20,26 +31,15 @@ export const SearchResults = async ({
     );
   }
 
-  const res = await fetch(
-    `https://api.themoviedb.org/3/search/tv?query=${query}&include_adult=true&language=en-US&page=1`,
-    {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${env.TMDB_SECRET_ACCESS_KEY}`,
-      },
-    },
-  );
+  const shows = await getSearchResults(query);
 
-  if (!res.ok) {
+  if (!shows) {
     return (
       <div className="flex h-full w-full items-center justify-center">
         <h1 className="text-2xl font-bold">Something went wrong</h1>
       </div>
     );
   }
-
-  const shows = (await res.json()) as TvShowListResponse;
 
   return (
     <div className="flex flex-col gap-8">

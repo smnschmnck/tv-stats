@@ -1,28 +1,27 @@
-"use cache";
-
-import { env } from "@/env";
 import { TVShowDetails } from "@/types/tmdbApi/tvShowDetails";
-import { cacheLife } from "next/dist/server/use-cache/cache-life";
+import { tmdbFetch } from "@/utils/tmdbFetch";
+import { unstable_cacheLife as cacheLife } from "next/cache";
 
-export const ShowDetails = async ({ showId }: { showId: string }) => {
+const getShowDetails = async (showId: string) => {
+  "use cache";
   cacheLife("hours");
 
-  const detailsRes = await fetch(
-    `https://api.themoviedb.org/3/tv/${showId}?language=en-US`,
-    {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${env.TMDB_SECRET_ACCESS_KEY}`,
-      },
-    },
-  );
+  const res = await tmdbFetch(`/tv/${showId}?language=en-US`);
 
-  if (!detailsRes.ok) {
+  if (!res.ok) {
+    return;
+  }
+
+  return (await res.json()) as TVShowDetails;
+};
+
+export const ShowDetails = async ({ showId }: { showId: string }) => {
+  const showDetails = await getShowDetails(showId);
+
+  if (!showDetails) {
     return <p>Show not found</p>;
   }
 
-  const showDetails = (await detailsRes.json()) as TVShowDetails;
   return (
     <>
       <h1 className="text-lg font-bold">{showDetails.name}</h1>
