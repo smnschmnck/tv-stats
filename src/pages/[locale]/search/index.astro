@@ -1,9 +1,66 @@
 ---
+import { TMDB_SECRET_ACCESS_KEY } from "astro:env/server";
 import BaseSearchLayout from "../../../layouts/BaseSearchLayout.astro";
+import type { TvShowListResponse } from "../../../types/tmdbApi/tvShow";
+import TvShowLink from "../../../components/TvShowLink.astro";
 const url = Astro.url;
 const query = url.searchParams.get("q");
+
+let error = "";
+let shows: TvShowListResponse | null = null;
+
+if (!query) {
+  error = "No search query provided";
+} else {
+  try {
+    const res = await fetch(
+      `https://api.themoviedb.org/3/search/tv?query=${query}&include_adult=true&language=en-US&page=1`,
+      {
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${TMDB_SECRET_ACCESS_KEY}`,
+        },
+      }
+    );
+
+    if (!res.ok) {
+      error = "Something went wrong";
+    } else {
+      shows = (await res.json()) as TvShowListResponse;
+    }
+  } catch (e) {
+    error = "Something went wrong";
+  }
+}
 ---
 
 <BaseSearchLayout>
-  <p>results for {query}</p>
+  <div class="h-full w-full px-8 pt-4 md:px-16">
+    {
+      !!error && (
+        <div class="flex h-full w-full items-center justify-center">
+          <h1 class="text-2xl font-bold">{error}</h1>
+        </div>
+      )
+    }{
+      !error && (
+        <div class="flex flex-col gap-8">
+          <div class="flex w-full items-center justify-between">
+            <h1 class="text-xl font-bold">Search results for '{query}'</h1>
+            <p class="font-medium">{shows!.total_results} shows found</p>
+          </div>
+
+          <div class="flex w-full flex-wrap items-center justify-center gap-8">
+            {shows!.total_results <= 0 ? (
+              <p class="pt-32 text-xl font-bold">
+                No shows matching '{query}' found
+              </p>
+            ) : (
+              shows!.results.map((show) => <TvShowLink show={show} />)
+            )}
+          </div>
+        </div>
+      )
+    }
+  </div>
 </BaseSearchLayout>
