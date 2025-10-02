@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "export $(grep -v '^#' .env | xargs) && astro preview",
     "astro": "astro",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio"
