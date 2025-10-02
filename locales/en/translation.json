@@ -1,0 +1,5 @@
+{
+  "welcome": {
+    "user": "Hallo, {{name}}! Willkommen zurück."
+  }
+}
