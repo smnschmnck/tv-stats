@@ -2,6 +2,7 @@ import type { MiddlewareHandler } from "astro";
 import i18next from "i18next";
 import Backend from "i18next-fs-backend";
 import { LanguageDetector } from "i18next-http-middleware";
+import { supportedLanguages } from "./constants/i18n";
 
 await i18next
   .use(Backend)
@@ -11,7 +12,7 @@ await i18next
     backend: {
       loadPath: "./locales/{{lng}}/translation.json",
     },
-    preload: ["en", "de"],
+    preload: supportedLanguages,
     interpolation: { escapeValue: false },
   });
 
