@@ -6,14 +6,22 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "@libsql/client": "^0.15.15",
     "@tailwindcss/vite": "^4.1.14",
     "astro": "^5.14.1",
+    "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.44.6",
     "i18next": "^25.5.3",
     "i18next-fs-backend": "^2.6.0",
     "i18next-http-middleware": "^3.8.1",
     "tailwindcss": "^4.1.14"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.5"
   }
 }
