@@ -1,8 +1,6 @@
 // astro.config.mjs
-import { defineConfig, envField } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
-
-import node from "@astrojs/node";
+import { defineConfig, envField } from "astro/config";
 
 import cloudflare from "@astrojs/cloudflare";
 
