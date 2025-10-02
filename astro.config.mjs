@@ -4,6 +4,8 @@ import tailwindcss from "@tailwindcss/vite";
 
 import node from "@astrojs/node";
 
+import cloudflare from "@astrojs/cloudflare";
+
 export default defineConfig({
   srcDir: "src",
   output: "server",
@@ -38,7 +40,5 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
 
-  adapter: node({
-    mode: "standalone",
-  }),
+  adapter: cloudflare(),
 });
