@@ -1,8 +1,8 @@
 ---
 import { Search } from "@lucide/astro";
-import { fallbackLanguage } from "../i18n/constants";
+import { getLocaleLink } from "../i18n/utils";
 
-const searchUrl = `/${Astro.currentLocale ?? fallbackLanguage}/search`;
+const searchUrl = getLocaleLink(Astro.currentLocale, "/search");
 ---
 
 <form

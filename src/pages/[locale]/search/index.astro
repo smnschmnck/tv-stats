@@ -6,32 +6,34 @@ import TvShowLink from "../../../components/TvShowLink.astro";
 const url = Astro.url;
 const query = url.searchParams.get("q");
 
-let error = "";
-let shows: TvShowListResponse | null = null;
+const getSearchResults = async () => {
+  if (!query) {
+    return { error: "No search query provided", shows: undefined } as const;
+  } else {
+    try {
+      const res = await fetch(
+        `https://api.themoviedb.org/3/search/tv?query=${query}&include_adult=true&language=en-US&page=1`,
+        {
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${TMDB_SECRET_ACCESS_KEY}`,
+          },
+        }
+      );
 
-if (!query) {
-  error = "No search query provided";
-} else {
-  try {
-    const res = await fetch(
-      `https://api.themoviedb.org/3/search/tv?query=${query}&include_adult=true&language=en-US&page=1`,
-      {
-        headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${TMDB_SECRET_ACCESS_KEY}`,
-        },
+      if (!res.ok) {
+        return { error: "Something went wrong", shows: undefined } as const;
+      } else {
+        const shows = (await res.json()) as TvShowListResponse;
+        return { error: undefined, shows };
       }
-    );
-
-    if (!res.ok) {
-      error = "Something went wrong";
-    } else {
-      shows = (await res.json()) as TvShowListResponse;
+    } catch (e) {
+      return { error: "Something went wrong", shows: undefined } as const;
     }
-  } catch (e) {
-    error = "Something went wrong";
   }
-}
+};
+
+const { shows, error } = await getSearchResults();
 ---
 
 <BaseSearchLayout>

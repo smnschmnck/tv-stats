@@ -1,0 +1,20 @@
+---
+import Rating from "./Rating.astro";
+
+type Episode = {
+  tconst: string;
+  episode: number | null;
+  rating: number;
+};
+
+const { seasonNumber, episodes } = Astro.props as {
+  seasonNumber: number;
+  episodes: Episode[];
+};
+---
+
+<div class="flex flex-col items-center gap-2">
+  <h6 class="font-bold">{seasonNumber}</h6>
+
+  {episodes.map((episode) => <Rating rating={episode.rating} />)}
+</div>

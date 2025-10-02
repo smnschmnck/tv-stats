@@ -1,0 +1,31 @@
+---
+import BaseRating from "./BaseRating.astro";
+
+const { rating } = Astro.props as { rating: number };
+
+let className = "";
+
+if (rating >= 9) {
+  className = "bg-green-700";
+} else if (rating >= 8) {
+  className = "bg-green-400";
+} else if (rating >= 7) {
+  className = "bg-yellow-400";
+} else if (rating >= 6) {
+  className = "bg-red-400";
+} else if (rating >= 5) {
+  className = "bg-red-600";
+} else if (rating >= 4) {
+  className = "bg-pink-600";
+} else if (rating >= 3) {
+  className = "bg-fuchsia-600";
+} else if (rating >= 2) {
+  className = "bg-violet-500";
+} else if (rating >= 1) {
+  className = "bg-blue-500";
+} else {
+  className = "bg-blue-600";
+}
+---
+
+<BaseRating rating={rating} className={className} />

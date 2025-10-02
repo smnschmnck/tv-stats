@@ -1,0 +1,74 @@
+---
+import { TMDB_SECRET_ACCESS_KEY } from "astro:env/server";
+import { eq, asc } from "drizzle-orm";
+import type { ExternalIds } from "../../../../types/tmdbApi/tvShow";
+import { db } from "../../../../db/drizzle";
+import { episodes, ratings } from "../../../../db/schema";
+import Season from "./Season.astro";
+
+const getRatings = async (showId: string) => {
+  try {
+    const externalIdRes = await fetch(
+      `https://api.themoviedb.org/3/tv/${showId}/external_ids`,
+      {
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${TMDB_SECRET_ACCESS_KEY}`,
+        },
+      }
+    );
+
+    if (!externalIdRes.ok) {
+      return { seasons: undefined, error: "Show not found" };
+    }
+
+    const externalIds = (await externalIdRes.json()) as ExternalIds;
+    const imdbId = externalIds.imdb_id;
+
+    if (!imdbId) {
+      return { seasons: undefined, error: "No IMDb ID found for this show" };
+    }
+
+    const eps = await db
+      .select({
+        season: episodes.seasonNumber,
+        episode: episodes.episodeNumber,
+        tconst: episodes.tconst,
+        rating: ratings.averageRating,
+      })
+      .from(episodes)
+      .innerJoin(ratings, eq(episodes.tconst, ratings.tconst))
+      .where(eq(episodes.parentTconst, imdbId))
+      .orderBy(asc(episodes.seasonNumber), asc(episodes.episodeNumber));
+
+    // Group episodes by season
+    const seasonsMap = Map.groupBy(eps, (e) => e.season!);
+    const seasons = Array.from(seasonsMap.entries());
+
+    return { seasons, error: undefined };
+  } catch (e) {
+    return { seasons: undefined, error: "Something went wrong" };
+  }
+};
+
+const { showId } = Astro.props as { showId: string };
+const { seasons, error } = await getRatings(showId);
+---
+
+{!!error && <p>{error}</p>}
+
+{
+  !error && seasons && (
+    <div class="flex w-full gap-4 overflow-x-auto">
+      {seasons.map(([seasonNumber, episodes]) =>
+        seasonNumber ? (
+          <Season
+            key={seasonNumber}
+            seasonNumber={seasonNumber}
+            episodes={episodes}
+          />
+        ) : null
+      )}
+    </div>
+  )
+}
