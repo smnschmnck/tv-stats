@@ -34,6 +34,11 @@ export default defineConfig({
     routing: "manual",
   },
 
+  prefetch: {
+    defaultStrategy: "viewport",
+    prefetchAll: true,
+  },
+
   vite: {
     plugins: [tailwindcss()],
   },
