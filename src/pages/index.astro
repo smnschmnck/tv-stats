@@ -1,5 +1,5 @@
 ---
-import { fallbackLanguage, languageCookieKey } from "../constants/i18n";
+import { languageCookieKey, fallbackLanguage } from "../i18n/constants";
 
 const preferredLanguage = Astro.cookies.get(languageCookieKey)?.value;
 
