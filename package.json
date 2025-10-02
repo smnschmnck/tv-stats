@@ -19,7 +19,6 @@
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.44.6",
     "i18next": "^25.5.3",
-    "i18next-fs-backend": "^2.6.0",
     "i18next-http-middleware": "^3.8.1",
     "tailwindcss": "^4.1.14"
   },
