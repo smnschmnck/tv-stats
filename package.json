@@ -11,7 +11,10 @@
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^12.6.9",
+    "@astrojs/node": "^9.4.4",
     "@libsql/client": "^0.15.15",
+    "@lucide/astro": "^0.544.0",
     "@tailwindcss/vite": "^4.1.14",
     "astro": "^5.14.1",
     "dotenv": "^17.2.3",

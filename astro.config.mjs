@@ -2,9 +2,12 @@
 import { defineConfig, envField } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 
+import node from "@astrojs/node";
+
 export default defineConfig({
   srcDir: "src",
   output: "server",
+
   env: {
     schema: {
       TMDB_SECRET_ACCESS_KEY: envField.string({
@@ -24,12 +27,18 @@ export default defineConfig({
       }),
     },
   },
+
   i18n: {
     locales: ["en", "de"],
     defaultLocale: "en",
     routing: "manual",
   },
+
   vite: {
     plugins: [tailwindcss()],
   },
+
+  adapter: node({
+    mode: "standalone",
+  }),
 });
