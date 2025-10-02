@@ -1,5 +1,6 @@
 // astro.config.mjs
 import { defineConfig } from "astro/config";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   srcDir: "src",
@@ -8,5 +9,8 @@ export default defineConfig({
     locales: ["en", "de"],
     defaultLocale: "en",
     routing: "manual",
+  },
+  vite: {
+    plugins: [tailwindcss()],
   },
 });
