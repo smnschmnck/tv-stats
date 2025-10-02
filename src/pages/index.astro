@@ -1,5 +1,19 @@
 ---
-return Astro.redirect("/en");
+import { fallbackLanguage, languageCookieKey } from "../utils/constants";
+
+const preferredLanguage = Astro.cookies.get(languageCookieKey)?.value;
+
+if (preferredLanguage) {
+  return Astro.redirect(`/${preferredLanguage}`);
+}
+
+const browserLocale = Astro.preferredLocale;
+
+if (browserLocale) {
+  return Astro.redirect(`/${browserLocale}`);
+}
+
+return Astro.redirect(`/${fallbackLanguage}`);
 ---
 
 <html lang="en">
