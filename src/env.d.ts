@@ -1,8 +1,13 @@
 /// <reference types="astro/client" />
+import type { TFunction } from "i18next";
 
-// This tells Astro that we'll add `t` to locals.
-declare namespace App {
-  interface Locals {
-    t: (key: string, options?: Record<string, unknown>) => string;
+// Put the augmentation in a declare global block
+declare global {
+  namespace App {
+    interface Locals {
+      t: TFunction;
+    }
   }
 }
+
+export {};
