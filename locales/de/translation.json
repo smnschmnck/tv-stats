@@ -1,5 +1,5 @@
 {
   "welcome": {
-    "user": "Hello, {{name}}! Welcome back."
+    "user": "Hallo, {{name}}! Willkommen zurück."
   }
 }

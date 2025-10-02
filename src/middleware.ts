@@ -12,14 +12,11 @@ await i18next
       loadPath: "./locales/{{lng}}/translation.json",
     },
     preload: ["en", "de"],
-    ns: ["common"],
-    defaultNS: "common",
     interpolation: { escapeValue: false },
   });
 
 export const onRequest: MiddlewareHandler = async (context, next) => {
-  const lng =
-    context.request.headers.get("accept-language")?.split(",")[0] ?? "en";
+  const lng = context.currentLocale ?? "en";
 
   const t = i18next.getFixedT(lng);
 

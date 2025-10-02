@@ -1,5 +1,7 @@
 ---
-return Astro.redirect("/en");
+const { t } = Astro.locals;
+
+const greeting = t("welcome.user", { name: "John Doe" });
 ---
 
 <html lang="en">
@@ -10,4 +12,7 @@ return Astro.redirect("/en");
     <meta name="generator" content={Astro.generator} />
     <title>Astro</title>
   </head>
+  <body>
+    <h1>{greeting}</h1>
+  </body>
 </html>
