@@ -1,10 +1,29 @@
 // astro.config.mjs
-import { defineConfig } from "astro/config";
+import { defineConfig, envField } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   srcDir: "src",
   output: "server",
+  env: {
+    schema: {
+      TMDB_SECRET_ACCESS_KEY: envField.string({
+        context: "server",
+        access: "secret",
+        min: 2,
+      }),
+      TURSO_DATABASE_URL: envField.string({
+        context: "server",
+        access: "secret",
+        url: true,
+      }),
+      TURSO_AUTH_TOKEN: envField.string({
+        context: "server",
+        access: "secret",
+        min: 2,
+      }),
+    },
+  },
   i18n: {
     locales: ["en", "de"],
     defaultLocale: "en",
