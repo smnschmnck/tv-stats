@@ -1,0 +1,18 @@
+---
+import BaseHeader from "../components/BaseHeader.astro";
+import SearchBarSmall from "../components/SearchBarSmall.astro";
+import RootLayout from "./RootLayout.astro";
+---
+
+<RootLayout>
+  <div class="flex h-full w-full flex-col">
+    <BaseHeader>
+      <div class="w-128">
+        <SearchBarSmall />
+      </div>
+    </BaseHeader>
+    <div class="h-full w-full pt-24">
+      <slot />
+    </div>
+  </div>
+</RootLayout>

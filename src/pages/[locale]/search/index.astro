@@ -1,0 +1,9 @@
+---
+import BaseSearchLayout from "../../../layouts/BaseSearchLayout.astro";
+const url = Astro.url;
+const query = url.searchParams.get("q");
+---
+
+<BaseSearchLayout>
+  <p>results for {query}</p>
+</BaseSearchLayout>
