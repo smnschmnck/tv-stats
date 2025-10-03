@@ -1,5 +1,7 @@
 ---
 import BaseHeader from "../../components/BaseHeader.astro";
+import LoadingFallback from "../../components/ui/LoadingFallback.astro";
+import Spinner from "../../components/ui/Spinner.astro";
 import { HOUR } from "../../constants/time";
 import RootLayout from "../../layouts/RootLayout.astro";
 import Hero from "./_components/Hero.astro";
@@ -17,13 +19,13 @@ Astro.response.headers.set(
     <div class="h-full w-full pt-24">
       <main class="flex h-full w-full flex-col items-center gap-16 pt-4">
         <Hero />
-        <div>
+        <div class="h-full w-full">
           <div class="min-h-12 w-full rounded-t-[100%] bg-zinc-50"></div>
           <div
             class="flex h-full w-full flex-col items-center gap-8 bg-zinc-50 pb-10"
           >
             <h2 class="text-xl font-bold">Popular TV Shows</h2>
-            <PopularShows />
+            <PopularShows slot="content" />
           </div>
         </div>
       </main>
