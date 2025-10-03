@@ -24,6 +24,8 @@
     "tailwindcss": "^4.1.14"
   },
   "devDependencies": {
-    "drizzle-kit": "^0.31.5"
+    "drizzle-kit": "^0.31.5",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-tailwindcss": "^0.6.14"
   }
 }
