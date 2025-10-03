@@ -1,4 +1,6 @@
 ---
+import LoadingFallback from "../../../components/ui/LoadingFallback.astro";
+import Spinner from "../../../components/ui/Spinner.astro";
 import BaseSearchLayout from "../../../layouts/BaseSearchLayout.astro";
 import Ratings from "./_components/Ratings.astro";
 import ShowDetails from "./_components/ShowDetails.astro";
@@ -24,7 +26,15 @@ Astro.response.headers.set(
       class="flex w-full flex-col gap-4 overflow-x-auto rounded-xl border border-zinc-100 bg-zinc-50 p-4 md:w-fit md:p-8"
     >
       <h2 class="text-lg font-bold">Ratings</h2>
-      <Ratings showId={showId} />
+      <LoadingFallback>
+        <div
+          class="w-64 max-w-full h-full flex justify-center items-center"
+          slot="fallback"
+        >
+          <Spinner />
+        </div>
+        <Ratings slot="content" showId={showId} />
+      </LoadingFallback>
     </div>
   </div>
 </BaseSearchLayout>
