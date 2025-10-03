@@ -1,20 +1,14 @@
 ---
-import { TMDB_SECRET_ACCESS_KEY } from "astro:env/server";
 import type { TVShowDetails } from "../../../../types/tmdbApi/tvShowDetails";
+import { tmdbFetch } from "../../../../utils/tmdbFetch";
 
 const { showId } = Astro.props as { showId: string };
 
 const getShowDetails = async () => {
   try {
-    const res = await fetch(
-      `https://api.themoviedb.org/3/tv/${showId}?language=en-US`,
-      {
-        headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${TMDB_SECRET_ACCESS_KEY}`,
-        },
-      }
-    );
+    const res = await tmdbFetch(`/tv/${showId}`, {
+      locale: Astro.currentLocale,
+    });
 
     if (!res.ok) {
       return { error: "Show not found", showDetails: undefined };

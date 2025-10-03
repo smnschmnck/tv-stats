@@ -1,22 +1,14 @@
 ---
-import { TMDB_SECRET_ACCESS_KEY } from "astro:env/server";
-import { eq, asc } from "drizzle-orm";
-import type { ExternalIds } from "../../../../types/tmdbApi/tvShow";
+import { asc, eq } from "drizzle-orm";
 import { db } from "../../../../db/drizzle";
 import { episodes, ratings } from "../../../../db/schema";
+import type { ExternalIds } from "../../../../types/tmdbApi/tvShow";
+import { tmdbFetch } from "../../../../utils/tmdbFetch";
 import Season from "./Season.astro";
 
 const getRatings = async (showId: string) => {
   try {
-    const externalIdRes = await fetch(
-      `https://api.themoviedb.org/3/tv/${showId}/external_ids`,
-      {
-        headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${TMDB_SECRET_ACCESS_KEY}`,
-        },
-      }
-    );
+    const externalIdRes = await tmdbFetch(`/tv/${showId}/external_ids`);
 
     if (!externalIdRes.ok) {
       return { seasons: undefined, error: "Show not found" };

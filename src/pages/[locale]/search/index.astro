@@ -1,8 +1,8 @@
 ---
-import { TMDB_SECRET_ACCESS_KEY } from "astro:env/server";
+import TvShowLink from "../../../components/TvShowLink.astro";
 import BaseSearchLayout from "../../../layouts/BaseSearchLayout.astro";
 import type { TvShowListResponse } from "../../../types/tmdbApi/tvShow";
-import TvShowLink from "../../../components/TvShowLink.astro";
+import { tmdbFetch } from "../../../utils/tmdbFetch";
 const url = Astro.url;
 const query = url.searchParams.get("q");
 
@@ -11,14 +11,9 @@ const getSearchResults = async () => {
     return { error: "No search query provided", shows: undefined } as const;
   } else {
     try {
-      const res = await fetch(
-        `https://api.themoviedb.org/3/search/tv?query=${query}&include_adult=true&language=en-US&page=1`,
-        {
-          headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${TMDB_SECRET_ACCESS_KEY}`,
-          },
-        }
+      const res = await tmdbFetch(
+        `/search/tv?query=${query}&include_adult=true`,
+        { locale: Astro.currentLocale, page: "1" }
       );
 
       if (!res.ok) {

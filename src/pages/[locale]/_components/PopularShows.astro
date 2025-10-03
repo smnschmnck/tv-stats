@@ -1,19 +1,14 @@
 ---
-import { TMDB_SECRET_ACCESS_KEY } from "astro:env/server";
-import type { TvShowListResponse } from "../../../types/tmdbApi/tvShow";
 import TvShowLink from "../../../components/TvShowLink.astro";
+import type { TvShowListResponse } from "../../../types/tmdbApi/tvShow";
+import { tmdbFetch } from "../../../utils/tmdbFetch";
 
 const getPopularShows = async () => {
   try {
-    const res = await fetch(
-      "https://api.themoviedb.org/3/tv/popular?language=en-US&page=1",
-      {
-        headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${TMDB_SECRET_ACCESS_KEY}`,
-        },
-      }
-    );
+    const res = await tmdbFetch("/tv/popular", {
+      locale: Astro.currentLocale,
+      page: "1",
+    });
 
     if (!res.ok) {
       console.error("TMDB error:", res.status, res.statusText);
