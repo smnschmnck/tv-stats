@@ -3,12 +3,15 @@ import TvShowLink from "../../../components/TvShowLink.astro";
 import BaseSearchLayout from "../../../layouts/BaseSearchLayout.astro";
 import type { TvShowListResponse } from "../../../types/tmdbApi/tvShow";
 import { tmdbFetch } from "../../../utils/tmdbFetch";
+
+const { t } = Astro.locals;
+
 const url = Astro.url;
 const query = url.searchParams.get("q");
 
 const getSearchResults = async () => {
   if (!query) {
-    return { error: "No search query provided", shows: undefined } as const;
+    return { error: t("search.noQueryProvided"), shows: undefined } as const;
   } else {
     try {
       const res = await tmdbFetch(
@@ -17,13 +20,19 @@ const getSearchResults = async () => {
       );
 
       if (!res.ok) {
-        return { error: "Something went wrong", shows: undefined } as const;
+        return {
+          error: t("common.somethingWentWrong"),
+          shows: undefined,
+        } as const;
       } else {
         const shows = (await res.json()) as TvShowListResponse;
         return { error: undefined, shows };
       }
     } catch (e) {
-      return { error: "Something went wrong", shows: undefined } as const;
+      return {
+        error: t("common.somethingWentWrong"),
+        shows: undefined,
+      } as const;
     }
   }
 };
@@ -43,14 +52,18 @@ const { shows, error } = await getSearchResults();
       !error && (
         <div class="flex flex-col gap-8">
           <div class="flex w-full items-center justify-between">
-            <h1 class="text-xl font-bold">Search results for '{query}'</h1>
-            <p class="font-medium">{shows!.total_results} shows found</p>
+            <h1 class="text-xl font-bold">
+              {t("search.resultsFor", { query })}
+            </h1>
+            <p class="font-medium">
+              {t("search.showsFound", { count: shows?.total_results })}
+            </p>
           </div>
 
           <div class="flex w-full flex-wrap items-center justify-center gap-8">
             {shows!.total_results <= 0 ? (
               <p class="pt-32 text-xl font-bold">
-                No shows matching '{query}' found
+                {t("search.noResults", { query })}
               </p>
             ) : (
               shows!.results.map((show) => <TvShowLink show={show} />)

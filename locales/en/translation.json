@@ -1,5 +1,36 @@
 {
-  "welcome": {
-    "user": "Hello, {{name}}! Welcome back."
+  "homePage": {
+    "hero": {
+      "title": "Spend Every Night on a Great Show",
+      "subtitle": "Check IMDb ratings at a glance and find the series worth your time"
+    },
+    "popularShows": {
+      "title": "Popular TV Shows"
+    }
+  },
+  "common": {
+    "somethingWentWrong": "Something went wrong"
+  },
+  "search": {
+    "noQueryProvided": "No search query provided",
+    "noResults": "No shows matching {{query}} found",
+    "resultsFor": "Search results for {{query}}",
+    "showsFound_one": "{{count}} show found",
+    "showsFound_other": "{{count}} shows found"
+  },
+  "show": {
+    "notFound": "Show not found",
+    "ratings": {
+      "header": "Ratings"
+    }
+  },
+  "components": {
+    "searchBar": {
+      "button": "Search",
+      "placeholder": "Search here"
+    },
+    "searchBarSmall": {
+      "placeholder": "Search"
+    }
   }
 }

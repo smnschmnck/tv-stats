@@ -2,6 +2,8 @@
 import { Search } from "@lucide/astro";
 import { getLocaleLink } from "../i18n/utils";
 
+const { t } = Astro.locals;
+
 const searchUrl = getLocaleLink(Astro.currentLocale, "/search");
 ---
 
@@ -17,13 +19,13 @@ const searchUrl = getLocaleLink(Astro.currentLocale, "/search");
       name="q"
       autocomplete="off"
       class="h-full w-full font-medium outline-none placeholder:text-zinc-500"
-      placeholder="Breaking Bad"
+      placeholder={t("components.searchBar.placeholder")}
     />
   </div>
   <button
     type="submit"
     class="h-11 rounded-full bg-black px-8 font-medium text-white transition hover:bg-zinc-700"
   >
-    Search
+    {t("components.searchBar.button")}
   </button>
 </form>

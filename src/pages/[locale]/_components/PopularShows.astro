@@ -3,6 +3,8 @@ import TvShowLink from "../../../components/TvShowLink.astro";
 import type { TvShowListResponse } from "../../../types/tmdbApi/tvShow";
 import { tmdbFetch } from "../../../utils/tmdbFetch";
 
+const { t } = Astro.locals;
+
 const getPopularShows = async () => {
   try {
     const res = await tmdbFetch("/tv/popular", {
@@ -35,4 +37,4 @@ const shows = await getPopularShows();
   )
 }
 
-{!shows && <p>something went wrong</p>}
+{!shows && <p>{t("common.somethingWentWrong")}</p>}

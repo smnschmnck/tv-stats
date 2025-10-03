@@ -1,5 +1,36 @@
 {
-  "welcome": {
-    "user": "Hallo, {{name}}! Willkommen zurück."
+  "homePage": {
+    "hero": {
+      "title": "Finde deine nächste Serie",
+      "subtitle": "Sieh IMDb-Bewertungen auf einen Blick und finde die besten Serien"
+    },
+    "popularShows": {
+      "title": "Beliebte TV-Serien"
+    }
+  },
+  "common": {
+    "somethingWentWrong": "Etwas ist schiefgelaufen"
+  },
+  "search": {
+    "noQueryProvided": "Keine Suchanfrage angegeben",
+    "noResults": "Keine Serien gefunden, die zu {{query}} passen",
+    "resultsFor": "Suchergebnisse für {{query}}",
+    "showsFound_one": "{{count}} Serie gefunden",
+    "showsFound_other": "{{count}} Serien gefunden"
+  },
+  "show": {
+    "notFound": "Serie nicht gefunden",
+    "ratings": {
+      "header": "Bewertungen"
+    }
+  },
+  "components": {
+    "searchBar": {
+      "button": "Suchen",
+      "placeholder": "Hier suchen"
+    },
+    "searchBarSmall": {
+      "placeholder": "Suchen"
+    }
   }
 }

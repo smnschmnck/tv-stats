@@ -2,6 +2,8 @@
 import type { TVShowDetails } from "../../../../types/tmdbApi/tvShowDetails";
 import { tmdbFetch } from "../../../../utils/tmdbFetch";
 
+const { t } = Astro.locals;
+
 const { showId } = Astro.props as { showId: string };
 
 const getShowDetails = async () => {
@@ -11,13 +13,13 @@ const getShowDetails = async () => {
     });
 
     if (!res.ok) {
-      return { error: "Show not found", showDetails: undefined };
+      return { error: t("show.notFound"), showDetails: undefined };
     } else {
       const showDetails = (await res.json()) as TVShowDetails;
       return { error: undefined, showDetails };
     }
   } catch (e) {
-    return { error: "Show not found", showDetails: undefined };
+    return { error: t("show.notFound"), showDetails: undefined };
   }
 };
 

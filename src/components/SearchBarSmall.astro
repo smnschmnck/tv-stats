@@ -2,6 +2,8 @@
 import { Search } from "@lucide/astro";
 import { getLocaleLink } from "../i18n/utils";
 
+const { t } = Astro.locals;
+
 const query = Astro.url.searchParams.get("q");
 
 const searchUrl = getLocaleLink(Astro.currentLocale, "/search");
@@ -16,7 +18,7 @@ const searchUrl = getLocaleLink(Astro.currentLocale, "/search");
       name="q"
       autocomplete="off"
       class="h-full w-full font-medium outline-none placeholder:text-zinc-500"
-      placeholder="Search"
+      placeholder={t("components.searchBarSmall.placeholder")}
       value={query}
     />
   </div>

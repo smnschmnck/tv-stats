@@ -1,11 +1,11 @@
 ---
 import BaseHeader from "../../components/BaseHeader.astro";
-import LoadingFallback from "../../components/ui/LoadingFallback.astro";
-import Spinner from "../../components/ui/Spinner.astro";
 import { HOUR } from "../../constants/time";
 import RootLayout from "../../layouts/RootLayout.astro";
 import Hero from "./_components/Hero.astro";
 import PopularShows from "./_components/PopularShows.astro";
+
+const { t } = Astro.locals;
 
 Astro.response.headers.set(
   "Cache-Control",
@@ -24,7 +24,9 @@ Astro.response.headers.set(
           <div
             class="flex h-full w-full flex-col items-center gap-8 bg-zinc-50 pb-10"
           >
-            <h2 class="text-xl font-bold">Popular TV Shows</h2>
+            <h2 class="text-xl font-bold">
+              {t("homePage.popularShows.title")}
+            </h2>
             <PopularShows slot="content" />
           </div>
         </div>
