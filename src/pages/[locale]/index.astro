@@ -1,8 +1,14 @@
 ---
 import BaseHeader from "../../components/BaseHeader.astro";
+import { HOUR } from "../../constants/time";
 import RootLayout from "../../layouts/RootLayout.astro";
 import Hero from "./_components/Hero.astro";
 import PopularShows from "./_components/PopularShows.astro";
+
+Astro.response.headers.set(
+  "Cache-Control",
+  `public, max-age=${24 * HOUR}, s-maxage=${24 * HOUR}`
+);
 ---
 
 <RootLayout>

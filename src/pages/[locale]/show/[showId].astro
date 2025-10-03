@@ -1,13 +1,12 @@
 ---
 import LoadingFallback from "../../../components/ui/LoadingFallback.astro";
 import Spinner from "../../../components/ui/Spinner.astro";
+import { HOUR } from "../../../constants/time";
 import BaseSearchLayout from "../../../layouts/BaseSearchLayout.astro";
 import Ratings from "./_components/Ratings.astro";
 import ShowDetails from "./_components/ShowDetails.astro";
 
 const { showId } = Astro.params;
-
-const HOUR = 60 * 60;
 
 Astro.response.headers.set(
   "Cache-Control",
