@@ -1,0 +1,59 @@
+---
+import { asc, desc, eq } from "drizzle-orm";
+import { db } from "../../../../db/drizzle";
+import Rating from "./Rating.astro";
+import { episodes, ratings } from "../../../../db/schema";
+
+interface Props {
+  imdbId: string | undefined;
+}
+
+const { imdbId } = Astro.props;
+
+const getHighestRatings = () => {
+  if (!imdbId) {
+    return;
+  }
+
+  return db
+    .select({ averageRating: ratings.averageRating })
+    .from(episodes)
+    .innerJoin(ratings, eq(episodes.tconst, ratings.tconst))
+    .where(eq(episodes.parentTconst, imdbId))
+    .orderBy(desc(ratings.averageRating))
+    .limit(3);
+};
+
+const highestRankings = await getHighestRatings();
+
+const getLowestRatings = () => {
+  if (!imdbId) {
+    return;
+  }
+
+  return db
+    .select({ averageRating: ratings.averageRating })
+    .from(episodes)
+    .innerJoin(ratings, eq(episodes.tconst, ratings.tconst))
+    .where(eq(episodes.parentTconst, imdbId))
+    .orderBy(asc(ratings.averageRating))
+    .limit(3);
+};
+
+const lowestRankings = await getLowestRatings();
+---
+
+<div class="flex flex-col gap-3 rounded-xl bg-zinc-100 p-4">
+  <div class="flex flex-col gap-1">
+    <h3 class="font-bold">Highest Rated</h3>
+    <div class="flex gap-2">
+      {highestRankings?.map((r) => <Rating rating={r.averageRating} />)}
+    </div>
+  </div>
+  <div class="flex flex-col gap-1">
+    <h3 class="font-bold">Lowest Rated</h3>
+    <div class="flex gap-2">
+      {lowestRankings?.map((r) => <Rating rating={r.averageRating} />)}
+    </div>
+  </div>
+</div>
