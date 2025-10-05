@@ -9,7 +9,7 @@ const { rating } = Astro.props;
 
 const getClassName = () => {
   if (!rating) {
-    return "";
+    return "bg-zinc-200";
   }
 
   if (rating >= 9) {

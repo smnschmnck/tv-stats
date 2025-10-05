@@ -4,9 +4,6 @@ import { db } from "../../../../db/drizzle";
 import { ratings } from "../../../../db/schema";
 import Rating from "./Rating.astro";
 import { getLocale } from "../../../../i18n/utils";
-import { undefined } from "astro:schema";
-
-const { t } = Astro.locals;
 
 interface Props {
   imdbId: string | undefined;
@@ -15,13 +12,17 @@ interface Props {
 const { imdbId } = Astro.props;
 
 const getAverageRating = async () => {
+  if (!imdbId) {
+    return;
+  }
+
   return db
     .select({
       averageRating: ratings.averageRating,
       numVotes: ratings.numVotes,
     })
     .from(ratings)
-    .where(eq(ratings.tconst, imdbId ?? ""))
+    .where(eq(ratings.tconst, imdbId))
     .limit(1)
     .then((res) => res.at(0));
 };
@@ -29,12 +30,15 @@ const getAverageRating = async () => {
 const ratingData = await getAverageRating();
 
 const formatter = new Intl.NumberFormat(getLocale(Astro.currentLocale));
-const formattedNumVotes = ratingData?.numVotes
-  ? formatter.format(ratingData.numVotes)
-  : undefined;
 ---
 
-<div class="flex items-center gap-2 rounded-xl bg-zinc-100 p-2">
-  <Rating rating={ratingData?.averageRating} />
-  <span class="text-zinc-600">({formattedNumVotes ?? "-"})</span>
-</div>
+{
+  !!ratingData && (
+    <div class="flex items-center gap-2 rounded-xl bg-zinc-100 p-2">
+      <Rating rating={ratingData.averageRating} />
+      <span class="text-zinc-600">
+        ({formatter.format(ratingData.numVotes)})
+      </span>
+    </div>
+  )
+}

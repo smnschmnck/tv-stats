@@ -37,7 +37,7 @@ const { error, showDetails } = await getShowDetails();
   !error && (
     <>
       <h1 class="text-lg font-bold">{showDetails!.name}</h1>
-
+      <ShowRating imdbId={imdbId} />
       {showDetails!.poster_path && (
         <div>
           <img
@@ -47,8 +47,6 @@ const { error, showDetails } = await getShowDetails();
           />
         </div>
       )}
-
-      <ShowRating imdbId={imdbId} />
 
       <p>{showDetails!.overview}</p>
     </>
