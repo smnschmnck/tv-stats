@@ -1,7 +1,6 @@
 ---
 import LoadingFallback from "../../../components/ui/LoadingFallback.astro";
 import Spinner from "../../../components/ui/Spinner.astro";
-import { HOUR } from "../../../constants/time";
 import BaseSearchLayout from "../../../layouts/BaseSearchLayout.astro";
 import type { ExternalIds } from "../../../types/tmdbApi/tvShow";
 import { tmdbFetch } from "../../../utils/tmdbFetch";
@@ -30,11 +29,6 @@ const getExternalIds = async () => {
 };
 
 const { imdbId, error } = await getExternalIds();
-
-Astro.response.headers.set(
-  "Cache-Control",
-  `public, max-age=${24 * HOUR}, s-maxage=${24 * HOUR}`
-);
 ---
 
 <BaseSearchLayout>
