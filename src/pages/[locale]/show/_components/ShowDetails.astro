@@ -1,14 +1,16 @@
 ---
 import type { TVShowDetails } from "../../../../types/tmdbApi/tvShowDetails";
 import { tmdbFetch } from "../../../../utils/tmdbFetch";
+import ShowRating from "./ShowRating.astro";
 
 const { t } = Astro.locals;
 
 interface Props {
   showId: string;
+  imdbId: string | undefined;
 }
 
-const { showId } = Astro.props;
+const { showId, imdbId } = Astro.props;
 
 const getShowDetails = async () => {
   try {
@@ -45,6 +47,8 @@ const { error, showDetails } = await getShowDetails();
           />
         </div>
       )}
+
+      <ShowRating imdbId={imdbId} />
 
       <p>{showDetails!.overview}</p>
     </>

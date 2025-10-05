@@ -2,7 +2,7 @@
 import { twMerge } from "tailwind-merge";
 
 interface Props {
-  rating: number;
+  rating: number | undefined;
   className?: string;
 }
 
@@ -15,5 +15,5 @@ const { rating, className } = Astro.props;
     className
   )}
 >
-  <span>{rating}</span>
+  <span>{rating ?? "-"}</span>
 </div>

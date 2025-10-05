@@ -43,7 +43,7 @@ Astro.response.headers.set(
     !!showId && (
       <div class="flex w-full flex-col gap-8 px-8 pb-8 md:flex-row md:px-12">
         <div class="flex h-fit min-h-128 w-full min-w-72 flex-col gap-2 rounded-xl border border-zinc-100 bg-zinc-50 p-4 md:w-72 md:p-8">
-          <ShowDetails showId={showId} />
+          <ShowDetails showId={showId} imdbId={imdbId} />
         </div>
         <div class="flex w-full flex-col gap-4 overflow-x-auto rounded-xl border border-zinc-100 bg-zinc-50 p-4 md:w-fit md:p-8">
           <h2 class="text-lg font-bold">{t("show.ratings.header")}</h2>
@@ -55,7 +55,7 @@ Astro.response.headers.set(
               <Spinner />
             </div>
             {!!error && <p>{error}</p>}
-            {!error && imdbId && <Ratings imdbId={imdbId} slot="content" />}
+            {!error && !!imdbId && <Ratings imdbId={imdbId} slot="content" />}
           </LoadingFallback>
         </div>
       </div>
