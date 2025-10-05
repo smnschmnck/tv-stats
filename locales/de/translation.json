@@ -21,7 +21,8 @@
   "show": {
     "notFound": "Serie nicht gefunden",
     "ratings": {
-      "header": "Bewertungen"
+      "header": "Bewertungen",
+      "notFound": "Keine Bewertungen gefunden"
     }
   },
   "components": {

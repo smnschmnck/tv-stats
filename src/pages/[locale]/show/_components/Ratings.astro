@@ -2,25 +2,18 @@
 import { asc, eq } from "drizzle-orm";
 import { db } from "../../../../db/drizzle";
 import { episodes, ratings } from "../../../../db/schema";
-import type { ExternalIds } from "../../../../types/tmdbApi/tvShow";
-import { tmdbFetch } from "../../../../utils/tmdbFetch";
 import Season from "./Season.astro";
 
-const getRatings = async (showId: string) => {
+interface Props {
+  imdbId: string;
+}
+
+const { imdbId } = Astro.props;
+
+const { t } = Astro.locals;
+
+const getRatings = async () => {
   try {
-    const externalIdRes = await tmdbFetch(`/tv/${showId}/external_ids`);
-
-    if (!externalIdRes.ok) {
-      return { seasons: undefined, error: "Show not found" };
-    }
-
-    const externalIds = (await externalIdRes.json()) as ExternalIds;
-    const imdbId = externalIds.imdb_id;
-
-    if (!imdbId) {
-      return { seasons: undefined, error: "No IMDb ID found for this show" };
-    }
-
     const eps = await db
       .select({
         season: episodes.seasonNumber,
@@ -33,18 +26,16 @@ const getRatings = async (showId: string) => {
       .where(eq(episodes.parentTconst, imdbId))
       .orderBy(asc(episodes.seasonNumber), asc(episodes.episodeNumber));
 
-    // Group episodes by season
-    const seasonsMap = Map.groupBy(eps, (e) => e.season!);
+    const seasonsMap = Map.groupBy(eps, (e) => e.season);
     const seasons = Array.from(seasonsMap.entries());
 
     return { seasons, error: undefined };
   } catch (e) {
-    return { seasons: undefined, error: "Something went wrong" };
+    return { seasons: undefined, error: t("common.somethingWentWrong") };
   }
 };
 
-const { showId } = Astro.props as { showId: string };
-const { seasons, error } = await getRatings(showId);
+const { seasons, error } = await getRatings();
 ---
 
 {!!error && <p>{error}</p>}
@@ -54,11 +45,7 @@ const { seasons, error } = await getRatings(showId);
     <div class="flex w-full gap-4 overflow-x-auto">
       {seasons.map(([seasonNumber, episodes]) =>
         seasonNumber ? (
-          <Season
-            key={seasonNumber}
-            seasonNumber={seasonNumber}
-            episodes={episodes}
-          />
+          <Season seasonNumber={seasonNumber} episodes={episodes} />
         ) : null
       )}
     </div>

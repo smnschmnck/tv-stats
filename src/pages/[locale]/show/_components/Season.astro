@@ -1,16 +1,18 @@
 ---
 import Rating from "./Rating.astro";
 
+interface Props {
+  seasonNumber: number;
+  episodes: Episode[];
+}
+
 type Episode = {
   tconst: string;
   episode: number | null;
   rating: number;
 };
 
-const { seasonNumber, episodes } = Astro.props as {
-  seasonNumber: number;
-  episodes: Episode[];
-};
+const { seasonNumber, episodes } = Astro.props;
 ---
 
 <div class="flex flex-col items-center gap-2">

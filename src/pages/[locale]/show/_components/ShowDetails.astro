@@ -4,7 +4,11 @@ import { tmdbFetch } from "../../../../utils/tmdbFetch";
 
 const { t } = Astro.locals;
 
-const { showId } = Astro.props as { showId: string };
+interface Props {
+  showId: string;
+}
+
+const { showId } = Astro.props;
 
 const getShowDetails = async () => {
   try {

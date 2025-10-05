@@ -3,12 +3,33 @@ import LoadingFallback from "../../../components/ui/LoadingFallback.astro";
 import Spinner from "../../../components/ui/Spinner.astro";
 import { HOUR } from "../../../constants/time";
 import BaseSearchLayout from "../../../layouts/BaseSearchLayout.astro";
+import type { ExternalIds } from "../../../types/tmdbApi/tvShow";
+import { tmdbFetch } from "../../../utils/tmdbFetch";
 import Ratings from "./_components/Ratings.astro";
 import ShowDetails from "./_components/ShowDetails.astro";
 
 const { t } = Astro.locals;
 
 const { showId } = Astro.params;
+
+const getExternalIds = async () => {
+  const externalIdRes = await tmdbFetch(`/tv/${showId}/external_ids`);
+
+  if (!externalIdRes.ok) {
+    return { imdbId: undefined, error: t("show.ratings.notFound") };
+  }
+
+  const externalIds = (await externalIdRes.json()) as ExternalIds;
+  const imdbId = externalIds.imdb_id;
+
+  if (!imdbId) {
+    return { imdbId: undefined, error: t("show.ratings.notFound") };
+  }
+
+  return { imdbId, error: undefined };
+};
+
+const { imdbId, error } = await getExternalIds();
 
 Astro.response.headers.set(
   "Cache-Control",
@@ -17,25 +38,27 @@ Astro.response.headers.set(
 ---
 
 <BaseSearchLayout>
-  <div class="flex w-full flex-col gap-8 px-8 pb-8 md:flex-row md:px-12">
-    <div
-      class="flex h-fit min-h-128 w-full min-w-72 flex-col gap-2 rounded-xl border border-zinc-100 bg-zinc-50 p-4 md:w-72 md:p-8"
-    >
-      <ShowDetails showId={showId} />
-    </div>
-    <div
-      class="flex w-full flex-col gap-4 overflow-x-auto rounded-xl border border-zinc-100 bg-zinc-50 p-4 md:w-fit md:p-8"
-    >
-      <h2 class="text-lg font-bold">{t("show.ratings.header")}</h2>
-      <LoadingFallback>
-        <div
-          class="flex h-full w-64 max-w-full items-center justify-center"
-          slot="fallback"
-        >
-          <Spinner />
+  {!showId && <p>{t("show.notFound")}</p>}
+  {
+    !!showId && (
+      <div class="flex w-full flex-col gap-8 px-8 pb-8 md:flex-row md:px-12">
+        <div class="flex h-fit min-h-128 w-full min-w-72 flex-col gap-2 rounded-xl border border-zinc-100 bg-zinc-50 p-4 md:w-72 md:p-8">
+          <ShowDetails showId={showId} />
         </div>
-        <Ratings slot="content" showId={showId} />
-      </LoadingFallback>
-    </div>
-  </div>
+        <div class="flex w-full flex-col gap-4 overflow-x-auto rounded-xl border border-zinc-100 bg-zinc-50 p-4 md:w-fit md:p-8">
+          <h2 class="text-lg font-bold">{t("show.ratings.header")}</h2>
+          <LoadingFallback>
+            <div
+              class="flex h-full w-64 max-w-full items-center justify-center"
+              slot="fallback"
+            >
+              <Spinner />
+            </div>
+            {!!error && <p>{error}</p>}
+            {!error && imdbId && <Ratings imdbId={imdbId} slot="content" />}
+          </LoadingFallback>
+        </div>
+      </div>
+    )
+  }
 </BaseSearchLayout>

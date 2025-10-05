@@ -1,10 +1,12 @@
 ---
 import { twMerge } from "tailwind-merge";
 
-const { rating, className } = Astro.props as {
+interface Props {
   rating: number;
   className?: string;
-};
+}
+
+const { rating, className } = Astro.props;
 ---
 
 <div

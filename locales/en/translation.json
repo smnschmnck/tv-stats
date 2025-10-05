@@ -21,7 +21,8 @@
   "show": {
     "notFound": "Show not found",
     "ratings": {
-      "header": "Ratings"
+      "header": "Ratings",
+      "notFound": "No Ratings found"
     }
   },
   "components": {

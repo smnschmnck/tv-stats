@@ -1,7 +1,11 @@
 ---
 import BaseRating from "./BaseRating.astro";
 
-const { rating } = Astro.props as { rating: number };
+interface Props {
+  rating: number;
+}
+
+const { rating } = Astro.props;
 
 let className = "";
 
