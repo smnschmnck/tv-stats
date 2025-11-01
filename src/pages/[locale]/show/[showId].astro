@@ -4,6 +4,7 @@ import Spinner from "../../../components/ui/Spinner.astro";
 import BaseSearchLayout from "../../../layouts/BaseSearchLayout.astro";
 import type { ExternalIds } from "../../../types/tmdbApi/tvShow";
 import { tmdbFetch } from "../../../utils/tmdbFetch";
+import { MyBla } from "./_components/EpisodeInfoDrawer";
 import Ratings from "./_components/Ratings.astro";
 import ShowDetails from "./_components/ShowDetails.astro";
 
@@ -32,6 +33,7 @@ const { imdbId, error } = await getExternalIds();
 ---
 
 <BaseSearchLayout>
+  <MyBla client:load />
   {!showId && <p>{t("show.notFound")}</p>}
   {
     !!showId && (
