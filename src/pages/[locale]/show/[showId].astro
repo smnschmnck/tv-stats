@@ -1,6 +1,7 @@
 ---
 import LoadingFallback from "../../../components/ui/LoadingFallback.astro";
 import Spinner from "../../../components/ui/Spinner.astro";
+import { fallbackLanguage } from "../../../i18n/constants";
 import BaseSearchLayout from "../../../layouts/BaseSearchLayout.astro";
 import type { ExternalIds } from "../../../types/tmdbApi/tvShow";
 import { tmdbFetch } from "../../../utils/tmdbFetch";
@@ -9,6 +10,7 @@ import Ratings from "./_components/Ratings.astro";
 import ShowDetails from "./_components/ShowDetails.astro";
 
 const { t } = Astro.locals;
+const locale = Astro.currentLocale ?? fallbackLanguage;
 
 const { showId } = Astro.params;
 
@@ -56,5 +58,5 @@ const { imdbId, error } = await getExternalIds();
       </div>
     )
   }
-  <EpisodeInfoDrawer client:load />
+  <EpisodeInfoDrawer client:load locale={locale} />
 </BaseSearchLayout>

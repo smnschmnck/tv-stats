@@ -4,21 +4,29 @@ import { selectedEpisode } from "../store";
 export const BaseRating = ({
   rating,
   tvShowId,
+  tconst,
   seasonNumber,
   episodeNumber,
   className,
 }: {
   rating: number | undefined;
   tvShowId: string | undefined;
-  seasonNumber: number;
-  episodeNumber: number | null;
+  tconst?: string;
+  seasonNumber?: number | null;
+  episodeNumber?: number | null;
   className?: string;
 }) => {
   return (
     <button
       onClick={() => {
-        if (tvShowId && episodeNumber) {
-          selectedEpisode.set({ seasonNumber, episodeNumber, tvShowId });
+        if (tvShowId && episodeNumber && seasonNumber && rating && tconst) {
+          selectedEpisode.set({
+            seasonNumber,
+            episodeNumber,
+            tvShowId,
+            tconst,
+            rating,
+          });
         }
       }}
       className={twMerge(

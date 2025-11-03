@@ -16,7 +16,12 @@ const getHighestRatings = () => {
   }
 
   return db
-    .select({ averageRating: ratings.averageRating })
+    .select({
+      tconst: ratings.tconst,
+      averageRating: ratings.averageRating,
+      season: episodes.seasonNumber,
+      episode: episodes.episodeNumber,
+    })
     .from(episodes)
     .innerJoin(ratings, eq(episodes.tconst, ratings.tconst))
     .where(eq(episodes.parentTconst, imdbId))
@@ -32,7 +37,12 @@ const getLowestRatings = () => {
   }
 
   return db
-    .select({ averageRating: ratings.averageRating })
+    .select({
+      tconst: ratings.tconst,
+      averageRating: ratings.averageRating,
+      season: episodes.seasonNumber,
+      episode: episodes.episodeNumber,
+    })
     .from(episodes)
     .innerJoin(ratings, eq(episodes.tconst, ratings.tconst))
     .where(eq(episodes.parentTconst, imdbId))
@@ -47,13 +57,31 @@ const lowestRankings = await getLowestRatings();
   <div class="flex flex-col gap-1">
     <h3 class="font-bold">Highest Rated</h3>
     <div class="flex gap-2">
-      {highestRankings?.map((r) => <Rating rating={r.averageRating} />)}
+      {
+        highestRankings?.map((r) => (
+          <Rating
+            rating={r.averageRating}
+            seasonNumber={r.season}
+            episodeNumber={r.episode}
+            tconst={r.tconst}
+          />
+        ))
+      }
     </div>
   </div>
   <div class="flex flex-col gap-1">
     <h3 class="font-bold">Lowest Rated</h3>
     <div class="flex gap-2">
-      {lowestRankings?.map((r) => <Rating rating={r.averageRating} />)}
+      {
+        lowestRankings?.map((r) => (
+          <Rating
+            rating={r.averageRating}
+            seasonNumber={r.season}
+            episodeNumber={r.episode}
+            tconst={r.tconst}
+          />
+        ))
+      }
     </div>
   </div>
 </div>
