@@ -1,0 +1,95 @@
+---
+import { SquareArrowOutUpRight } from "@lucide/astro";
+import RootLayout from "../../../../layouts/RootLayout.astro";
+import type {
+  EpisodeDetails,
+  TVShowDetails,
+} from "../../../../types/tmdbApi/tvShowDetails";
+import { tmdbFetch } from "../../../../utils/tmdbFetch";
+import Rating from "../../show/_components/Rating.astro";
+
+const { t } = Astro.locals;
+const { showId } = Astro.params;
+const { searchParams } = Astro.url;
+
+const season = searchParams.get("season");
+const episode = searchParams.get("episode");
+const rating = searchParams.get("rating");
+const tconst = searchParams.get("tconst");
+
+const getShowDetails = async () => {
+  try {
+    const res = await tmdbFetch(`/tv/${showId}`, {
+      locale: Astro.currentLocale,
+    });
+
+    if (!res.ok) {
+      return { error: t("show.notFound"), showDetails: undefined };
+    } else {
+      const showDetails = (await res.json()) as TVShowDetails;
+      return { error: undefined, showDetails };
+    }
+  } catch (e) {
+    return { error: t("show.notFound"), showDetails: undefined };
+  }
+};
+
+const { showDetails } = await getShowDetails();
+
+const getEpisodeDetails = async () => {
+  try {
+    const res = await tmdbFetch(
+      `/tv/${showId}/season/${season}/episode/${episode}`,
+      {
+        locale: Astro.currentLocale,
+      }
+    );
+
+    if (!res.ok) {
+      return { error: t("show.notFound"), episodeDetails: undefined };
+    } else {
+      const episodeDetails = (await res.json()) as EpisodeDetails;
+      return { error: undefined, episodeDetails };
+    }
+  } catch (e) {
+    return { error: t("show.notFound"), episodeDetails: undefined };
+  }
+};
+
+const { episodeDetails } = await getEpisodeDetails();
+---
+
+<RootLayout>
+  <div class="flex h-full w-full flex-col gap-4">
+    <div
+      class="flex flex-col gap-2 rounded-xl border border-zinc-100 bg-zinc-50 p-4"
+    >
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="font-bold text-zinc-500">{showDetails?.name}</h3>
+          <h2 class="text-lg font-bold">{episodeDetails?.name}</h2>
+        </div>
+        <Rating rating={rating ? Number(rating) : undefined} />
+      </div>
+      <div class="flex flex-col">
+        <p class="flex gap-1">
+          <span class="text-zinc-500">{t("episode.infos.seasonNumber")}:</span>
+          <span>{season}</span>
+        </p>
+        <p class="flex gap-1">
+          <span class="text-zinc-500">{t("episode.infos.episodeNumber")}:</span>
+          <span>{episode}</span>
+        </p>
+      </div>
+      <p>{episodeDetails?.overview}</p>
+    </div>
+    <a
+      class="flex min-h-10 w-full items-center justify-center gap-2 rounded-md bg-zinc-100 font-semibold text-black"
+      target="_blank"
+      rel="noopener noreferrer"
+      href={`https://www.imdb.com/title/${tconst}/`}
+    >
+      <span>{t("episode.infos.openInImdb")}</span>
+    </a>
+  </div>
+</RootLayout>

@@ -1,11 +1,16 @@
 ---
-import BaseRating from "./BaseRating.astro";
+import { BaseRating } from "./BaseRating";
 
 interface Props {
   rating: number | undefined;
+  tconst?: string;
+  seasonNumber?: number | null;
+  episodeNumber?: number | null;
 }
 
-const { rating } = Astro.props;
+const { rating, episodeNumber, seasonNumber, tconst } = Astro.props;
+
+const { showId } = Astro.params;
 
 const getClassName = () => {
   if (!rating) {
@@ -37,4 +42,12 @@ const getClassName = () => {
 const className = getClassName();
 ---
 
-<BaseRating rating={rating} className={className} />
+<BaseRating
+  client:load
+  seasonNumber={seasonNumber}
+  episodeNumber={episodeNumber}
+  tconst={tconst}
+  rating={rating}
+  tvShowId={showId}
+  className={className}
+/>

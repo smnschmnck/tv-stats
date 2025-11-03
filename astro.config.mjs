@@ -4,6 +4,8 @@ import { defineConfig, envField } from "astro/config";
 
 import cloudflare from "@astrojs/cloudflare";
 
+import react from "@astrojs/react";
+
 export default defineConfig({
   srcDir: "src",
   output: "server",
@@ -44,4 +46,5 @@ export default defineConfig({
   },
 
   adapter: cloudflare(),
+  integrations: [react()],
 });

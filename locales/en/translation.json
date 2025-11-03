@@ -25,6 +25,13 @@
       "notFound": "No Ratings found"
     }
   },
+  "episode": {
+    "infos": {
+      "seasonNumber": "Season",
+      "episodeNumber": "Episode",
+      "openInImdb": "Open in IMDb"
+    }
+  },
   "components": {
     "searchBar": {
       "button": "Search",

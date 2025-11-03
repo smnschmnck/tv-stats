@@ -25,6 +25,13 @@
       "notFound": "Keine Bewertungen gefunden"
     }
   },
+  "episode": {
+    "infos": {
+      "seasonNumber": "Staffel",
+      "episodeNumber": "Episode",
+      "openInImdb": "In IMDb öffnen"
+    }
+  },
   "components": {
     "searchBar": {
       "button": "Suchen",
