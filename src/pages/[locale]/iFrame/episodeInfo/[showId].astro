@@ -1,5 +1,4 @@
 ---
-import { SquareArrowOutUpRight } from "@lucide/astro";
 import RootLayout from "../../../../layouts/RootLayout.astro";
 import type {
   EpisodeDetails,
@@ -60,36 +59,41 @@ const { episodeDetails } = await getEpisodeDetails();
 ---
 
 <RootLayout>
-  <div class="flex h-full w-full flex-col gap-4">
-    <div
-      class="flex flex-col gap-2 rounded-xl border border-zinc-100 bg-zinc-50 p-4"
-    >
-      <div class="flex items-center justify-between">
-        <div>
-          <h3 class="font-bold text-zinc-500">{showDetails?.name}</h3>
-          <h2 class="text-lg font-bold">{episodeDetails?.name}</h2>
+  <div class="flex h-full w-full justify-center">
+    <div class="flex h-full w-full flex-col gap-4 sm:max-w-prose">
+      <div
+        class="flex flex-col gap-2 rounded-xl border border-zinc-100 bg-zinc-50 p-4"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="font-bold text-zinc-500">{showDetails?.name}</h3>
+            <h2 class="text-lg font-bold">{episodeDetails?.name}</h2>
+          </div>
+          <Rating rating={rating ? Number(rating) : undefined} />
         </div>
-        <Rating rating={rating ? Number(rating) : undefined} />
+        <div class="flex flex-col">
+          <p class="flex gap-1">
+            <span class="text-zinc-500">{t("episode.infos.seasonNumber")}:</span
+            >
+            <span>{season}</span>
+          </p>
+          <p class="flex gap-1">
+            <span class="text-zinc-500"
+              >{t("episode.infos.episodeNumber")}:</span
+            >
+            <span>{episode}</span>
+          </p>
+        </div>
+        <p>{episodeDetails?.overview}</p>
       </div>
-      <div class="flex flex-col">
-        <p class="flex gap-1">
-          <span class="text-zinc-500">{t("episode.infos.seasonNumber")}:</span>
-          <span>{season}</span>
-        </p>
-        <p class="flex gap-1">
-          <span class="text-zinc-500">{t("episode.infos.episodeNumber")}:</span>
-          <span>{episode}</span>
-        </p>
-      </div>
-      <p>{episodeDetails?.overview}</p>
+      <a
+        class="flex min-h-10 w-full items-center justify-center gap-2 rounded-md bg-zinc-100 font-semibold text-black"
+        target="_blank"
+        rel="noopener noreferrer"
+        href={`https://www.imdb.com/title/${tconst}/`}
+      >
+        <span>{t("episode.infos.openInImdb")}</span>
+      </a>
     </div>
-    <a
-      class="flex min-h-10 w-full items-center justify-center gap-2 rounded-md bg-zinc-100 font-semibold text-black"
-      target="_blank"
-      rel="noopener noreferrer"
-      href={`https://www.imdb.com/title/${tconst}/`}
-    >
-      <span>{t("episode.infos.openInImdb")}</span>
-    </a>
   </div>
 </RootLayout>

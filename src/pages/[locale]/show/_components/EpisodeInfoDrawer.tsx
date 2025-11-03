@@ -18,7 +18,7 @@ export const EpisodeInfoDrawer = ({ locale }: { locale: string }) => {
 
   const infoLink = getLocaleLink(
     locale,
-    `/iFrame/showInfo/${ep?.tvShowId}?season=${ep?.seasonNumber}&episode=${ep?.episodeNumber}&rating=${ep?.rating}&tconst=${ep?.tconst}`,
+    `/iFrame/episodeInfo/${ep?.tvShowId}?season=${ep?.seasonNumber}&episode=${ep?.episodeNumber}&rating=${ep?.rating}&tconst=${ep?.tconst}`,
   );
 
   return (
