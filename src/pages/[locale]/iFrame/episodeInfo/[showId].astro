@@ -1,4 +1,5 @@
 ---
+import { Dot } from "@lucide/astro";
 import RootLayout from "../../../../layouts/RootLayout.astro";
 import type {
   EpisodeDetails,
@@ -62,7 +63,7 @@ const { episodeDetails } = await getEpisodeDetails();
   <div class="flex h-full w-full justify-center">
     <div class="flex h-full w-full flex-col gap-4 sm:max-w-prose">
       <div
-        class="flex flex-col gap-2 rounded-xl border border-zinc-100 bg-zinc-50 p-4"
+        class="flex flex-col gap-1 rounded-xl border border-zinc-100 bg-zinc-50 p-4"
       >
         <div class="flex items-center justify-between">
           <div>
@@ -71,18 +72,10 @@ const { episodeDetails } = await getEpisodeDetails();
           </div>
           <Rating rating={rating ? Number(rating) : undefined} />
         </div>
-        <div class="flex flex-col">
-          <p class="flex gap-1">
-            <span class="text-zinc-500">{t("episode.infos.seasonNumber")}:</span
-            >
-            <span>{season}</span>
-          </p>
-          <p class="flex gap-1">
-            <span class="text-zinc-500"
-              >{t("episode.infos.episodeNumber")}:</span
-            >
-            <span>{episode}</span>
-          </p>
+        <div class="flex text-zinc-500">
+          <span>{t("episode.infos.seasonNumber")} {season}</span>
+          <Dot />
+          <span>{t("episode.infos.episodeNumber")} {episode}</span>
         </div>
         <p>{episodeDetails?.overview}</p>
       </div>

@@ -23,6 +23,13 @@
     "ratings": {
       "header": "Ratings",
       "notFound": "No Ratings found"
+    },
+    "rankings": {
+      "highest": "Highest Rated",
+      "lowest": "Lowest Rated"
+    },
+    "watchProviders": {
+      "justWatchInfo": "Powered by"
     }
   },
   "episode": {

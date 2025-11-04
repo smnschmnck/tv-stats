@@ -23,6 +23,13 @@
     "ratings": {
       "header": "Bewertungen",
       "notFound": "Keine Bewertungen gefunden"
+    },
+    "rankings": {
+      "highest": "Am besten bewertet",
+      "lowest": "Am schlechtesten bewertet"
+    },
+    "watchProviders": {
+      "justWatchInfo": "Unterstützt von"
     }
   },
   "episode": {
