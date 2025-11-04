@@ -23,12 +23,9 @@ const getShowWatchProviders = async () => {
 
 const { watchProviders } = await getShowWatchProviders();
 
-const ipCountry = headers.get("cf-ipcountry") ?? "null";
-const requestOrigin = JSON.parse(ipCountry) as { country: string } | null;
+const ipCountry = headers.get("cf-ipcountry");
 
-const providers = requestOrigin
-  ? watchProviders?.results[requestOrigin.country]
-  : undefined;
+const providers = ipCountry ? watchProviders?.results[ipCountry] : undefined;
 ---
 
 <div class="flex flex-col gap-3 rounded-xl bg-zinc-100 p-4">
