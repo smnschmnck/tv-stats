@@ -1,0 +1,56 @@
+---
+import type { WatchProvidersResponse } from "../../../../types/tmdbApi/watchProviders";
+import { tmdbFetch } from "../../../../utils/tmdbFetch";
+
+const { t } = Astro.locals;
+const { showId } = Astro.params;
+const { headers } = Astro.request;
+
+const getShowWatchProviders = async () => {
+  try {
+    const res = await tmdbFetch(`/tv/${showId}/watch/providers`);
+
+    if (!res.ok) {
+      return { error: t("show.notFound"), watchProviders: undefined };
+    } else {
+      const watchProviders = (await res.json()) as WatchProvidersResponse;
+      return { error: undefined, watchProviders };
+    }
+  } catch (e) {
+    return { error: t("show.notFound"), watchProviders: undefined };
+  }
+};
+
+const { watchProviders } = await getShowWatchProviders();
+
+const ipCountry = headers.get("cf-ipcountry") ?? "null";
+const requestOrigin = JSON.parse(ipCountry) as { country: string } | null;
+
+const providers = requestOrigin
+  ? watchProviders?.results[requestOrigin.country]
+  : undefined;
+---
+
+<div class="flex flex-col gap-3 rounded-xl bg-zinc-100 p-4">
+  <div>
+    <h3 class="font-bold">Stream</h3>
+    <p class="text-sm text-zinc-500">
+      Powered by <a
+        class="underline"
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://www.justwatch.com/">JustWatch</a
+      >
+    </p>
+  </div>
+  <li class="flex list-none flex-wrap gap-2">
+    {
+      providers?.flatrate?.map((p) => (
+        <img
+          class="h-10 w-10 rounded-lg"
+          src={`https://image.tmdb.org/t/p/w185/${p.logo_path}`}
+        />
+      ))
+    }
+  </li>
+</div>

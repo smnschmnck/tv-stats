@@ -3,6 +3,7 @@ import type { TVShowDetails } from "../../../../types/tmdbApi/tvShowDetails";
 import { tmdbFetch } from "../../../../utils/tmdbFetch";
 import EpisodeRankings from "./EpisodeRankings.astro";
 import ShowRating from "./ShowRating.astro";
+import WatchProviders from "./WatchProviders.astro";
 
 const { t } = Astro.locals;
 
@@ -50,6 +51,7 @@ const { error, showDetails } = await getShowDetails();
       )}
       <p>{showDetails!.overview}</p>
       <EpisodeRankings imdbId={imdbId} />
+      <WatchProviders />
     </>
   )
 }
