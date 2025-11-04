@@ -31,7 +31,7 @@ export const EpisodeInfoDrawer = ({ locale }: { locale: string }) => {
               aria-hidden
               className="mx-auto mb-8 h-1.5 w-12 flex-shrink-0 rounded-full bg-gray-300"
             />
-            <iframe src={infoLink} className="h-[75vh] w-full" />
+            <iframe src={infoLink} className="h-[50vh] w-full" />
           </div>
         </Drawer.Content>
       </Drawer.Portal>
