@@ -37,25 +37,29 @@ const { error, showDetails } = await getShowDetails();
 {!!error && <p>{error}</p>}
 {
   !error && (
-    <>
+    <div class="flex flex-col gap-3">
       <h1 class="text-lg font-bold">{showDetails!.name}</h1>
       <ShowRating imdbId={imdbId} />
-      {showDetails!.poster_path && (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href={`https://www.imdb.com/title/${imdbId}/`}
-        >
-          <img
-            class="w-72 rounded-xl"
-            src={`https://image.tmdb.org/t/p/w500/${showDetails!.poster_path}`}
-            alt={`${showDetails!.name} poster`}
-          />
-        </a>
-      )}
+      <div class="flex gap-2">
+        {showDetails!.poster_path && (
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href={`https://www.imdb.com/title/${imdbId}/`}
+          >
+            <img
+              class="min-w-36 rounded-xl"
+              src={`https://image.tmdb.org/t/p/w500/${showDetails!.poster_path}`}
+              alt={`${showDetails!.name} poster`}
+            />
+          </a>
+        )}
+        <div class="flex flex-col gap-2">
+          <EpisodeRankings imdbId={imdbId} />
+        </div>
+      </div>
       <p>{showDetails!.overview}</p>
-      <EpisodeRankings imdbId={imdbId} />
       <WatchProviders />
-    </>
+    </div>
   )
 }
