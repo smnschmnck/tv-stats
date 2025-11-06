@@ -32,6 +32,17 @@ const getShowDetails = async () => {
 };
 
 const { error, showDetails } = await getShowDetails();
+
+const getSplitOverview = () => {
+  const splitted = showDetails?.overview.split(" ");
+
+  const shortOverview = splitted?.slice(0, 12).join(" ");
+  const restOverview = splitted?.slice(12, splitted.length).join(" ");
+
+  return { shortOverview, restOverview };
+};
+
+const { shortOverview, restOverview } = getSplitOverview();
 ---
 
 {!!error && <p>{error}</p>}
@@ -58,7 +69,16 @@ const { error, showDetails } = await getShowDetails();
           <EpisodeRankings imdbId={imdbId} />
         </div>
       </div>
-      <p>{showDetails!.overview}</p>
+      <details class="group">
+        <summary class="list-none [&::-webkit-details-marker]:hidden">
+          {shortOverview}
+          <span class="group-open:hidden">... </span>
+          <span class="w-full cursor-pointer font-medium text-nowrap text-zinc-500 transition group-open:hidden hover:text-black">
+            {t("common.showMore")}
+          </span>
+        </summary>
+        {restOverview}
+      </details>
       <WatchProviders />
     </div>
   )

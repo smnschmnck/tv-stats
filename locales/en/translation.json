@@ -9,7 +9,8 @@
     }
   },
   "common": {
-    "somethingWentWrong": "Something went wrong"
+    "somethingWentWrong": "Something went wrong",
+    "showMore": "Show more"
   },
   "search": {
     "noQueryProvided": "No search query provided",

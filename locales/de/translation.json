@@ -9,7 +9,8 @@
     }
   },
   "common": {
-    "somethingWentWrong": "Etwas ist schiefgelaufen"
+    "somethingWentWrong": "Etwas ist schiefgelaufen",
+    "showMore": "Mehr anzeigen"
   },
   "search": {
     "noQueryProvided": "Keine Suchanfrage angegeben",
