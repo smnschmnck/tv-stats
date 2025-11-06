@@ -41,13 +41,17 @@ const { error, showDetails } = await getShowDetails();
       <h1 class="text-lg font-bold">{showDetails!.name}</h1>
       <ShowRating imdbId={imdbId} />
       {showDetails!.poster_path && (
-        <div>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={`https://www.imdb.com/title/${imdbId}/`}
+        >
           <img
             class="w-72 rounded-xl"
             src={`https://image.tmdb.org/t/p/w500/${showDetails!.poster_path}`}
             alt={`${showDetails!.name} poster`}
           />
-        </div>
+        </a>
       )}
       <p>{showDetails!.overview}</p>
       <EpisodeRankings imdbId={imdbId} />
