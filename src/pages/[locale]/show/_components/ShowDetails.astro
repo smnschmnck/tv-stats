@@ -1,7 +1,9 @@
 ---
+import LoadingFallback from "../../../../components/ui/LoadingFallback.astro";
 import type { TVShowDetails } from "../../../../types/tmdbApi/tvShowDetails";
 import { tmdbFetch } from "../../../../utils/tmdbFetch";
 import EpisodeRankings from "./EpisodeRankings.astro";
+import EpisodeRankingsBase from "./EpisodeRankingsBase.astro";
 import ShowRating from "./ShowRating.astro";
 import WatchProviders from "./WatchProviders.astro";
 
@@ -43,6 +45,10 @@ const getSplitOverview = () => {
 };
 
 const { shortOverview, restOverview } = getSplitOverview();
+
+const fallbackRankings = Array.from({ length: 3 }, () => ({
+  averageRating: undefined,
+}));
 ---
 
 {!!error && <p>{error}</p>}
@@ -66,7 +72,14 @@ const { shortOverview, restOverview } = getSplitOverview();
           </a>
         )}
         <div class="flex flex-col gap-2">
-          <EpisodeRankings imdbId={imdbId} />
+          <LoadingFallback>
+            <EpisodeRankings imdbId={imdbId} slot="content" />
+            <EpisodeRankingsBase
+              highestRatings={fallbackRankings}
+              lowestRatings={fallbackRankings}
+              slot="fallback"
+            />
+          </LoadingFallback>
         </div>
       </div>
       <details class="group">

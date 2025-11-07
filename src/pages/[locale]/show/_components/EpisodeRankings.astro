@@ -1,11 +1,10 @@
 ---
+import { ArrowDown, ArrowUp } from "@lucide/astro";
 import { asc, desc, eq } from "drizzle-orm";
 import { db } from "../../../../db/drizzle";
-import Rating from "./Rating.astro";
 import { episodes, ratings } from "../../../../db/schema";
-import { ArrowDown, ArrowUp, ThumbsDown, ThumbsUp } from "@lucide/astro";
-
-const { t } = Astro.locals;
+import Rating from "./Rating.astro";
+import EpisodeRankingsBase from "./EpisodeRankingsBase.astro";
 
 interface Props {
   imdbId: string | undefined;
@@ -56,35 +55,7 @@ const getLowestRatings = () => {
 const lowestRankings = await getLowestRatings();
 ---
 
-<div class="flex gap-2">
-  <div class="flex flex-col items-center gap-2 rounded-xl bg-zinc-100 p-2">
-    <ArrowUp />
-    <div class="flex flex-col gap-2">
-      {
-        highestRankings?.map((r) => (
-          <Rating
-            rating={r.averageRating}
-            seasonNumber={r.season}
-            episodeNumber={r.episode}
-            tconst={r.tconst}
-          />
-        ))
-      }
-    </div>
-  </div>
-  <div class="flex flex-col items-center gap-2 rounded-xl bg-zinc-100 p-2">
-    <ArrowDown />
-    <div class="flex flex-col gap-2">
-      {
-        lowestRankings?.map((r) => (
-          <Rating
-            rating={r.averageRating}
-            seasonNumber={r.season}
-            episodeNumber={r.episode}
-            tconst={r.tconst}
-          />
-        ))
-      }
-    </div>
-  </div>
-</div>
+<EpisodeRankingsBase
+  highestRatings={highestRankings}
+  lowestRatings={lowestRankings}
+/>

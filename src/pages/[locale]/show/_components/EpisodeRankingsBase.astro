@@ -1,0 +1,51 @@
+---
+import { ArrowDown, ArrowUp } from "@lucide/astro";
+import Rating from "./Rating.astro";
+
+type TRating = {
+  averageRating: number | undefined;
+  tconst?: string;
+  season?: number | null;
+  episode?: number | null;
+};
+
+interface Props {
+  highestRatings: TRating[] | undefined;
+  lowestRatings: TRating[] | undefined;
+}
+
+const { highestRatings, lowestRatings } = Astro.props;
+---
+
+<div class="flex gap-2">
+  <div class="flex flex-col items-center gap-2 rounded-xl bg-zinc-100 p-2">
+    <ArrowUp />
+    <div class="flex flex-col gap-2">
+      {
+        highestRatings?.map((r) => (
+          <Rating
+            rating={r.averageRating}
+            seasonNumber={r.season}
+            episodeNumber={r.episode}
+            tconst={r.tconst}
+          />
+        ))
+      }
+    </div>
+  </div>
+  <div class="flex flex-col items-center gap-2 rounded-xl bg-zinc-100 p-2">
+    <ArrowDown />
+    <div class="flex flex-col gap-2">
+      {
+        lowestRatings?.map((r) => (
+          <Rating
+            rating={r.averageRating}
+            seasonNumber={r.season}
+            episodeNumber={r.episode}
+            tconst={r.tconst}
+          />
+        ))
+      }
+    </div>
+  </div>
+</div>
