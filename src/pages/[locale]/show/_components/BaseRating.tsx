@@ -9,15 +9,14 @@ export const BaseRating = ({
   episodeNumber,
   className,
 }: {
-  rating: number | undefined;
+  rating: number | undefined | null;
   tvShowId: string | undefined;
   tconst?: string;
   seasonNumber?: number | null;
   episodeNumber?: number | null;
   className?: string;
 }) => {
-  const hasFullInfo =
-    tvShowId && episodeNumber && seasonNumber && rating && tconst;
+  const hasFullInfo = tvShowId && episodeNumber && seasonNumber && tconst;
 
   return (
     <button

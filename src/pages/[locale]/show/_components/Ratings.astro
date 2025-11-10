@@ -22,7 +22,7 @@ const getRatings = async () => {
         rating: ratings.averageRating,
       })
       .from(episodes)
-      .innerJoin(ratings, eq(episodes.tconst, ratings.tconst))
+      .leftJoin(ratings, eq(episodes.tconst, ratings.tconst))
       .where(eq(episodes.parentTconst, imdbId))
       .orderBy(asc(episodes.seasonNumber), asc(episodes.episodeNumber));
 

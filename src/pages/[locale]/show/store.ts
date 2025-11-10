@@ -2,7 +2,7 @@ import { atom } from "nanostores";
 
 export type SelectedEpisode = {
   tvShowId: string;
-  rating: number;
+  rating: number | null | undefined;
   seasonNumber: number;
   episodeNumber: number;
   tconst: string;
