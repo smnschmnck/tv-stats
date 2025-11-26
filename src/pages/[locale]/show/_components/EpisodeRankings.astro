@@ -1,9 +1,7 @@
 ---
-import { ArrowDown, ArrowUp } from "@lucide/astro";
 import { asc, desc, eq } from "drizzle-orm";
 import { db } from "../../../../db/drizzle";
 import { episodes, ratings } from "../../../../db/schema";
-import Rating from "./Rating.astro";
 import EpisodeRankingsBase from "./EpisodeRankingsBase.astro";
 
 interface Props {
