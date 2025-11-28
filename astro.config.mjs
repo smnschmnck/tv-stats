@@ -17,15 +17,10 @@ export default defineConfig({
         access: "secret",
         min: 2,
       }),
-      TURSO_DATABASE_URL: envField.string({
+      DATABASE_URL: envField.string({
         context: "server",
         access: "secret",
         url: true,
-      }),
-      TURSO_AUTH_TOKEN: envField.string({
-        context: "server",
-        access: "secret",
-        min: 2,
       }),
     },
   },

@@ -1,16 +1,16 @@
 import {
-  sqliteTable,
-  text,
+  pgTable,
+  varchar,
   integer,
-  real,
+  doublePrecision,
   index,
-} from "drizzle-orm/sqlite-core";
+} from "drizzle-orm/pg-core";
 
-export const ratings = sqliteTable(
+export const ratings = pgTable(
   "ratings",
   {
-    tconst: text("tconst").primaryKey(),
-    averageRating: real("average_rating").notNull(),
+    tconst: varchar("tconst").primaryKey(),
+    averageRating: doublePrecision("average_rating").notNull(),
     numVotes: integer("num_votes").notNull(),
   },
   (table) => [
@@ -20,16 +20,11 @@ export const ratings = sqliteTable(
   ],
 );
 
-export const episodes = sqliteTable(
+export const episodes = pgTable(
   "episodes",
   {
-    tconst: text("tconst").primaryKey(),
-    parentTconst: text("parent_tconst")
-      .references(() => ratings.tconst, {
-        onDelete: "cascade",
-        onUpdate: "cascade",
-      })
-      .notNull(),
+    tconst: varchar("tconst").primaryKey(),
+    parentTconst: varchar("parent_tconst").notNull(),
     seasonNumber: integer("season_number"),
     episodeNumber: integer("episode_number"),
   },
