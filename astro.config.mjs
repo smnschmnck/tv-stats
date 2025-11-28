@@ -2,9 +2,9 @@
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, envField } from "astro/config";
 
-import cloudflare from "@astrojs/cloudflare";
-
 import react from "@astrojs/react";
+
+import node from "@astrojs/node";
 
 export default defineConfig({
   srcDir: "src",
@@ -35,6 +35,8 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
 
-  adapter: cloudflare(),
+  adapter: node({
+    mode: "standalone",
+  }),
   integrations: [react()],
 });
