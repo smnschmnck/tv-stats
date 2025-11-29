@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "start": "node ./dist/server/entry.mjs",
+    "start": "bun ./dist/server/entry.mjs",
     "dev": "astro dev",
     "build": "astro build",
     "preview": "export $(grep -v '^#' .env | xargs) && astro preview",
