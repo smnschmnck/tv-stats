@@ -1,4 +1,4 @@
-import { drizzle } from "drizzle-orm/postgres-js";
+import { drizzle } from "drizzle-orm/bun-sql";
 import * as schema from "./schema";
 import { DATABASE_URL } from "astro:env/server";
 
