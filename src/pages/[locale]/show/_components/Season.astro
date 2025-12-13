@@ -8,8 +8,8 @@ interface Props {
 
 type Episode = {
   tconst: string;
-  episode: number | null;
-  rating: number | null;
+  episodeNumber: number | null;
+  averageRating: number | null;
 };
 
 const { seasonNumber, episodes } = Astro.props;
@@ -21,9 +21,9 @@ const { seasonNumber, episodes } = Astro.props;
   {
     episodes.map((episode) => (
       <Rating
-        rating={episode.rating}
+        rating={episode.averageRating}
         seasonNumber={seasonNumber}
-        episodeNumber={episode.episode}
+        episodeNumber={episode.episodeNumber}
         tconst={episode.tconst}
       />
     ))

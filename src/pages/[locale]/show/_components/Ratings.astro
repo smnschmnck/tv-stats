@@ -1,7 +1,5 @@
 ---
-import { asc, eq } from "drizzle-orm";
-import { db } from "../../../../db/drizzle";
-import { episodes, ratings } from "../../../../db/schema";
+import { getRatings } from "../../../../db/redis";
 import Season from "./Season.astro";
 
 interface Props {
@@ -12,21 +10,12 @@ const { imdbId } = Astro.props;
 
 const { t } = Astro.locals;
 
-const getRatings = async () => {
+const getSeasons = async () => {
   try {
-    const eps = await db
-      .select({
-        season: episodes.seasonNumber,
-        episode: episodes.episodeNumber,
-        tconst: episodes.tconst,
-        rating: ratings.averageRating,
-      })
-      .from(episodes)
-      .leftJoin(ratings, eq(episodes.tconst, ratings.tconst))
-      .where(eq(episodes.parentTconst, imdbId))
-      .orderBy(asc(episodes.seasonNumber), asc(episodes.episodeNumber));
+    const show = await getRatings(imdbId);
+    const eps = show?.episodes ?? [];
 
-    const seasonsMap = Map.groupBy(eps, (e) => e.season);
+    const seasonsMap = Map.groupBy(eps, (e) => e.seasonNumber);
     const seasons = Array.from(seasonsMap.entries());
 
     return { seasons, error: undefined };
@@ -35,7 +24,7 @@ const getRatings = async () => {
   }
 };
 
-const { seasons, error } = await getRatings();
+const { seasons, error } = await getSeasons();
 ---
 
 {!!error && <p>{error}</p>}
@@ -46,7 +35,7 @@ const { seasons, error } = await getRatings();
       {seasons.map(([seasonNumber, episodes]) =>
         seasonNumber ? (
           <Season seasonNumber={seasonNumber} episodes={episodes} />
-        ) : null
+        ) : null,
       )}
     </div>
   )

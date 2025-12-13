@@ -19,6 +19,8 @@
     "dotenv": "^17.2.3",
     "i18next": "^25.5.3",
     "i18next-http-middleware": "^3.8.1",
+    "ioredis": "^5.8.2",
+    "msgpackr": "^1.11.5",
     "nanostores": "^1.0.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
