@@ -1,43 +1,23 @@
 ---
-import { eq } from "drizzle-orm";
-import { db } from "../../../../db/drizzle";
-import { ratings } from "../../../../db/schema";
-import Rating from "./Rating.astro";
+import { type Ratings } from "../../../../db/redis";
 import { getLocale } from "../../../../i18n/utils";
+import Rating from "./Rating.astro";
 
 interface Props {
-  imdbId: string | undefined;
+  ratings: Ratings | undefined;
 }
 
-const { imdbId } = Astro.props;
-
-const getAverageRating = async () => {
-  if (!imdbId) {
-    return;
-  }
-
-  return db
-    .select({
-      averageRating: ratings.averageRating,
-      numVotes: ratings.numVotes,
-    })
-    .from(ratings)
-    .where(eq(ratings.tconst, imdbId))
-    .limit(1)
-    .then((res) => res.at(0));
-};
-
-const ratingData = await getAverageRating();
+const { ratings } = Astro.props;
 
 const formatter = new Intl.NumberFormat(getLocale(Astro.currentLocale));
 ---
 
 {
-  !!ratingData && (
+  !!ratings && (
     <div class="flex items-center gap-2 rounded-xl bg-zinc-100 p-2">
-      <Rating rating={ratingData.averageRating} />
+      <Rating rating={ratings.averageRating} />
       <span class="text-zinc-600">
-        ({formatter.format(ratingData.numVotes)})
+        ({formatter.format(ratings.numVotes ?? 0)})
       </span>
     </div>
   )

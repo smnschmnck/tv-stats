@@ -1,56 +1,26 @@
 ---
-import { asc, desc, eq } from "drizzle-orm";
-import { db } from "../../../../db/drizzle";
-import { episodes, ratings } from "../../../../db/schema";
+import { type Ratings } from "../../../../db/redis";
 import EpisodeRankingsBase from "./EpisodeRankingsBase.astro";
 
 interface Props {
-  imdbId: string | undefined;
+  ratings: Ratings | undefined;
 }
 
-const { imdbId } = Astro.props;
+const { ratings } = Astro.props;
 
-const getHighestRatings = () => {
-  if (!imdbId) {
-    return;
-  }
+const sortedEpisodes = ratings?.episodes
+  .filter((ep) => !!ep.averageRating)
+  .toSorted((a, b) => {
+    const aR = a?.averageRating;
+    const bR = b?.averageRating;
+    if (aR == null && bR == null) return 0;
+    if (aR == null) return 1; // unrated last
+    if (bR == null) return -1;
+    return bR - aR; // highest first
+  });
 
-  return db
-    .select({
-      tconst: ratings.tconst,
-      averageRating: ratings.averageRating,
-      season: episodes.seasonNumber,
-      episode: episodes.episodeNumber,
-    })
-    .from(episodes)
-    .innerJoin(ratings, eq(episodes.tconst, ratings.tconst))
-    .where(eq(episodes.parentTconst, imdbId))
-    .orderBy(desc(ratings.averageRating))
-    .limit(3);
-};
-
-const highestRankings = await getHighestRatings();
-
-const getLowestRatings = () => {
-  if (!imdbId) {
-    return;
-  }
-
-  return db
-    .select({
-      tconst: ratings.tconst,
-      averageRating: ratings.averageRating,
-      season: episodes.seasonNumber,
-      episode: episodes.episodeNumber,
-    })
-    .from(episodes)
-    .innerJoin(ratings, eq(episodes.tconst, ratings.tconst))
-    .where(eq(episodes.parentTconst, imdbId))
-    .orderBy(asc(ratings.averageRating))
-    .limit(3);
-};
-
-const lowestRankings = await getLowestRatings();
+const highestRankings = sortedEpisodes?.slice(0, 3);
+const lowestRankings = sortedEpisodes?.toReversed().slice(0, 3);
 ---
 
 <EpisodeRankingsBase

@@ -3,10 +3,10 @@ import { ArrowDown, ArrowUp } from "@lucide/astro";
 import Rating from "./Rating.astro";
 
 type TRating = {
-  averageRating: number | undefined;
+  averageRating: number | null;
   tconst?: string;
-  season?: number | null;
-  episode?: number | null;
+  seasonNumber?: number | null;
+  episodeNumber?: number | null;
 };
 
 interface Props {
@@ -25,8 +25,8 @@ const { highestRatings, lowestRatings } = Astro.props;
         highestRatings?.map((r) => (
           <Rating
             rating={r.averageRating}
-            seasonNumber={r.season}
-            episodeNumber={r.episode}
+            seasonNumber={r.seasonNumber}
+            episodeNumber={r.episodeNumber}
             tconst={r.tconst}
           />
         ))
@@ -40,8 +40,8 @@ const { highestRatings, lowestRatings } = Astro.props;
         lowestRatings?.map((r) => (
           <Rating
             rating={r.averageRating}
-            seasonNumber={r.season}
-            episodeNumber={r.episode}
+            seasonNumber={r.seasonNumber}
+            episodeNumber={r.episodeNumber}
             tconst={r.tconst}
           />
         ))
