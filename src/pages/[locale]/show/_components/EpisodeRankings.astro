@@ -10,10 +10,21 @@ const { imdbId } = Astro.props;
 
 const ratings = await getRatings(imdbId);
 
-const sortedEpisodes = ratings?.episodes.sort();
+const sortedEpisodes = ratings?.episodes
+  .filter((ep) => !!ep.averageRating)
+  .toSorted((a, b) => {
+    const aR = a?.averageRating;
+    const bR = b?.averageRating;
+    if (aR == null && bR == null) return 0;
+    if (aR == null) return 1; // unrated last
+    if (bR == null) return -1;
+    return bR - aR; // highest first
+  });
 
-const highestRankings = sortedEpisodes?.slice(0, 3) ?? [];
-const lowestRankings = sortedEpisodes?.slice(-3) ?? [];
+const highestRankings = sortedEpisodes?.slice(0, 3);
+const lowestRankings = sortedEpisodes?.toReversed().slice(0, 3);
+
+console.log(sortedEpisodes);
 ---
 
 <EpisodeRankingsBase

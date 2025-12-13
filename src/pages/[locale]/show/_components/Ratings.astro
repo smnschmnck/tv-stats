@@ -17,8 +17,26 @@ const getSeasons = async () => {
 
     const seasonsMap = Map.groupBy(eps, (e) => e.seasonNumber);
     const seasons = Array.from(seasonsMap.entries());
+    const sortedSeasons = seasons.toSorted(([a], [b]) => {
+      if (!(a && b)) {
+        return 0;
+      }
+      return a - b;
+    });
 
-    return { seasons, error: undefined };
+    const sortedSeasonsAndEpisodes = sortedSeasons.map(
+      ([seasonNumber, episodes]) => {
+        const sortedEpisodes = episodes.toSorted((a, b) => {
+          if (!(a.episodeNumber && b.episodeNumber)) {
+            return 0;
+          }
+          return a.episodeNumber - b.episodeNumber;
+        });
+        return [seasonNumber, sortedEpisodes] as const;
+      },
+    );
+
+    return { seasons: sortedSeasonsAndEpisodes, error: undefined };
   } catch (e) {
     return { seasons: undefined, error: t("common.somethingWentWrong") };
   }
