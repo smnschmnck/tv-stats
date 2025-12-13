@@ -1,14 +1,12 @@
 ---
-import { getRatings } from "../../../../db/redis";
+import { type Ratings } from "../../../../db/redis";
 import EpisodeRankingsBase from "./EpisodeRankingsBase.astro";
 
 interface Props {
-  imdbId: string | undefined;
+  ratings: Ratings | undefined;
 }
 
-const { imdbId } = Astro.props;
-
-const ratings = await getRatings(imdbId);
+const { ratings } = Astro.props;
 
 const sortedEpisodes = ratings?.episodes
   .filter((ep) => !!ep.averageRating)
@@ -23,8 +21,6 @@ const sortedEpisodes = ratings?.episodes
 
 const highestRankings = sortedEpisodes?.slice(0, 3);
 const lowestRankings = sortedEpisodes?.toReversed().slice(0, 3);
-
-console.log(sortedEpisodes);
 ---
 
 <EpisodeRankingsBase

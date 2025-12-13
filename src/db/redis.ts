@@ -38,6 +38,8 @@ const normalizeShow = (show: ShowSmallFormat) => {
   };
 };
 
+export type Ratings = ReturnType<typeof normalizeShow>;
+
 export const getRatings = async (tconst: string | undefined) => {
   if (!tconst) {
     return;

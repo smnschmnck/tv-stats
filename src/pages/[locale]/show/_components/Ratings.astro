@@ -1,19 +1,18 @@
 ---
-import { getRatings } from "../../../../db/redis";
+import { type Ratings } from "../../../../db/redis";
 import Season from "./Season.astro";
 
 interface Props {
-  imdbId: string;
+  ratings: Ratings | undefined;
 }
 
-const { imdbId } = Astro.props;
+const { ratings } = Astro.props;
 
 const { t } = Astro.locals;
 
 const getSeasons = async () => {
   try {
-    const show = await getRatings(imdbId);
-    const eps = show?.episodes ?? [];
+    const eps = ratings?.episodes ?? [];
 
     const seasonsMap = Map.groupBy(eps, (e) => e.seasonNumber);
     const seasons = Array.from(seasonsMap.entries());
