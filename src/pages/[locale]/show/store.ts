@@ -1,4 +1,4 @@
-import { atom } from "nanostores";
+import { createSignal } from "solid-js";
 
 export type SelectedEpisode = {
   tvShowId: string;
@@ -8,4 +8,5 @@ export type SelectedEpisode = {
   tconst: string;
 };
 
-export const selectedEpisode = atom<SelectedEpisode | null>(null);
+export const [selectedEpisode, setSelectedEpisode] =
+  createSignal<SelectedEpisode | null>(null);

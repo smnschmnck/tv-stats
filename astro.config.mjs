@@ -2,9 +2,9 @@
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, envField } from "astro/config";
 
-import react from "@astrojs/react";
-
 import node from "@astrojs/node";
+
+import solidJs from "@astrojs/solid-js";
 
 export default defineConfig({
   srcDir: "src",
@@ -38,5 +38,5 @@ export default defineConfig({
   adapter: node({
     mode: "standalone",
   }),
-  integrations: [react()],
+  integrations: [solidJs()],
 });
