@@ -1,5 +1,6 @@
 ---
 import TvShowLink from "../../../components/TvShowLink.astro";
+import Pagination from "../../../components/ui/Pagination.astro";
 import BaseSearchLayout from "../../../layouts/BaseSearchLayout.astro";
 import type { TvShowListResponse } from "../../../types/tmdbApi/tvShow";
 import { tmdbFetch } from "../../../utils/tmdbFetch";
@@ -8,6 +9,13 @@ const { t } = Astro.locals;
 
 const url = Astro.url;
 const query = url.searchParams.get("q");
+const currentPage = url.searchParams.get("page") ?? "1";
+
+if (Number(currentPage) < 1) {
+  const page1 = new URL(url);
+  page1.searchParams.delete("page");
+  return Astro.redirect(page1.toString());
+}
 
 const getSearchResults = async () => {
   if (!query) {
@@ -16,7 +24,7 @@ const getSearchResults = async () => {
     try {
       const res = await tmdbFetch(
         `/search/tv?query=${query}&include_adult=true`,
-        { locale: Astro.currentLocale, page: "1" }
+        { locale: Astro.currentLocale, page: currentPage },
       );
 
       if (!res.ok) {
@@ -41,36 +49,51 @@ const { shows, error } = await getSearchResults();
 ---
 
 <BaseSearchLayout>
-  <div class="h-full w-full px-8 pt-4 md:px-16">
-    {
-      !!error && (
-        <div class="flex h-full w-full items-center justify-center">
-          <h1 class="text-2xl font-bold">{error}</h1>
-        </div>
-      )
-    }{
-      !error && (
-        <div class="flex flex-col gap-8">
-          <div class="flex w-full items-center justify-between">
-            <h1 class="text-xl font-bold">
-              {t("search.resultsFor", { query })}
-            </h1>
-            <p class="font-medium">
-              {t("search.showsFound", { count: shows?.total_results })}
-            </p>
+  <div class="pb-24">
+    <div class="h-full w-full px-8 pt-4 md:px-16">
+      {
+        !!error && (
+          <div class="flex h-full w-full items-center justify-center">
+            <h1 class="text-2xl font-bold">{error}</h1>
           </div>
-
-          <div class="flex w-full flex-wrap items-center justify-center gap-8">
-            {shows!.total_results <= 0 ? (
-              <p class="pt-32 text-xl font-bold">
-                {t("search.noResults", { query })}
+        )
+      }{
+        !error && (
+          <div class="flex flex-col gap-8">
+            <div class="flex w-full items-center justify-between">
+              <h1 class="text-xl font-bold">
+                {t("search.resultsFor", { query })}
+              </h1>
+              <p class="font-medium">
+                {t("search.showsFound", { count: shows?.total_results })}
               </p>
-            ) : (
-              shows!.results.map((show) => <TvShowLink show={show} />)
-            )}
+            </div>
+            <div class="grid w-full grid-cols-[repeat(auto-fill,8rem)] justify-between gap-4">
+              {shows!.total_results <= 0 ? (
+                <p class="col-span-full pt-32 text-center text-xl font-bold">
+                  {t("search.noResults", { query })}
+                </p>
+              ) : (
+                shows!.results.map((show) => <TvShowLink show={show} />)
+              )}
+            </div>
           </div>
-        </div>
-      )
-    }
+        )
+      }
+    </div>
+    <div class="sm:hidden">
+      <Pagination
+        totalPages={shows?.total_pages}
+        currentPage={Number(currentPage)}
+        windowSize={5}
+      />
+    </div>
+    <div class="hidden sm:block">
+      <Pagination
+        totalPages={shows?.total_pages}
+        currentPage={Number(currentPage)}
+        windowSize={10}
+      />
+    </div>
   </div>
 </BaseSearchLayout>

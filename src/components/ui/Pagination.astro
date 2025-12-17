@@ -1,0 +1,72 @@
+---
+import { twMerge } from "tailwind-merge";
+
+interface Props {
+  totalPages: number | undefined;
+  currentPage: number;
+  windowSize: number;
+}
+
+const { totalPages, currentPage, windowSize } = Astro.props;
+const url = Astro.url;
+
+const getPageOptions = () => {
+  if (!totalPages) {
+    return;
+  }
+
+  const total = totalPages;
+  const curPage = currentPage;
+
+  const start = Math.max(1, curPage - 2);
+  const end = Math.min(total, start + windowSize - 1);
+
+  if (end - start + 1 < windowSize) {
+    const newStart = Math.max(1, end - windowSize + 1);
+    return { prevPages: newStart, nextPages: end };
+  }
+
+  return { prevPages: start, nextPages: end };
+};
+
+const getPages = () => {
+  const pageOptions = getPageOptions();
+
+  if (!pageOptions) {
+    return [{ page: 1, href: "/" }];
+  }
+
+  return Array.from(
+    {
+      length: pageOptions.nextPages - pageOptions.prevPages + 1,
+    },
+    (_, i) => {
+      const cur = i + pageOptions.prevPages;
+
+      const pageUrl = new URL(url);
+      pageUrl.searchParams.set("page", String(cur));
+      return { page: cur, href: pageUrl.toString() };
+    },
+  );
+};
+
+const pages = getPages();
+---
+
+<div class="flex w-full items-center justify-center gap-2">
+  {
+    pages.map(({ page, href }) => (
+      <a
+        class={twMerge(
+          "flex aspect-square w-10 items-center justify-center rounded-lg bg-zinc-100 font-medium transition",
+          page === currentPage
+            ? "bg-black text-white hover:bg-zinc-700"
+            : "hover:bg-zinc-200",
+        )}
+        href={href}
+      >
+        {page}
+      </a>
+    ))
+  }
+</div>
