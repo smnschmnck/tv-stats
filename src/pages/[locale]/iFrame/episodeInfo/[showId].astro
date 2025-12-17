@@ -17,6 +17,18 @@ const episode = searchParams.get("episode");
 const rating = searchParams.get("rating");
 const tconst = searchParams.get("tconst");
 
+const getRating = () => {
+  if (!rating) {
+    return;
+  }
+
+  if (rating === "null") {
+    return;
+  }
+
+  return Number(rating);
+};
+
 const getShowDetails = async () => {
   try {
     const res = await tmdbFetch(`/tv/${showId}`, {
@@ -42,7 +54,7 @@ const getEpisodeDetails = async () => {
       `/tv/${showId}/season/${season}/episode/${episode}`,
       {
         locale: Astro.currentLocale,
-      }
+      },
     );
 
     if (!res.ok) {
@@ -70,7 +82,7 @@ const { episodeDetails } = await getEpisodeDetails();
             <h3 class="font-bold text-zinc-500">{showDetails?.name}</h3>
             <h2 class="text-lg font-bold">{episodeDetails?.name}</h2>
           </div>
-          <Rating rating={rating ? Number(rating) : undefined} />
+          <Rating rating={getRating()} />
         </div>
         <div class="flex text-zinc-500">
           <span>{t("episode.infos.seasonNumber")} {season}</span>
