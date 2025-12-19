@@ -1,5 +1,6 @@
 ---
 import { type Ratings } from "../../../../db/redis";
+import { getIsDividedByYears } from "../_utils/seasonMapper";
 import Season from "./Season.astro";
 
 interface Props {
@@ -10,11 +11,15 @@ const { ratings } = Astro.props;
 
 const { t } = Astro.locals;
 
+const isDividedByYears = getIsDividedByYears(ratings);
+
 const getSeasons = async () => {
   try {
     const eps = ratings?.episodes ?? [];
 
-    const seasonsMap = Map.groupBy(eps, (e) => e.seasonNumber);
+    const seasonsMap = Map.groupBy(eps, (episode) =>
+      isDividedByYears ? Number(episode.startYear ?? 0) : episode.seasonNumber,
+    );
     const seasons = Array.from(seasonsMap.entries());
     const sortedSeasons = seasons.toSorted(([a], [b]) => {
       if (!(a && b)) {
