@@ -12,11 +12,15 @@ type EpisodeSmallFormat = {
   e: number | null;
   ar: number | null;
   nv: number | null;
+  sy: string | null;
+  ey: string | null;
 };
 
 type ShowSmallFormat = {
   ar: number | null;
   nv: number | null;
+  sy: string | null;
+  ey: string | null;
   eps: EpisodeSmallFormat[];
 };
 
@@ -27,6 +31,8 @@ const normalizeEpisode = (ep: EpisodeSmallFormat) => {
     numVotes: ep.nv,
     seasonNumber: ep.s,
     episodeNumber: ep.e,
+    startYear: ep.sy,
+    endYear: ep.ey,
   };
 };
 
@@ -34,6 +40,8 @@ const normalizeShow = (show: ShowSmallFormat) => {
   return {
     averageRating: show.ar ? show.ar / 10 : null,
     numVotes: show.nv,
+    startYear: show.sy,
+    endYear: show.ey,
     episodes: show.eps.map(normalizeEpisode),
   };
 };
@@ -51,7 +59,6 @@ export const getRatings = async (tconst: string | undefined) => {
   }
 
   const show = packr.unpack(res) as ShowSmallFormat;
-
   const normalized = normalizeShow(show);
 
   return normalized;
