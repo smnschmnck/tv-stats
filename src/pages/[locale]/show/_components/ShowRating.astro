@@ -14,9 +14,9 @@ const formatter = new Intl.NumberFormat(getLocale(Astro.currentLocale));
 
 {
   !!ratings && (
-    <div class="flex items-center gap-2 rounded-xl bg-zinc-100 p-2">
+    <div class="flex items-center gap-2 rounded-xl bg-zinc-100 p-2 dark:bg-zinc-800">
       <Rating rating={ratings.averageRating} />
-      <span class="text-zinc-600">
+      <span class="text-zinc-600 dark:text-zinc-400">
         ({formatter.format(ratings.numVotes ?? 0)})
       </span>
     </div>

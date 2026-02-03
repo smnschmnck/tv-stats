@@ -75,16 +75,16 @@ const { episodeDetails } = await getEpisodeDetails();
   <div class="flex h-full w-full justify-center">
     <div class="flex h-full w-full flex-col gap-4 sm:max-w-prose">
       <div
-        class="flex flex-col gap-1 rounded-xl border border-zinc-100 bg-zinc-50 p-4"
+        class="flex flex-col gap-1 rounded-xl border border-zinc-100 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-800/50"
       >
         <div class="flex items-center justify-between">
           <div>
-            <h3 class="font-bold text-zinc-500">{showDetails?.name}</h3>
+            <h3 class="font-bold text-zinc-500 dark:text-zinc-400">{showDetails?.name}</h3>
             <h2 class="text-lg font-bold">{episodeDetails?.name}</h2>
           </div>
           <Rating rating={getRating()} />
         </div>
-        <div class="flex text-zinc-500">
+        <div class="flex text-zinc-500 dark:text-zinc-400">
           <span>{t("episode.infos.seasonNumber")} {season}</span>
           <Dot />
           <span>{t("episode.infos.episodeNumber")} {episode}</span>
@@ -92,7 +92,7 @@ const { episodeDetails } = await getEpisodeDetails();
         <p>{episodeDetails?.overview}</p>
       </div>
       <a
-        class="flex min-h-10 w-full items-center justify-center gap-2 rounded-md bg-zinc-100 font-semibold text-black"
+        class="flex min-h-10 w-full items-center justify-center gap-2 rounded-md bg-zinc-100 font-semibold text-black dark:bg-zinc-800 dark:text-white"
         target="_blank"
         rel="noopener noreferrer"
         href={`https://www.imdb.com/title/${tconst}/`}

@@ -14,7 +14,7 @@ const { showId } = Astro.params;
 
 const getClassName = () => {
   if (!rating) {
-    return "bg-zinc-200";
+    return "bg-zinc-200 dark:bg-zinc-700";
   }
 
   if (rating >= 9) {

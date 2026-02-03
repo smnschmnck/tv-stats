@@ -1,0 +1,87 @@
+---
+import { Moon, Sun } from "@lucide/astro";
+---
+
+<button
+  id="theme-toggle"
+  type="button"
+  class="flex h-9 w-9 items-center justify-center rounded-lg text-zinc-600 transition hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
+  aria-label="Toggle theme"
+>
+  <Sun id="sun-icon" class="hidden h-5 w-5" />
+  <Moon id="moon-icon" class="hidden h-5 w-5" />
+</button>
+
+<script>
+  const initTheme = () => {
+    const themeToggle = document.getElementById("theme-toggle");
+    const sunIcon = document.getElementById("sun-icon");
+    const moonIcon = document.getElementById("moon-icon");
+
+    const getStoredTheme = () => {
+      return localStorage.getItem("theme");
+    };
+
+    const getSystemTheme = () => {
+      return window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+    };
+
+    const getEffectiveTheme = () => {
+      const stored = getStoredTheme();
+      if (stored === "dark" || stored === "light") {
+        return stored;
+      }
+      return getSystemTheme();
+    };
+
+    const updateIcons = (theme: "dark" | "light") => {
+      if (!sunIcon || !moonIcon) return;
+
+      if (theme === "dark") {
+        sunIcon.classList.remove("hidden");
+        moonIcon.classList.add("hidden");
+      } else {
+        sunIcon.classList.add("hidden");
+        moonIcon.classList.remove("hidden");
+      }
+    };
+
+    const applyTheme = (theme: "dark" | "light") => {
+      if (theme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+      updateIcons(theme);
+    };
+
+    const toggleTheme = () => {
+      const currentTheme = document.documentElement.classList.contains("dark")
+        ? "dark"
+        : "light";
+      const newTheme = currentTheme === "dark" ? "light" : "dark";
+
+      localStorage.setItem("theme", newTheme);
+      applyTheme(newTheme);
+    };
+
+    const effectiveTheme = getEffectiveTheme();
+    applyTheme(effectiveTheme);
+
+    themeToggle?.addEventListener("click", toggleTheme);
+
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (e) => {
+        if (!getStoredTheme()) {
+          applyTheme(e.matches ? "dark" : "light");
+        }
+      });
+  };
+
+  initTheme();
+
+  document.addEventListener("astro:after-swap", initTheme);
+</script>

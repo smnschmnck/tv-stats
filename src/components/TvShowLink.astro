@@ -25,7 +25,7 @@ const url = getLocaleLink(Astro.currentLocale, `/show/${show.id}`);
     }
     {
       !show.poster_path && (
-        <div class="flex aspect-2/3 w-32 items-center justify-center rounded-xl bg-zinc-700 text-zinc-500 transition group-hover:bg-zinc-600">
+        <div class="flex aspect-2/3 w-32 items-center justify-center rounded-xl bg-zinc-700 text-zinc-500 transition group-hover:bg-zinc-600 dark:bg-zinc-800 dark:text-zinc-600 dark:group-hover:bg-zinc-700">
           <Clapperboard />
         </div>
       )

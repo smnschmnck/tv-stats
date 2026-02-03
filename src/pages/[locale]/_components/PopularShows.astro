@@ -29,7 +29,7 @@ const shows = await getPopularShows();
 
 {
   !!shows && (
-    <div class="flex w-full flex-wrap items-center justify-center gap-8 bg-zinc-50 px-8 md:px-20">
+    <div class="flex w-full flex-wrap items-center justify-center gap-8 bg-zinc-50 px-8 dark:bg-zinc-800 md:px-20">
       {shows?.results.map((show) => (
         <TvShowLink show={show} />
       ))}

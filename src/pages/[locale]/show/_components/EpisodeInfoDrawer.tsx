@@ -32,11 +32,11 @@ export const EpisodeInfoDrawer = ({ locale }: { locale: string }) => {
               'background-color': `rgb(0 0 0 / ${0.4 * props.openPercentage})`
             }}
           />
-          <Drawer.Content class="fixed right-0 bottom-0 left-0 z-20 mt-24 flex h-fit flex-col rounded-t-[10px] bg-gray-100 outline-none data-transitioning:transition-transform data-transitioning:duration-500 data-transitioning:ease-[cubic-bezier(0.32,0.72,0,1)]">
-            <div class="flex-1 rounded-t-[10px] bg-white p-4">
+          <Drawer.Content class="fixed right-0 bottom-0 left-0 z-20 mt-24 flex h-fit flex-col rounded-t-[10px] bg-gray-100 outline-none data-transitioning:transition-transform data-transitioning:duration-500 data-transitioning:ease-[cubic-bezier(0.32,0.72,0,1)] dark:bg-zinc-800">
+            <div class="flex-1 rounded-t-[10px] bg-white p-4 dark:bg-zinc-900">
               <div
                 aria-hidden
-                class="mx-auto mb-8 h-1.5 w-12 shrink-0 rounded-full bg-gray-300"
+                class="mx-auto mb-8 h-1.5 w-12 shrink-0 rounded-full bg-gray-300 dark:bg-zinc-600"
               />
               <iframe src={infoLink()} class="h-[50vh] w-full" />
             </div>

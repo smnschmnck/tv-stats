@@ -1,17 +1,18 @@
 ---
 import { Clapperboard } from "@lucide/astro";
 import { getLocaleLink } from "../i18n/utils";
+import ThemeSwitcher from "./ThemeSwitcher.astro";
 
 const rootUrl = getLocaleLink(Astro.currentLocale, "/");
 ---
 
 <header
-  class="fixed z-10 flex min-h-24 w-full items-center justify-between gap-4 bg-white px-8 md:px-12"
+  class="fixed z-10 flex min-h-24 w-full items-center justify-between gap-4 bg-white px-8 dark:bg-zinc-900 md:px-12"
 >
   <a class="flex items-center gap-2 font-bold select-none" href={rootUrl}>
     <Clapperboard />
     <span class="hidden md:block">TV Stats</span>
   </a>
   <slot />
-  <div></div>
+  <ThemeSwitcher />
 </header>
