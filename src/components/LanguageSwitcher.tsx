@@ -33,9 +33,11 @@ export const LanguageSwitcher = () => {
       itemComponent={(props) => (
         <Select.Item
           item={props.item}
-          class="flex cursor-pointer items-center justify-between rounded px-3 py-1.5 text-sm text-zinc-700 outline-none hover:bg-zinc-100 data-highlighted:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-700 dark:data-highlighted:bg-zinc-700"
+          class="flex cursor-pointer items-center justify-between gap-2 rounded px-3 py-1.5 text-sm text-zinc-700 outline-none hover:bg-zinc-100 data-highlighted:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-700 dark:data-highlighted:bg-zinc-700"
         >
-          <Select.ItemLabel>{fullLabels[props.item.rawValue as keyof typeof fullLabels]}</Select.ItemLabel>
+          <Select.ItemLabel>
+            {fullLabels[props.item.rawValue as keyof typeof fullLabels]}
+          </Select.ItemLabel>
           <Select.ItemIndicator>
             <Check size={14} stroke-width={2.5} />
           </Select.ItemIndicator>
@@ -47,7 +49,9 @@ export const LanguageSwitcher = () => {
         aria-label="Switch language"
       >
         <Select.Value<string>>
-          {(state) => shortLabels[state.selectedOption() as keyof typeof shortLabels]}
+          {(state) =>
+            shortLabels[state.selectedOption() as keyof typeof shortLabels]
+          }
         </Select.Value>
       </Select.Trigger>
       <Select.Portal>
