@@ -3,6 +3,7 @@ import { Clapperboard } from "@lucide/astro";
 import { getLocaleLink } from "../i18n/utils";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { ThemeSwitcher } from "./ThemeSwitcher";
+import { SettingsDropdown } from "./SettingsDropdown";
 
 const rootUrl = getLocaleLink(Astro.currentLocale, "/");
 ---
@@ -16,7 +17,12 @@ const rootUrl = getLocaleLink(Astro.currentLocale, "/");
   </a>
   <slot />
   <div class="flex items-center gap-1">
-    <LanguageSwitcher client:load />
-    <ThemeSwitcher client:load />
+    <div class="md:hidden">
+      <SettingsDropdown client:load />
+    </div>
+    <div class="hidden items-center gap-1 md:flex">
+      <LanguageSwitcher client:load />
+      <ThemeSwitcher client:load />
+    </div>
   </div>
 </header>
