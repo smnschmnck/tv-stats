@@ -1,7 +1,7 @@
 ---
 import { Clapperboard } from "@lucide/astro";
 import { getLocaleLink } from "../i18n/utils";
-import ThemeSwitcher from "./ThemeSwitcher.astro";
+import { ThemeSwitcher } from "./ThemeSwitcher";
 
 const rootUrl = getLocaleLink(Astro.currentLocale, "/");
 ---
@@ -14,5 +14,5 @@ const rootUrl = getLocaleLink(Astro.currentLocale, "/");
     <span class="hidden md:block">TV Stats</span>
   </a>
   <slot />
-  <ThemeSwitcher />
+  <ThemeSwitcher client:load />
 </header>
