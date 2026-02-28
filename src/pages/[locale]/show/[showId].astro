@@ -6,7 +6,7 @@ import { fallbackLanguage } from "../../../i18n/constants";
 import BaseSearchLayout from "../../../layouts/BaseSearchLayout.astro";
 import type { ExternalIds } from "../../../types/tmdbApi/tvShow";
 import { tmdbFetch } from "../../../utils/tmdbFetch";
-import { EpisodeInfoDrawer } from "./_components/EpisodeInfoDrawer";
+import { EpisodeInfo } from "./_components/EpisodeInfo";
 import Ratings from "./_components/Ratings.astro";
 import ShowDetails from "./_components/ShowDetails.astro";
 
@@ -61,5 +61,5 @@ const ratings = await getRatings(imdbId);
       </div>
     )
   }
-  <EpisodeInfoDrawer client:load locale={locale} />
+  <EpisodeInfo client:load locale={locale} />
 </BaseSearchLayout>
