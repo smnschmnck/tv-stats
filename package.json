@@ -20,9 +20,7 @@
     "drizzle-orm": "^0.45.1",
     "i18next": "^25.5.3",
     "i18next-http-middleware": "^3.8.1",
-    "ioredis": "^5.8.2",
     "lucide-solid": "^0.575.0",
-    "msgpackr": "^1.11.5",
     "solid-js": "^1.9.10",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.14"

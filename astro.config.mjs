@@ -17,12 +17,7 @@ export default defineConfig({
         access: "secret",
         min: 2,
       }),
-      REDIS_URL: envField.string({
-        context: "server",
-        access: "secret",
-        url: true,
-      }),
-      DATABASE_URL:  envField.string({
+      DATABASE_URL: envField.string({
         context: "server",
         access: "secret",
         url: true,

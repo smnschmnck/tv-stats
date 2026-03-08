@@ -1,4 +1,4 @@
-import type { Ratings } from "../../../../db/redis";
+import type { Ratings } from "../../../../utils/ratings";
 
 export const getIsDividedByYears = (ratings: Ratings | undefined) => {
   const date = new Date();
