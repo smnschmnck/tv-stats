@@ -22,6 +22,11 @@ export default defineConfig({
         access: "secret",
         url: true,
       }),
+      DATABASE_URL:  envField.string({
+        context: "server",
+        access: "secret",
+        url: true,
+      }),
     },
   },
 
