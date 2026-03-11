@@ -1,6 +1,6 @@
 // astro.config.mjs
 import tailwindcss from "@tailwindcss/vite";
-import { defineConfig, envField } from "astro/config";
+import { defineConfig, envField, fontProviders } from "astro/config";
 
 import node from "@astrojs/node";
 
@@ -24,6 +24,15 @@ export default defineConfig({
       }),
     },
   },
+
+  fonts: [
+    {
+      name: "Inter",
+      cssVariable: "--font-inter",
+      provider: fontProviders.fontsource(),
+      weights: [400, 500, 600, 700, 800],
+    },
+  ],
 
   i18n: {
     locales: ["en", "de"],
