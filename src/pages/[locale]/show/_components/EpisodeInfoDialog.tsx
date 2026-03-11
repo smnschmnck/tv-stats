@@ -26,10 +26,10 @@ export const EpisodeInfoDialog = ({ locale }: { locale: string }) => {
   return (
     <Dialog open={!!ep()} onOpenChange={handleOpenChange}>
       <Dialog.Portal>
-        <Dialog.Overlay class="fixed inset-0 z-10 bg-black/40 max-md:hidden" />
-        <Dialog.Content class="fixed top-1/2 left-1/2 z-20 flex w-175 max-w-[90vw] -translate-x-1/2 -translate-y-1/2 flex-col gap-2 rounded-xl bg-white p-4 shadow-xl outline-none max-md:hidden dark:bg-zinc-900">
+        <Dialog.Overlay class="fixed inset-0 z-10 bg-black/40 max-md:hidden data-[expanded]:animate-overlay-in data-[closed]:animate-overlay-out" />
+        <Dialog.Content class="fixed top-1/2 left-1/2 z-20 flex w-175 max-w-[90vw] [translate:-50%_-50%] flex-col gap-2 rounded-xl bg-white p-4 shadow-xl outline-none max-md:hidden dark:bg-zinc-900 data-[expanded]:animate-dialog-in data-[closed]:animate-dialog-out">
           <div class="flex justify-end">
-            <Dialog.CloseButton class="rounded-md p-1 text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100">
+            <Dialog.CloseButton class="flex h-8 w-8 items-center justify-center rounded-md p-1 text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100">
               <X size={18} />
             </Dialog.CloseButton>
           </div>
