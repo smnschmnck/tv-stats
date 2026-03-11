@@ -7,13 +7,13 @@ export const getIsDividedByYears = (ratings: Ratings | undefined) => {
     Number(ratings?.startYear ?? "0") <
     Number(ratings?.endYear ?? date.getFullYear());
 
-  const multipleSeaons = ratings?.episodes.some((ep) => {
-    if (!ep.seasonNumber) {
+  const multipleSeasons = ratings?.episodes.some((ep) => {
+    if (!ep.seasonNumber || ep.seasonNumber <= 1) {
       return false;
     }
 
-    return ep.seasonNumber > 1;
+    return ep.averageRating !== null;
   });
 
-  return spansYears && !multipleSeaons;
+  return spansYears && !multipleSeasons;
 };
