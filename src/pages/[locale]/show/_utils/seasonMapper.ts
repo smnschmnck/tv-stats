@@ -10,5 +10,5 @@ export const getIsDividedByYears = (ratings: Ratings | undefined) => {
   const seasonOneEpisodeCount =
     ratings?.episodes.filter((ep) => ep.seasonNumber === 1).length ?? 0;
 
-  return spansYears && seasonOneEpisodeCount > 50;
+  return spansYears && seasonOneEpisodeCount > 100;
 };
