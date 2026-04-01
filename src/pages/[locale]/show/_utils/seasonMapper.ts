@@ -1,6 +1,18 @@
 import type { Ratings } from "../../../../db/redis";
 
 export const getIsDividedByYears = (ratings: Ratings | undefined) => {
+  const hasSeasonThree = ratings?.episodes.some((ep) => {
+    if (!ep.seasonNumber) {
+      return false;
+    }
+
+    return ep.seasonNumber >= 3;
+  });
+
+  if (hasSeasonThree) {
+    return false;
+  }
+
   const date = new Date();
 
   const spansYears =
