@@ -3,6 +3,8 @@ import { Clapperboard } from "@lucide/astro";
 import type { TvShow } from "../types/tmdbApi/tvShow";
 import { getLocaleLink } from "../i18n/utils";
 import { getRatingClassName } from "../pages/[locale]/show/_utils/getRatingClassName";
+import { getImdbId } from "../utils/tmdb/imdbId";
+import { getRatings } from "../db/ratingsRedis";
 
 interface Props {
   show: TvShow;
@@ -12,10 +14,15 @@ const { show } = Astro.props;
 
 const url = getLocaleLink(Astro.currentLocale, `/show/${show.id}`);
 
-const hasRating = show.vote_average > 0;
-const ratingLabel = hasRating ? show.vote_average.toFixed(1) : null;
+const showId = show.id ? String(show.id) : undefined;
+
+const imdbId = await getImdbId(showId);
+const ratings = await getRatings(imdbId);
+
+const hasRating = !!ratings?.averageRating;
+const ratingLabel = hasRating ? ratings.averageRating : null;
 const ratingClassName = hasRating
-  ? getRatingClassName(show.vote_average)
+  ? getRatingClassName(ratings.averageRating)
   : "bg-zinc-700";
 ---
 
@@ -42,7 +49,7 @@ const ratingClassName = hasRating
         hasRating && (
           <span
             class:list={[
-              "absolute -right-1.5 -top-1.5 rounded-md px-2 py-1 text-xs font-semibold text-white shadow-sm ring-1 ring-black/10 backdrop-blur-sm",
+              "absolute -top-1.5 -right-1.5 rounded-md px-2 py-1 text-xs font-semibold text-white shadow-sm ring-1 ring-black/10 backdrop-blur-sm",
               ratingClassName,
             ]}
           >

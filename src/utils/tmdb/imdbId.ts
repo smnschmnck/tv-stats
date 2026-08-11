@@ -7,6 +7,10 @@ export const getImdbId = (showId: string | undefined) => {
     cacheKey: `imdb-id-${showId}`,
     ttl: 30 * DAY,
     queryFn: async () => {
+      if (!showId) {
+        return;
+      }
+
       const externalIdRes = await tmdbFetch(`/tv/${showId}/external_ids`);
 
       if (!externalIdRes.ok) {
