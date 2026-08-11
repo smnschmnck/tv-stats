@@ -1,6 +1,9 @@
 ---
 import { Clapperboard } from "@lucide/astro";
 import type { Movie } from "../types/tmdbApi/movie";
+import { getRatingClassName } from "../pages/[locale]/show/_utils/getRatingClassName";
+import { getRatings } from "../db/ratingsRedis";
+import { getImdbId } from "../utils/tmdb/imdbId";
 
 interface Props {
   movie: Movie;
@@ -8,6 +11,12 @@ interface Props {
 
 const { movie } = Astro.props;
 const url = `https://www.themoviedb.org/movie/${movie.id}`;
+const imdbId = await getImdbId(String(movie.id), "movie");
+const ratings = await getRatings(imdbId);
+const hasRating = !!ratings?.averageRating;
+const ratingClassName = hasRating
+  ? getRatingClassName(ratings.averageRating)
+  : "bg-zinc-700";
 ---
 
 <div class="h-76 overflow-visible">
@@ -31,11 +40,18 @@ const url = `https://www.themoviedb.org/movie/${movie.id}`;
           </div>
         )
       }
-      <span
-        class="absolute -top-1.5 -right-1.5 rounded-md bg-zinc-700 px-2 py-1 text-xs font-semibold text-white shadow-sm ring-1 ring-black/10"
-      >
-        Movie
-      </span>
+      {
+        hasRating && (
+          <span
+            class:list={[
+              "absolute -top-1.5 -right-1.5 rounded-md px-2 py-1 text-xs font-semibold text-white shadow-sm ring-1 ring-black/10 backdrop-blur-sm",
+              ratingClassName,
+            ]}
+          >
+            {ratings.averageRating}
+          </span>
+        )
+      }
     </div>
     <p class="line-clamp-3 w-32 text-center font-medium">{movie.title}</p>
   </a>

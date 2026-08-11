@@ -2,16 +2,19 @@ import { cached, DAY } from "../../db/cachingRedis";
 import type { ExternalIds } from "../../types/tmdbApi/tvShow";
 import { tmdbFetch } from "../tmdbFetch";
 
-export const getImdbId = (showId: string | undefined) => {
+export const getImdbId = (
+  id: string | undefined,
+  mediaType: "tv" | "movie" = "tv",
+) => {
   return cached({
-    cacheKey: `imdb-id-${showId}`,
+    cacheKey: `imdb-id-${mediaType}-${id}`,
     ttl: 30 * DAY,
     queryFn: async () => {
-      if (!showId) {
+      if (!id) {
         return;
       }
 
-      const externalIdRes = await tmdbFetch(`/tv/${showId}/external_ids`);
+      const externalIdRes = await tmdbFetch(`/${mediaType}/${id}/external_ids`);
 
       if (!externalIdRes.ok) {
         return;
