@@ -1,4 +1,5 @@
 ---
+import { cached, HOUR } from "../../../../db/cachingRedis";
 import type { WatchProvidersResponse } from "../../../../types/tmdbApi/watchProviders";
 import { tmdbFetch } from "../../../../utils/tmdbFetch";
 
@@ -8,14 +9,25 @@ const { headers } = Astro.request;
 
 const getShowWatchProviders = async () => {
   try {
-    const res = await tmdbFetch(`/tv/${showId}/watch/providers`);
+    const watchProviders = await cached({
+      cacheKey: `tmdb:watch-providers:${showId}`,
+      ttl: 12 * HOUR,
+      queryFn: async () => {
+        const res = await tmdbFetch(`/tv/${showId}/watch/providers`);
 
-    if (!res.ok) {
+        if (!res.ok) {
+          return;
+        }
+
+        return (await res.json()) as WatchProvidersResponse;
+      },
+    });
+
+    if (!watchProviders) {
       return { error: t("show.notFound"), watchProviders: undefined };
-    } else {
-      const watchProviders = (await res.json()) as WatchProvidersResponse;
-      return { error: undefined, watchProviders };
     }
+
+    return { error: undefined, watchProviders };
   } catch (e) {
     return { error: t("show.notFound"), watchProviders: undefined };
   }

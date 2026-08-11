@@ -1,5 +1,6 @@
 ---
 import TvShowLink from "../../../components/TvShowLink.astro";
+import { cached, MINUTE } from "../../../db/cachingRedis";
 import type { TvShowListResponse } from "../../../types/tmdbApi/tvShow";
 import { tmdbFetch } from "../../../utils/tmdbFetch";
 
@@ -7,17 +8,25 @@ const { t } = Astro.locals;
 
 const getPopularShows = async () => {
   try {
-    const res = await tmdbFetch("/tv/popular", {
-      locale: Astro.currentLocale,
-      page: "1",
+    const shows = await cached({
+      cacheKey: `tmdb:popular:${Astro.currentLocale ?? "default"}:1`,
+      ttl: 30 * MINUTE,
+      queryFn: async () => {
+        const res = await tmdbFetch("/tv/popular", {
+          locale: Astro.currentLocale,
+          page: "1",
+        });
+
+        if (!res.ok) {
+          console.error("TMDB error:", res.status, res.statusText);
+          return;
+        }
+
+        return (await res.json()) as TvShowListResponse;
+      },
     });
 
-    if (!res.ok) {
-      console.error("TMDB error:", res.status, res.statusText);
-      return null;
-    }
-
-    return (await res.json()) as TvShowListResponse;
+    return shows ?? null;
   } catch (err) {
     console.error("Fetch failed:", err);
     return null;

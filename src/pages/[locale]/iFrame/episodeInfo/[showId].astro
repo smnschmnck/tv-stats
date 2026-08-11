@@ -1,5 +1,6 @@
 ---
 import { Dot } from "@lucide/astro";
+import { cached, DAY } from "../../../../db/cachingRedis";
 import RootLayout from "../../../../layouts/RootLayout.astro";
 import type {
   EpisodeDetails,
@@ -31,16 +32,27 @@ const getRating = () => {
 
 const getShowDetails = async () => {
   try {
-    const res = await tmdbFetch(`/tv/${showId}`, {
-      locale: Astro.currentLocale,
+    const showDetails = await cached({
+      cacheKey: `tmdb:show:${showId}:${Astro.currentLocale ?? "default"}`,
+      ttl: DAY,
+      queryFn: async () => {
+        const res = await tmdbFetch(`/tv/${showId}`, {
+          locale: Astro.currentLocale,
+        });
+
+        if (!res.ok) {
+          return;
+        }
+
+        return (await res.json()) as TVShowDetails;
+      },
     });
 
-    if (!res.ok) {
+    if (!showDetails) {
       return { error: t("show.notFound"), showDetails: undefined };
-    } else {
-      const showDetails = (await res.json()) as TVShowDetails;
-      return { error: undefined, showDetails };
     }
+
+    return { error: undefined, showDetails };
   } catch (e) {
     return { error: t("show.notFound"), showDetails: undefined };
   }
@@ -50,19 +62,30 @@ const { showDetails } = await getShowDetails();
 
 const getEpisodeDetails = async () => {
   try {
-    const res = await tmdbFetch(
-      `/tv/${showId}/season/${season}/episode/${episode}`,
-      {
-        locale: Astro.currentLocale,
-      },
-    );
+    const episodeDetails = await cached({
+      cacheKey: `tmdb:episode:${showId}:${season}:${episode}:${Astro.currentLocale ?? "default"}`,
+      ttl: 7 * DAY,
+      queryFn: async () => {
+        const res = await tmdbFetch(
+          `/tv/${showId}/season/${season}/episode/${episode}`,
+          {
+            locale: Astro.currentLocale,
+          },
+        );
 
-    if (!res.ok) {
+        if (!res.ok) {
+          return;
+        }
+
+        return (await res.json()) as EpisodeDetails;
+      },
+    });
+
+    if (!episodeDetails) {
       return { error: t("show.notFound"), episodeDetails: undefined };
-    } else {
-      const episodeDetails = (await res.json()) as EpisodeDetails;
-      return { error: undefined, episodeDetails };
     }
+
+    return { error: undefined, episodeDetails };
   } catch (e) {
     return { error: t("show.notFound"), episodeDetails: undefined };
   }
@@ -79,7 +102,9 @@ const { episodeDetails } = await getEpisodeDetails();
       >
         <div class="flex items-center justify-between">
           <div>
-            <h3 class="font-bold text-zinc-500 dark:text-zinc-400">{showDetails?.name}</h3>
+            <h3 class="font-bold text-zinc-500 dark:text-zinc-400">
+              {showDetails?.name}
+            </h3>
             <h2 class="text-lg font-bold">{episodeDetails?.name}</h2>
           </div>
           <Rating rating={getRating()} />

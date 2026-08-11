@@ -1,5 +1,6 @@
 ---
 import LoadingFallback from "../../../../components/ui/LoadingFallback.astro";
+import { cached, DAY } from "../../../../db/cachingRedis";
 import type { Ratings } from "../../../../db/ratingsRedis";
 import type { TVShowDetails } from "../../../../types/tmdbApi/tvShowDetails";
 import { tmdbFetch } from "../../../../utils/tmdbFetch";
@@ -20,16 +21,27 @@ const { showId, ratings, imdbId } = Astro.props;
 
 const getShowDetails = async () => {
   try {
-    const res = await tmdbFetch(`/tv/${showId}`, {
-      locale: Astro.currentLocale,
+    const showDetails = await cached({
+      cacheKey: `tmdb:show:${showId}:${Astro.currentLocale ?? "default"}`,
+      ttl: DAY,
+      queryFn: async () => {
+        const res = await tmdbFetch(`/tv/${showId}`, {
+          locale: Astro.currentLocale,
+        });
+
+        if (!res.ok) {
+          return;
+        }
+
+        return (await res.json()) as TVShowDetails;
+      },
     });
 
-    if (!res.ok) {
+    if (!showDetails) {
       return { error: t("show.notFound"), showDetails: undefined };
-    } else {
-      const showDetails = (await res.json()) as TVShowDetails;
-      return { error: undefined, showDetails };
     }
+
+    return { error: undefined, showDetails };
   } catch (e) {
     return { error: t("show.notFound"), showDetails: undefined };
   }
