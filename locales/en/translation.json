@@ -40,6 +40,9 @@
       "openInImdb": "Open in IMDb"
     }
   },
+  "movie": {
+    "notFound": "Movie not found"
+  },
   "components": {
     "searchBar": {
       "button": "Search",

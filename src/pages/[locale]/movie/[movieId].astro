@@ -1,0 +1,12 @@
+---
+import BaseSearchLayout from "../../../layouts/BaseSearchLayout.astro";
+
+const { t } = Astro.locals;
+const { movieId } = Astro.params;
+---
+
+<BaseSearchLayout>
+  <div class="p-12">
+    <p>{t("movie.notFound")}</p>
+  </div>
+</BaseSearchLayout>

@@ -1,6 +1,7 @@
 ---
 import { Clapperboard } from "@lucide/astro";
 import type { Movie } from "../types/tmdbApi/movie";
+import { getLocaleLink } from "../i18n/utils";
 import { getRatingClassName } from "../pages/[locale]/show/_utils/getRatingClassName";
 import { getRatings } from "../db/ratingsRedis";
 import { getImdbId } from "../utils/tmdb/imdbId";
@@ -10,7 +11,7 @@ interface Props {
 }
 
 const { movie } = Astro.props;
-const url = `https://www.themoviedb.org/movie/${movie.id}`;
+const url = getLocaleLink(Astro.currentLocale, `/movie/${movie.id}`);
 const imdbId = await getImdbId(String(movie.id), "movie");
 const ratings = await getRatings(imdbId);
 const hasRating = !!ratings?.averageRating;
