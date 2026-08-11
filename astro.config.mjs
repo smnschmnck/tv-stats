@@ -17,7 +17,7 @@ export default defineConfig({
         access: "secret",
         min: 2,
       }),
-      REDIS_URL: envField.string({
+      RATINGS_REDIS_URL: envField.string({
         context: "server",
         access: "secret",
         url: true,

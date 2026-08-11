@@ -5,8 +5,8 @@ Explore TV shows and find detailed episode IMDb ratings, season breakdowns, and 
 ## Setup
 
 ```sh
-bun install
-bun dev
+pnpm install
+pnpm dev
 ```
 
 The app runs at `localhost:4321`.
@@ -14,8 +14,8 @@ The app runs at `localhost:4321`.
 For production builds:
 
 ```sh
-bun build
-bun preview
+pnpm build
+pnpm preview
 ```
 
 Requires a TMDB API key in your `.env` file.

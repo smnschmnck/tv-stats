@@ -1,10 +1,10 @@
-import { REDIS_URL } from "astro:env/server";
+import { RATINGS_REDIS_URL } from "astro:env/server";
 import Redis from "ioredis";
 import { Packr } from "msgpackr";
 
 const packr = new Packr();
 
-const redis = new Redis(REDIS_URL);
+const redis = new Redis(RATINGS_REDIS_URL);
 
 type EpisodeSmallFormat = {
   t: string;
