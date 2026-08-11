@@ -4,8 +4,7 @@ import Spinner from "../../../components/ui/Spinner.astro";
 import { getRatings } from "../../../db/ratingsRedis";
 import { fallbackLanguage } from "../../../i18n/constants";
 import BaseSearchLayout from "../../../layouts/BaseSearchLayout.astro";
-import type { ExternalIds } from "../../../types/tmdbApi/tvShow";
-import { tmdbFetch } from "../../../utils/tmdbFetch";
+import { getImdbId } from "../../../utils/tmdb/imdbId";
 import { EpisodeInfo } from "./_components/EpisodeInfo";
 import Ratings from "./_components/Ratings.astro";
 import ShowDetails from "./_components/ShowDetails.astro";
@@ -15,24 +14,7 @@ const locale = Astro.currentLocale ?? fallbackLanguage;
 
 const { showId } = Astro.params;
 
-const getExternalIds = async () => {
-  const externalIdRes = await tmdbFetch(`/tv/${showId}/external_ids`);
-
-  if (!externalIdRes.ok) {
-    return { imdbId: undefined, error: t("show.ratings.notFound") };
-  }
-
-  const externalIds = (await externalIdRes.json()) as ExternalIds;
-  const imdbId = externalIds.imdb_id;
-
-  if (!imdbId) {
-    return { imdbId: undefined, error: t("show.ratings.notFound") };
-  }
-
-  return { imdbId, error: undefined };
-};
-
-const { imdbId, error } = await getExternalIds();
+const imdbId = await getImdbId(showId);
 
 const ratings = await getRatings(imdbId);
 ---
@@ -54,8 +36,8 @@ const ratings = await getRatings(imdbId);
             >
               <Spinner />
             </div>
-            {!!error && <p>{error}</p>}
-            {!error && !!imdbId && <Ratings ratings={ratings} slot="content" />}
+            {!imdbId && <p>{t("show.ratings.notFound")}</p>}
+            {!!imdbId && <Ratings ratings={ratings} slot="content" />}
           </LoadingFallback>
         </div>
       </div>
