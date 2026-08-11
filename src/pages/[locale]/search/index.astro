@@ -37,45 +37,35 @@ const getSearchResults = async () => {
   } else {
     try {
       const searchQuery = encodeURIComponent(query);
-      const tvSearch = tmdbFetch(
-        `/search/tv?query=${searchQuery}&include_adult=true`,
+      const response = await tmdbFetch(
+        `/search/${includeMovies ? "movie" : "tv"}?query=${searchQuery}&include_adult=true`,
         { locale: Astro.currentLocale, page: currentPage },
       );
-      const movieSearch = includeMovies
-        ? tmdbFetch(`/search/movie?query=${searchQuery}&include_adult=true`, {
-            locale: Astro.currentLocale,
-            page: currentPage,
-          })
-        : undefined;
-      const [tvResponse, movieResponse] = await Promise.all([
-        tvSearch,
-        movieSearch,
-      ]);
 
-      if (!tvResponse.ok || (movieResponse && !movieResponse.ok)) {
+      if (!response.ok) {
         return {
           error: t("common.somethingWentWrong"),
           results: undefined,
         } as const;
       } else {
-        const tvShows = (await tvResponse.json()) as TvShowListResponse;
-        const movies = movieResponse
-          ? ((await movieResponse.json()) as MovieListResponse)
-          : undefined;
-        const results: SearchResults = {
-          results: [
-            ...tvShows.results.map((item) => ({
-              mediaType: "tv" as const,
-              item,
-            })),
-            ...(movies?.results.map((item) => ({
-              mediaType: "movie" as const,
-              item,
-            })) ?? []),
-          ],
-          total_pages: Math.max(tvShows.total_pages, movies?.total_pages ?? 0),
-          total_results: tvShows.total_results + (movies?.total_results ?? 0),
-        };
+        const searchResponse = (await response.json()) as
+          | TvShowListResponse
+          | MovieListResponse;
+        const results: SearchResults = includeMovies
+          ? {
+              results: (searchResponse as MovieListResponse).results.map(
+                (item) => ({ mediaType: "movie" as const, item }),
+              ),
+              total_pages: searchResponse.total_pages,
+              total_results: searchResponse.total_results,
+            }
+          : {
+              results: (searchResponse as TvShowListResponse).results.map(
+                (item) => ({ mediaType: "tv" as const, item }),
+              ),
+              total_pages: searchResponse.total_pages,
+              total_results: searchResponse.total_results,
+            };
         return { error: undefined, results };
       }
     } catch (e) {

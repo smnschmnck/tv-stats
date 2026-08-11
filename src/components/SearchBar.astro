@@ -30,7 +30,7 @@ const searchUrl = getLocaleLink(Astro.currentLocale, "/search");
     </button>
   </div>
   <label
-    class="group ms-4 inline-flex cursor-pointer items-center gap-2 self-start rounded-full bg-zinc-50 py-1.5 pr-4 pl-2 text-zinc-600 transition hover:bg-zinc-100 has-[:checked]:bg-zinc-100 has-[:checked]:text-blue-700 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-blue-500/40 has-[:focus-visible]:ring-offset-2 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 dark:has-[:checked]:bg-zinc-700 dark:has-[:checked]:text-blue-300"
+    class="group ms-3 inline-flex cursor-pointer items-center gap-2 self-start rounded-full bg-zinc-50 py-1.5 pr-4 pl-2 text-zinc-600 transition hover:bg-zinc-100 has-checked:bg-zinc-100 has-checked:text-blue-700 has-focus-visible:ring-2 has-focus-visible:ring-blue-500/40 has-focus-visible:ring-offset-2 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 dark:has-checked:bg-zinc-700 dark:has-checked:text-blue-300"
   >
     <input type="checkbox" name="include-movies" class="peer sr-only" />
     <span
@@ -40,9 +40,9 @@ const searchUrl = getLocaleLink(Astro.currentLocale, "/search");
       <Check
         size={12}
         stroke-width={3}
-        class="scale-75 opacity-0 transition group-has-[:checked]:scale-100 group-has-[:checked]:opacity-100"
+        class="scale-75 opacity-0 transition group-has-checked:scale-100 group-has-checked:opacity-100"
       />
     </span>
-    <span class="text-sm font-medium">Include Movies</span>
+    <span class="text-sm font-medium">Movies</span>
   </label>
 </form>
