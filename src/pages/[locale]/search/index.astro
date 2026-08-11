@@ -1,8 +1,11 @@
 ---
 import TvShowLink from "../../../components/TvShowLink.astro";
+import MovieLink from "../../../components/MovieLink.astro";
 import Pagination from "../../../components/ui/Pagination.astro";
 import BaseSearchLayout from "../../../layouts/BaseSearchLayout.astro";
+import type { Movie, MovieListResponse } from "../../../types/tmdbApi/movie";
 import type { TvShowListResponse } from "../../../types/tmdbApi/tvShow";
+import type { TvShow } from "../../../types/tmdbApi/tvShow";
 import { tmdbFetch } from "../../../utils/tmdbFetch";
 
 const { t } = Astro.locals;
@@ -10,6 +13,17 @@ const { t } = Astro.locals;
 const url = Astro.url;
 const query = url.searchParams.get("q");
 const currentPage = url.searchParams.get("page") ?? "1";
+const includeMovies = url.searchParams.get("include-movies") === "on";
+
+type SearchResult =
+  | { mediaType: "tv"; item: TvShow }
+  | { mediaType: "movie"; item: Movie };
+
+type SearchResults = {
+  results: SearchResult[];
+  total_pages: number;
+  total_results: number;
+};
 
 if (Number(currentPage) < 1) {
   const page1 = new URL(url);
@@ -19,33 +33,61 @@ if (Number(currentPage) < 1) {
 
 const getSearchResults = async () => {
   if (!query) {
-    return { error: t("search.noQueryProvided"), shows: undefined } as const;
+    return { error: t("search.noQueryProvided"), results: undefined } as const;
   } else {
     try {
-      const res = await tmdbFetch(
-        `/search/tv?query=${query}&include_adult=true`,
+      const searchQuery = encodeURIComponent(query);
+      const tvSearch = tmdbFetch(
+        `/search/tv?query=${searchQuery}&include_adult=true`,
         { locale: Astro.currentLocale, page: currentPage },
       );
+      const movieSearch = includeMovies
+        ? tmdbFetch(`/search/movie?query=${searchQuery}&include_adult=true`, {
+            locale: Astro.currentLocale,
+            page: currentPage,
+          })
+        : undefined;
+      const [tvResponse, movieResponse] = await Promise.all([
+        tvSearch,
+        movieSearch,
+      ]);
 
-      if (!res.ok) {
+      if (!tvResponse.ok || (movieResponse && !movieResponse.ok)) {
         return {
           error: t("common.somethingWentWrong"),
-          shows: undefined,
+          results: undefined,
         } as const;
       } else {
-        const shows = (await res.json()) as TvShowListResponse;
-        return { error: undefined, shows };
+        const tvShows = (await tvResponse.json()) as TvShowListResponse;
+        const movies = movieResponse
+          ? ((await movieResponse.json()) as MovieListResponse)
+          : undefined;
+        const results: SearchResults = {
+          results: [
+            ...tvShows.results.map((item) => ({
+              mediaType: "tv" as const,
+              item,
+            })),
+            ...(movies?.results.map((item) => ({
+              mediaType: "movie" as const,
+              item,
+            })) ?? []),
+          ],
+          total_pages: Math.max(tvShows.total_pages, movies?.total_pages ?? 0),
+          total_results: tvShows.total_results + (movies?.total_results ?? 0),
+        };
+        return { error: undefined, results };
       }
     } catch (e) {
       return {
         error: t("common.somethingWentWrong"),
-        shows: undefined,
+        results: undefined,
       } as const;
     }
   }
 };
 
-const { shows, error } = await getSearchResults();
+const { results, error } = await getSearchResults();
 ---
 
 <BaseSearchLayout>
@@ -65,16 +107,22 @@ const { shows, error } = await getSearchResults();
                 {t("search.resultsFor", { query })}
               </h1>
               <p class="font-medium">
-                {t("search.showsFound", { count: shows?.total_results })}
+                {t("search.showsFound", { count: results?.total_results })}
               </p>
             </div>
             <div class="grid w-full grid-cols-[repeat(auto-fill,8rem)] justify-between gap-4">
-              {shows!.total_results <= 0 ? (
+              {results!.total_results <= 0 ? (
                 <p class="col-span-full pt-32 text-center text-xl font-bold">
                   {t("search.noResults", { query })}
                 </p>
               ) : (
-                shows!.results.map((show) => <TvShowLink show={show} />)
+                results!.results.map((result) =>
+                  result.mediaType === "tv" ? (
+                    <TvShowLink show={result.item} />
+                  ) : (
+                    <MovieLink movie={result.item} />
+                  ),
+                )
               )}
             </div>
           </div>
@@ -83,14 +131,14 @@ const { shows, error } = await getSearchResults();
     </div>
     <div class="sm:hidden">
       <Pagination
-        totalPages={shows?.total_pages}
+        totalPages={results?.total_pages}
         currentPage={Number(currentPage)}
         windowSize={5}
       />
     </div>
     <div class="hidden sm:block">
       <Pagination
-        totalPages={shows?.total_pages}
+        totalPages={results?.total_pages}
         currentPage={Number(currentPage)}
         windowSize={10}
       />

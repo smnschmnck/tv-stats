@@ -1,0 +1,40 @@
+---
+import { Clapperboard } from "@lucide/astro";
+import type { Movie } from "../types/tmdbApi/movie";
+
+interface Props {
+  movie: Movie;
+}
+
+const { movie } = Astro.props;
+const url = `https://www.themoviedb.org/movie/${movie.id}`;
+---
+
+<div class="h-76 overflow-visible">
+  <a
+    href={url}
+    target="_blank"
+    rel="noreferrer"
+    class="group flex h-fit flex-col items-center gap-2"
+  >
+    <div class="relative">
+      {
+        movie.poster_path ? (
+          <img
+            class="w-32 rounded-xl transition group-hover:opacity-60"
+            src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+            alt={`${movie.title} poster`}
+          />
+        ) : (
+          <div class="flex aspect-2/3 w-32 items-center justify-center rounded-xl bg-zinc-700 text-zinc-500 transition group-hover:bg-zinc-600 dark:bg-zinc-800 dark:text-zinc-600 dark:group-hover:bg-zinc-700">
+            <Clapperboard />
+          </div>
+        )
+      }
+      <span class="absolute -top-1.5 -right-1.5 rounded-md bg-zinc-700 px-2 py-1 text-xs font-semibold text-white shadow-sm ring-1 ring-black/10">
+        Movie
+      </span>
+    </div>
+    <p class="line-clamp-3 w-32 text-center font-medium">{movie.title}</p>
+  </a>
+</div>
