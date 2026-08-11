@@ -1,4 +1,4 @@
-import type { Ratings } from "../../../../db/redis";
+import type { Ratings } from "../../../../db/ratingsRedis";
 
 export const getIsDividedByYears = (ratings: Ratings | undefined) => {
   const hasSeasonThree = ratings?.episodes.some((ep) => {
