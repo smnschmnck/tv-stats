@@ -18,7 +18,7 @@ const getShowWatchProviders = async () => {
       cacheKey: `tmdb:watch-providers:${mediaType}:${tmdbId}`,
       ttl: 12 * HOUR,
       queryFn: async () => {
-        const res = await tmdbFetch(`/tv/${tmdbId}/watch/providers`);
+        const res = await tmdbFetch(`/${mediaType}/${tmdbId}/watch/providers`);
 
         if (!res.ok) {
           return;

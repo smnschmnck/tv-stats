@@ -1,0 +1,33 @@
+---
+interface Props {
+  field: string;
+  options: { label: string; value: string; defaultChecked?: boolean }[];
+}
+
+const { options, field } = Astro.props;
+---
+
+<fieldset
+  class="flex items-center justify-center gap-2 rounded-full bg-zinc-100 px-2 py-3 text-sm font-medium"
+>
+  {
+    options.map(({ label, value, defaultChecked }) => (
+      <div class="group">
+        <input
+          type="radio"
+          name={field}
+          value={value}
+          id={`${field}-${value}`}
+          class="sr-only"
+          checked={!!defaultChecked}
+        />
+        <label
+          class="rounded-full p-2 group-has-checked:bg-black group-has-checked:text-white"
+          for={`${field}-${value}`}
+        >
+          {label}
+        </label>
+      </div>
+    ))
+  }
+</fieldset>

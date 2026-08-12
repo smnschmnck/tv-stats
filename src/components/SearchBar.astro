@@ -1,6 +1,7 @@
 ---
 import { Check, Search } from "@lucide/astro";
 import { getLocaleLink } from "../i18n/utils";
+import SegmentedControl from "./ui/SegmentedControl.astro";
 
 const { t } = Astro.locals;
 
@@ -8,6 +9,13 @@ const searchUrl = getLocaleLink(Astro.currentLocale, "/search");
 ---
 
 <form action={searchUrl} class="flex flex-col items-center gap-2">
+  <SegmentedControl
+    field="media-type"
+    options={[
+      { label: "TV Shows", value: "tv", defaultChecked: true },
+      { label: "Movies", value: "movie" },
+    ]}
+  />
   <div
     class="flex h-15 w-full items-center justify-between rounded-full border border-zinc-200 bg-zinc-100 px-2 shadow-zinc-100 ring-blue-500 transition focus-within:ring-2 hover:shadow-lg dark:border-zinc-700 dark:bg-zinc-800 dark:hover:border-zinc-500 dark:hover:shadow-none"
   >
@@ -29,20 +37,4 @@ const searchUrl = getLocaleLink(Astro.currentLocale, "/search");
       {t("components.searchBar.button")}
     </button>
   </div>
-  <label
-    class="group ms-3 inline-flex cursor-pointer items-center gap-2 self-start rounded-full bg-zinc-50 py-1.5 pr-4 pl-2 text-zinc-600 transition hover:bg-zinc-100 has-checked:bg-zinc-100 has-checked:text-blue-700 has-focus-visible:ring-2 has-focus-visible:ring-blue-500/40 has-focus-visible:ring-offset-2 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 dark:has-checked:bg-zinc-700 dark:has-checked:text-blue-300"
-  >
-    <input type="checkbox" name="include-movies" class="peer sr-only" />
-    <span
-      aria-hidden="true"
-      class="flex size-5 items-center justify-center rounded-full border border-zinc-300 bg-zinc-50 text-white transition group-hover:border-zinc-400 peer-checked:border-blue-600 peer-checked:bg-blue-600 dark:border-zinc-600 dark:bg-zinc-800 dark:group-hover:border-zinc-400 dark:peer-checked:border-blue-500 dark:peer-checked:bg-blue-500"
-    >
-      <Check
-        size={12}
-        stroke-width={3}
-        class="scale-75 opacity-0 transition group-has-checked:scale-100 group-has-checked:opacity-100"
-      />
-    </span>
-    <span class="text-sm font-medium">Movies</span>
-  </label>
 </form>

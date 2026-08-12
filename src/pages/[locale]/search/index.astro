@@ -13,11 +13,10 @@ const { t } = Astro.locals;
 const url = Astro.url;
 const query = url.searchParams.get("q");
 const currentPage = url.searchParams.get("page") ?? "1";
-const includeMovies = url.searchParams.get("include-movies") === "on";
+const mediaType = url.searchParams.get("media-type") as "tv" | "movie";
 
 type SearchResult =
-  | { mediaType: "tv"; item: TvShow }
-  | { mediaType: "movie"; item: Movie };
+  { mediaType: "tv"; item: TvShow } | { mediaType: "movie"; item: Movie };
 
 type SearchResults = {
   results: SearchResult[];
@@ -38,7 +37,7 @@ const getSearchResults = async () => {
     try {
       const searchQuery = encodeURIComponent(query);
       const response = await tmdbFetch(
-        `/search/${includeMovies ? "movie" : "tv"}?query=${searchQuery}&include_adult=true`,
+        `/search/${mediaType}?query=${searchQuery}&include_adult=true`,
         { locale: Astro.currentLocale, page: currentPage },
       );
 
@@ -49,23 +48,23 @@ const getSearchResults = async () => {
         } as const;
       } else {
         const searchResponse = (await response.json()) as
-          | TvShowListResponse
-          | MovieListResponse;
-        const results: SearchResults = includeMovies
-          ? {
-              results: (searchResponse as MovieListResponse).results.map(
-                (item) => ({ mediaType: "movie" as const, item }),
-              ),
-              total_pages: searchResponse.total_pages,
-              total_results: searchResponse.total_results,
-            }
-          : {
-              results: (searchResponse as TvShowListResponse).results.map(
-                (item) => ({ mediaType: "tv" as const, item }),
-              ),
-              total_pages: searchResponse.total_pages,
-              total_results: searchResponse.total_results,
-            };
+          TvShowListResponse | MovieListResponse;
+        const results: SearchResults =
+          mediaType === "movie"
+            ? {
+                results: (searchResponse as MovieListResponse).results.map(
+                  (item) => ({ mediaType: "movie" as const, item }),
+                ),
+                total_pages: searchResponse.total_pages,
+                total_results: searchResponse.total_results,
+              }
+            : {
+                results: (searchResponse as TvShowListResponse).results.map(
+                  (item) => ({ mediaType: "tv" as const, item }),
+                ),
+                total_pages: searchResponse.total_pages,
+                total_results: searchResponse.total_results,
+              };
         return { error: undefined, results };
       }
     } catch (e) {
