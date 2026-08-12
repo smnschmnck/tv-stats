@@ -2,9 +2,15 @@
 interface Props {
   field: string;
   options: { label: string; value: string; defaultChecked?: boolean }[];
+  size?: "default" | "compact";
 }
 
-const { options, field } = Astro.props;
+const { options, field, size = "default" } = Astro.props;
+const isCompact = size === "compact";
+const containerPadding = isCompact ? "px-2 py-1" : "px-3 py-2";
+const labelPadding = isCompact ? "px-3 py-1.5" : "px-4 py-2";
+const indicatorInsetX = isCompact ? "0.5rem" : "0.75rem";
+const indicatorInsetY = isCompact ? "0.25rem" : "0.5rem";
 
 const indicatorStyles = `
   .segmented-control {
@@ -12,7 +18,9 @@ const indicatorStyles = `
   }
 
   .segmented-control__indicator {
-    width: calc((100% - 1.5rem) / var(--segment-count));
+    width: calc(
+      (100% - (2 * var(--segment-indicator-inset-x))) / var(--segment-count)
+    );
     transition: transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
@@ -35,8 +43,11 @@ ${options
 ---
 
 <fieldset
-  class="segmented-control relative grid items-center rounded-full bg-zinc-100 px-3 py-2 text-sm font-medium text-zinc-600 transition-colors dark:bg-zinc-800 dark:text-zinc-300"
-  style={`--segment-count: ${options.length}`}
+  class:list={[
+    "segmented-control relative grid items-center rounded-full bg-zinc-100 text-sm font-medium text-zinc-600 transition-colors dark:bg-zinc-800 dark:text-zinc-300",
+    containerPadding,
+  ]}
+  style={`--segment-count: ${options.length}; --segment-indicator-inset-x: ${indicatorInsetX}`}
 >
   {
     options.map(({ label, value, defaultChecked }) => (
@@ -50,7 +61,10 @@ ${options
           checked={!!defaultChecked}
         />
         <label
-          class="block cursor-pointer rounded-full px-4 py-2 text-center transition-colors group-has-checked:text-white group-has-checked:hover:text-white group-has-focus-visible:ring-2 group-has-focus-visible:ring-blue-500/60 hover:text-zinc-900 dark:group-has-checked:text-black dark:group-has-checked:hover:text-black dark:hover:text-white"
+          class:list={[
+            "block cursor-pointer rounded-full text-center transition-colors group-has-checked:text-white group-has-checked:hover:text-white group-has-focus-visible:ring-2 group-has-focus-visible:ring-blue-500/60 hover:text-zinc-900 dark:group-has-checked:text-black dark:group-has-checked:hover:text-black dark:hover:text-white",
+            labelPadding,
+          ]}
           for={`${field}-${value}`}
         >
           {label}
@@ -58,7 +72,11 @@ ${options
       </div>
     ))
   }
-  <span class="segmented-control__indicator pointer-events-none absolute inset-y-2 left-3 rounded-full bg-black dark:bg-white" aria-hidden="true"></span>
+  <span
+    class="segmented-control__indicator pointer-events-none absolute rounded-full bg-black dark:bg-white"
+    style={`inset-block: ${indicatorInsetY}; inset-inline-start: ${indicatorInsetX}`}
+    aria-hidden="true"
+  ></span>
 </fieldset>
 
 <style is:inline set:html={indicatorStyles} />
