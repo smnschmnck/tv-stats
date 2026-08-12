@@ -8,7 +8,7 @@ const { options, field } = Astro.props;
 ---
 
 <fieldset
-  class="flex items-center justify-center gap-2 rounded-full bg-zinc-100 px-2 py-3 text-sm font-medium"
+  class="flex items-center justify-center gap-2 rounded-full bg-zinc-100 px-2 py-3 text-sm font-medium text-zinc-600 transition-colors dark:bg-zinc-800 dark:text-zinc-300"
 >
   {
     options.map(({ label, value, defaultChecked }) => (
@@ -22,7 +22,7 @@ const { options, field } = Astro.props;
           checked={!!defaultChecked}
         />
         <label
-          class="rounded-full p-2 group-has-checked:bg-black group-has-checked:text-white"
+          class="cursor-pointer rounded-full px-4 py-2 transition-colors group-has-checked:bg-black group-has-checked:text-white group-has-focus-visible:ring-2 group-has-focus-visible:ring-blue-500/60 hover:bg-zinc-200 group-has-checked:hover:bg-zinc-700 dark:group-has-checked:bg-white dark:group-has-checked:text-black dark:hover:bg-zinc-700 dark:group-has-checked:hover:bg-zinc-200"
           for={`${field}-${value}`}
         >
           {label}
