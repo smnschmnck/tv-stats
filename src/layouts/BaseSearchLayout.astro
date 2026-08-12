@@ -5,13 +5,13 @@ import RootLayout from "./RootLayout.astro";
 ---
 
 <RootLayout>
-  <div class="flex h-full w-full flex-col">
+  <div class="flex min-h-full w-full flex-col">
     <BaseHeader>
-      <div class="order-3 w-full md:order-none md:w-lg">
+      <div class="order-3 w-full md:order-0 md:w-lg">
         <SearchBarSmall />
       </div>
     </BaseHeader>
-    <div class="h-full w-full">
+    <div class="w-full flex-1">
       <slot />
     </div>
   </div>
