@@ -62,7 +62,7 @@ ${options
         />
         <label
           class:list={[
-            "block cursor-pointer rounded-full text-center transition-colors group-has-checked:text-white group-has-checked:hover:text-white group-has-focus-visible:ring-2 group-has-focus-visible:ring-blue-500/60 hover:text-zinc-900 dark:group-has-checked:text-black dark:group-has-checked:hover:text-black dark:hover:text-white",
+            "block cursor-pointer rounded-full text-center transition-colors group-has-checked:text-zinc-900 group-has-focus-visible:ring-2 group-has-focus-visible:ring-blue-500/60 hover:text-zinc-900 group-has-checked:hover:text-zinc-900 dark:group-has-checked:text-white dark:hover:text-white dark:group-has-checked:hover:text-white",
             labelPadding,
           ]}
           for={`${field}-${value}`}
@@ -73,10 +73,9 @@ ${options
     ))
   }
   <span
-    class="segmented-control__indicator pointer-events-none absolute rounded-full bg-black dark:bg-white"
+    class="segmented-control__indicator pointer-events-none absolute rounded-full bg-white dark:bg-zinc-700"
     style={`inset-block: ${indicatorInsetY}; inset-inline-start: ${indicatorInsetX}`}
-    aria-hidden="true"
-  ></span>
+    aria-hidden="true"></span>
 </fieldset>
 
-<style is:inline set:html={indicatorStyles} />
+<style is:inline set:html={indicatorStyles}></style>
