@@ -106,7 +106,7 @@ const fallbackRankings = Array.from({ length: 3 }, () => ({
         </summary>
         {restOverview}
       </details>
-      <WatchProviders mediaType="tv" />
+      <WatchProviders mediaType="tv" tmdbId={showId} />
     </div>
   )
 }
