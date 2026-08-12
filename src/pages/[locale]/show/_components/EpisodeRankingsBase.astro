@@ -1,6 +1,6 @@
 ---
 import { ArrowDown, ArrowUp } from "@lucide/astro";
-import Rating from "./Rating.astro";
+import Rating from "../../../../components/Rating.astro";
 
 type TRating = {
   averageRating: number | null;
@@ -18,7 +18,9 @@ const { highestRatings, lowestRatings } = Astro.props;
 ---
 
 <div class="flex gap-2">
-  <div class="flex flex-col items-center gap-2 rounded-xl bg-zinc-100 p-2 dark:bg-zinc-800">
+  <div
+    class="flex flex-col items-center gap-2 rounded-xl bg-zinc-100 p-2 dark:bg-zinc-800"
+  >
     <ArrowUp />
     <div class="flex flex-col gap-2">
       {
@@ -33,7 +35,9 @@ const { highestRatings, lowestRatings } = Astro.props;
       }
     </div>
   </div>
-  <div class="flex flex-col items-center gap-2 rounded-xl bg-zinc-100 p-2 dark:bg-zinc-800">
+  <div
+    class="flex flex-col items-center gap-2 rounded-xl bg-zinc-100 p-2 dark:bg-zinc-800"
+  >
     <ArrowDown />
     <div class="flex flex-col gap-2">
       {

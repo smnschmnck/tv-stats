@@ -1,13 +1,13 @@
 ---
+import ImdbRating from "../../../../components/ImdbRating.astro";
 import LoadingFallback from "../../../../components/ui/LoadingFallback.astro";
+import WatchProviders from "../../../../components/WatchProviders.astro";
 import { cached, DAY } from "../../../../db/cachingRedis";
 import type { Ratings } from "../../../../db/ratingsRedis";
 import type { TVShowDetails } from "../../../../types/tmdbApi/tvShowDetails";
 import { tmdbFetch } from "../../../../utils/tmdbFetch";
 import EpisodeRankings from "./EpisodeRankings.astro";
 import EpisodeRankingsBase from "./EpisodeRankingsBase.astro";
-import ShowRating from "./ShowRating.astro";
-import WatchProviders from "./WatchProviders.astro";
 
 const { t } = Astro.locals;
 
@@ -70,7 +70,7 @@ const fallbackRankings = Array.from({ length: 3 }, () => ({
   !error && (
     <div class="flex flex-col gap-3">
       <h1 class="text-lg font-bold">{showDetails!.name}</h1>
-      <ShowRating ratings={ratings} />
+      <ImdbRating ratings={ratings} />
       <div class="flex gap-2">
         {showDetails!.poster_path && (
           <a
@@ -106,7 +106,7 @@ const fallbackRankings = Array.from({ length: 3 }, () => ({
         </summary>
         {restOverview}
       </details>
-      <WatchProviders />
+      <WatchProviders mediaType="tv" />
     </div>
   )
 }

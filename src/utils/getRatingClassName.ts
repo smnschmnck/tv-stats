@@ -1,0 +1,29 @@
+export const getRatingClassName = (
+  rating: number | undefined | null,
+): string => {
+  if (!rating) {
+    return "bg-zinc-200 dark:bg-zinc-700";
+  }
+
+  if (rating >= 9) {
+    return "bg-green-700";
+  } else if (rating >= 8) {
+    return "bg-green-400";
+  } else if (rating >= 7) {
+    return "bg-yellow-400";
+  } else if (rating >= 6) {
+    return "bg-red-400";
+  } else if (rating >= 5) {
+    return "bg-red-600";
+  } else if (rating >= 4) {
+    return "bg-pink-600";
+  } else if (rating >= 3) {
+    return "bg-fuchsia-600";
+  } else if (rating >= 2) {
+    return "bg-violet-500";
+  } else if (rating >= 1) {
+    return "bg-blue-500";
+  }
+
+  return "bg-blue-600";
+};

@@ -2,7 +2,7 @@ import { Dialog } from "@kobalte/core/dialog";
 import { X } from "lucide-solid";
 import { createMemo } from "solid-js";
 import { getLocaleLink } from "../../../../i18n/utils";
-import { selectedEpisode, setSelectedEpisode } from "../store";
+import { selectedEpisode, setSelectedEpisode } from "../../../../store/store";
 
 export const EpisodeInfoDialog = ({ locale }: { locale: string }) => {
   const handleOpenChange = (open: boolean) => {

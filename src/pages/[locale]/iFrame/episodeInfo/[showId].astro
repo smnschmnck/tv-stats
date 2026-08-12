@@ -1,5 +1,6 @@
 ---
 import { Dot } from "@lucide/astro";
+import Rating from "../../../../components/Rating.astro";
 import { cached, DAY } from "../../../../db/cachingRedis";
 import RootLayout from "../../../../layouts/RootLayout.astro";
 import type {
@@ -7,7 +8,6 @@ import type {
   TVShowDetails,
 } from "../../../../types/tmdbApi/tvShowDetails";
 import { tmdbFetch } from "../../../../utils/tmdbFetch";
-import Rating from "../../show/_components/Rating.astro";
 
 const { t } = Astro.locals;
 const { showId } = Astro.params;

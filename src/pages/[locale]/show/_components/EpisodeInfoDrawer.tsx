@@ -1,7 +1,7 @@
 import Drawer from "@corvu/drawer";
 import { createMemo } from "solid-js";
 import { getLocaleLink } from "../../../../i18n/utils";
-import { selectedEpisode, setSelectedEpisode } from "../store";
+import { selectedEpisode, setSelectedEpisode } from "../../../../store/store";
 
 export const EpisodeInfoDrawer = ({ locale }: { locale: string }) => {
   const handleOpenChange = (open: boolean) => {

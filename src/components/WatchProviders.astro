@@ -1,16 +1,21 @@
 ---
-import { cached, HOUR } from "../../../../db/cachingRedis";
-import type { WatchProvidersResponse } from "../../../../types/tmdbApi/watchProviders";
-import { tmdbFetch } from "../../../../utils/tmdbFetch";
+import { cached, HOUR } from "../db/cachingRedis";
+import type { WatchProvidersResponse } from "../types/tmdbApi/watchProviders";
+import { tmdbFetch } from "../utils/tmdbFetch";
+
+interface Props {
+  mediaType: "tv" | "movie";
+}
 
 const { t } = Astro.locals;
 const { showId } = Astro.params;
 const { headers } = Astro.request;
+const { mediaType } = Astro.props;
 
 const getShowWatchProviders = async () => {
   try {
     const watchProviders = await cached({
-      cacheKey: `tmdb:watch-providers:${showId}`,
+      cacheKey: `tmdb:watch-providers:${mediaType}:${showId}`,
       ttl: 12 * HOUR,
       queryFn: async () => {
         const res = await tmdbFetch(`/tv/${showId}/watch/providers`);

@@ -1,0 +1,95 @@
+---
+import ImdbRating from "../../../components/ImdbRating.astro";
+import WatchProviders from "../../../components/WatchProviders.astro";
+import { cached, DAY } from "../../../db/cachingRedis";
+import type { Ratings } from "../../../db/ratingsRedis";
+import type { MovieDetails } from "../../../types/tmdbApi/movieDetails";
+import { tmdbFetch } from "../../../utils/tmdbFetch";
+
+const { t } = Astro.locals;
+
+interface Props {
+  movieId: string;
+  imdbId: string | undefined;
+  ratings: Ratings | undefined;
+}
+
+const { movieId, imdbId, ratings } = Astro.props;
+
+const getMovieDetails = async () => {
+  try {
+    const movieDetails = await cached({
+      cacheKey: `tmdb:movie:${movieId}:${Astro.currentLocale ?? "default"}`,
+      ttl: DAY,
+      queryFn: async () => {
+        const res = await tmdbFetch(`/movie/${movieId}`, {
+          locale: Astro.currentLocale,
+        });
+
+        if (!res.ok) {
+          return;
+        }
+
+        return (await res.json()) as MovieDetails;
+      },
+    });
+
+    if (!movieDetails) {
+      return { error: t("movie"), movieDetails: undefined };
+    }
+
+    return { error: undefined, movieDetails };
+  } catch (e) {
+    return { error: t("movie.notFound"), movieDetails: undefined };
+  }
+};
+
+const { error, movieDetails } = await getMovieDetails();
+
+const getSplitOverview = () => {
+  const splitted = movieDetails?.overview.split(" ");
+
+  const shortOverview = splitted?.slice(0, 12).join(" ");
+  const restOverview = splitted?.slice(12, splitted.length).join(" ");
+
+  return { shortOverview, restOverview };
+};
+
+const { shortOverview, restOverview } = getSplitOverview();
+---
+
+{!!error && <p>{error}</p>}
+{
+  !error && (
+    <div class="flex flex-col gap-3">
+      <h1 class="text-lg font-bold">{movieDetails?.title}</h1>
+      <ImdbRating ratings={ratings} />
+      <div class="flex gap-2">
+        {movieDetails!.poster_path && (
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href={`https://www.imdb.com/title/${imdbId}/`}
+          >
+            <img
+              class="min-w-36 rounded-xl"
+              src={`https://image.tmdb.org/t/p/w500/${movieDetails!.poster_path}`}
+              alt={`${movieDetails?.title} poster`}
+            />
+          </a>
+        )}
+      </div>
+      <details class="group">
+        <summary class="list-none [&::-webkit-details-marker]:hidden">
+          {shortOverview}
+          <span class="group-open:hidden">... </span>
+          <span class="w-full cursor-pointer font-medium text-nowrap text-zinc-500 transition group-open:hidden hover:text-black dark:text-zinc-400 dark:hover:text-white">
+            {t("common.showMore")}
+          </span>
+        </summary>
+        {restOverview}
+      </details>
+      <WatchProviders mediaType="movie" />
+    </div>
+  )
+}

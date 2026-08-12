@@ -1,5 +1,5 @@
 import { twMerge } from "tailwind-merge";
-import { setSelectedEpisode } from "../store";
+import { setSelectedEpisode } from "../store/store";
 
 export const BaseRating = ({
   rating,
