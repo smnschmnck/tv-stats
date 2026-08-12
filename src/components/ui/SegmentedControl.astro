@@ -5,14 +5,42 @@ interface Props {
 }
 
 const { options, field } = Astro.props;
+
+const indicatorStyles = `
+  .segmented-control {
+    grid-template-columns: repeat(var(--segment-count), minmax(0, 1fr));
+  }
+
+  .segmented-control__indicator {
+    width: calc((100% - 1.5rem) / var(--segment-count));
+    transition: transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .segmented-control__indicator {
+      transition: none;
+    }
+  }
+
+${options
+  .map(
+    (_, index) => `
+      .segmented-control:has(.segmented-control__option:nth-of-type(${index + 1}) > input:checked) .segmented-control__indicator {
+        transform: translateX(${index * 100}%);
+      }
+    `,
+  )
+  .join("\n")}
+`;
 ---
 
 <fieldset
-  class="flex items-center justify-center gap-2 rounded-full bg-zinc-100 px-2 py-3 text-sm font-medium text-zinc-600 transition-colors dark:bg-zinc-800 dark:text-zinc-300"
+  class="segmented-control relative grid items-center rounded-full bg-zinc-100 px-3 py-2 text-sm font-medium text-zinc-600 transition-colors dark:bg-zinc-800 dark:text-zinc-300"
+  style={`--segment-count: ${options.length}`}
 >
   {
     options.map(({ label, value, defaultChecked }) => (
-      <div class="group">
+      <div class="segmented-control__option group relative z-10">
         <input
           type="radio"
           name={field}
@@ -22,7 +50,7 @@ const { options, field } = Astro.props;
           checked={!!defaultChecked}
         />
         <label
-          class="cursor-pointer rounded-full px-4 py-2 transition-colors group-has-checked:bg-black group-has-checked:text-white group-has-focus-visible:ring-2 group-has-focus-visible:ring-blue-500/60 hover:bg-zinc-200 group-has-checked:hover:bg-zinc-700 dark:group-has-checked:bg-white dark:group-has-checked:text-black dark:hover:bg-zinc-700 dark:group-has-checked:hover:bg-zinc-200"
+          class="block cursor-pointer rounded-full px-4 py-2 text-center transition-colors group-has-checked:text-white group-has-checked:hover:text-white group-has-focus-visible:ring-2 group-has-focus-visible:ring-blue-500/60 hover:text-zinc-900 dark:group-has-checked:text-black dark:group-has-checked:hover:text-black dark:hover:text-white"
           for={`${field}-${value}`}
         >
           {label}
@@ -30,4 +58,7 @@ const { options, field } = Astro.props;
       </div>
     ))
   }
+  <span class="segmented-control__indicator pointer-events-none absolute inset-y-2 left-3 rounded-full bg-black dark:bg-white" aria-hidden="true"></span>
 </fieldset>
+
+<style is:inline set:html={indicatorStyles} />
