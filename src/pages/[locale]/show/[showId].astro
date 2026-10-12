@@ -1,10 +1,13 @@
 ---
 import LoadingFallback from "../../../components/ui/LoadingFallback.astro";
 import Spinner from "../../../components/ui/Spinner.astro";
+import { cached, DAY } from "../../../db/cachingRedis";
 import { getRatings } from "../../../db/ratingsRedis";
 import { fallbackLanguage } from "../../../i18n/constants";
 import BaseSearchLayout from "../../../layouts/BaseSearchLayout.astro";
+import type { TVShowDetails } from "../../../types/tmdbApi/tvShowDetails";
 import { getImdbId } from "../../../utils/tmdb/imdbId";
+import { tmdbFetch } from "../../../utils/tmdbFetch";
 import { EpisodeInfo } from "./_components/EpisodeInfo";
 import Ratings from "./_components/Ratings.astro";
 import ShowDetails from "./_components/ShowDetails.astro";
@@ -17,9 +20,44 @@ const { showId } = Astro.params;
 const imdbId = await getImdbId(showId);
 
 const ratings = await getRatings(imdbId);
+
+const getShowDetails = async () => {
+  try {
+    const showDetails = await cached({
+      cacheKey: `tmdb:show:${showId}:${Astro.currentLocale ?? "default"}`,
+      ttl: DAY,
+      queryFn: async () => {
+        const res = await tmdbFetch(`/tv/${showId}`, {
+          locale: Astro.currentLocale,
+        });
+
+        if (!res.ok) {
+          return;
+        }
+
+        return (await res.json()) as TVShowDetails;
+      },
+    });
+
+    if (!showDetails) {
+      return { error: t("show.notFound"), showDetails: undefined };
+    }
+
+    return { error: undefined, showDetails };
+  } catch (e) {
+    return { error: t("show.notFound"), showDetails: undefined };
+  }
+};
+
+const { error, showDetails } = await getShowDetails();
 ---
 
-<BaseSearchLayout>
+<BaseSearchLayout
+  ogImage={`${Astro.url.host}/${Astro.currentLocale}/show/og/${showId}.png`}
+  ogTitle={showDetails?.name}
+  ogType="video.tv_show"
+  ogUrl={Astro.url.toString()}
+>
   {!showId && <p>{t("show.notFound")}</p>}
   {
     !!showId && (
