@@ -55,35 +55,56 @@ export const getOgImage = async ({
   const { showDetails, error } = await getShowDetails();
 
   const formatter = new Intl.NumberFormat(getLocale(currentLocale));
+  const posterUrl = showDetails?.poster_path
+    ? `https://image.tmdb.org/t/p/w500/${showDetails.poster_path}`
+    : undefined;
+  const averageRating = ratings?.averageRating;
 
   const html = renderToString(() => (
-    <div tw="w-full h-full flex flex-col justify-center px-12 gap-10 bg-white">
-      <div tw="flex w-fit items-center gap-3 font-bold">
-        <Clapperboard size={48} />
-        <span tw="text-4xl">TV Stats</span>
+    <div tw="flex h-full w-full flex-col bg-white px-14 py-12 text-zinc-950">
+      <div tw="flex items-center gap-3 font-bold">
+        <Clapperboard size={40} />
+        <span tw="text-3xl">TV Stats</span>
       </div>
-      <div tw="flex bg-zinc-50 px-8 gap-8 rounded-xl h-fit justify-center items-center">
-        <img
-          tw="rounded-xl max-w-64 object-contain"
-          src={`https://image.tmdb.org/t/p/w300/${showDetails!.poster_path}`}
-          alt={`${showDetails!.name} poster`}
-        />
-        <div tw="flex flex-col gap-4">
-          <div tw="min-w-80 w-fit flex gap-4 items-center bg-zinc-100 rounded-xl p-4">
+      <div tw="mt-8 h-px w-full bg-zinc-200" />
+
+      <div tw="mt-10 flex flex-1 items-center gap-10">
+        {posterUrl ? (
+          <img
+            tw="h-[390px] w-[260px] rounded-xl object-cover"
+            src={posterUrl}
+            alt={`${showDetails?.name ?? "TV show"} poster`}
+          />
+        ) : (
+          <div tw="flex h-[390px] w-[260px] items-center justify-center rounded-xl bg-zinc-100 text-zinc-400">
+            <Clapperboard size={56} />
+          </div>
+        )}
+
+        <div tw="flex min-w-0 flex-1 flex-col gap-5">
+          <div tw="max-h-32 max-w-3xl overflow-hidden text-5xl font-bold leading-tight">
+            {showDetails?.name ?? error}
+          </div>
+          <div tw="flex w-fit items-center gap-4 rounded-xl bg-zinc-100 p-3">
             <div
               tw={twMerge(
-                "min-w-18 min-h-18 max-w-18 max-h-18 rounded-xl text-3xl font-bold text-white flex justify-center items-center",
-                getRatingClassName(ratings?.averageRating),
+                "flex h-[72px] min-w-[72px] items-center justify-center rounded-xl text-3xl font-bold text-white",
+                averageRating === undefined
+                  ? "bg-zinc-500"
+                  : getRatingClassName(averageRating),
               )}
             >
-              {ratings?.averageRating}
+              {averageRating ?? "—"}
             </div>
             <span tw="text-3xl text-zinc-600">
               {`(${formatter.format(ratings?.numVotes ?? 0)})`}
             </span>
           </div>
-          <span tw="text-5xl font-bold">{showDetails?.name ?? error}</span>
-          <span tw="text-ellipsis h-38 text-2xl">{showDetails?.overview}</span>
+          {showDetails?.overview && (
+            <div tw="max-h-32 max-w-3xl overflow-hidden text-ellipsis text-[26px] leading-relaxed text-zinc-600">
+              {showDetails.overview}
+            </div>
+          )}
         </div>
       </div>
     </div>
