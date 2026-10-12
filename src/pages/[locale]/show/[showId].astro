@@ -11,6 +11,7 @@ import { tmdbFetch } from "../../../utils/tmdbFetch";
 import { EpisodeInfo } from "./_components/EpisodeInfo";
 import Ratings from "./_components/Ratings.astro";
 import ShowDetails from "./_components/ShowDetails.astro";
+import { DOMAIN } from "astro:env/server";
 
 const { t } = Astro.locals;
 const locale = Astro.currentLocale ?? fallbackLanguage;
@@ -53,7 +54,7 @@ const { error, showDetails } = await getShowDetails();
 ---
 
 <BaseSearchLayout
-  ogImage={`${Astro.url.host}/${Astro.currentLocale}/show/og/${showId}.png`}
+  ogImage={`${DOMAIN}/${Astro.currentLocale}/show/og/${showId}.png`}
   ogTitle={showDetails?.name}
   ogType="video.tv_show"
   ogUrl={Astro.url.toString()}
