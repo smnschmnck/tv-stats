@@ -4,6 +4,7 @@ import { render } from "takumi-js";
 import { cached, DAY } from "../../../../db/cachingRedis";
 import type { TVShowDetails } from "../../../../types/tmdbApi/tvShowDetails";
 import { tmdbFetch } from "../../../../utils/tmdbFetch";
+import { Clapperboard } from "lucide-solid";
 
 export const getOgImage = async ({
   showId,
@@ -45,17 +46,21 @@ export const getOgImage = async ({
   const { showDetails, error } = await getShowDetails();
 
   const html = renderToString(() => (
-    <div
-      style={{
-        "font-size": "72px",
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        "align-items": "center",
-        "justify-content": "center",
-      }}
-    >
-      {showDetails?.name ?? error}
+    <div tw="w-full h-full flex flex-col justify-center px-12 gap-12">
+      <div tw="flex w-fit items-center gap-3 font-bold">
+        <Clapperboard size={48} />
+        <span tw="text-5xl">TV Stats</span>
+      </div>
+      <div tw="flex gap-8 bg-zinc-50 p-8 rounded-xl">
+        <img
+          tw="rounded-xl"
+          src={`https://image.tmdb.org/t/p/w200/${showDetails!.poster_path}`}
+          alt={`${showDetails!.name} poster`}
+        />
+        <div>
+          <span tw="text-6xl font-bold">{showDetails?.name ?? error}</span>
+        </div>
+      </div>
     </div>
   ));
 
