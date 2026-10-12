@@ -1,16 +1,54 @@
 ---
 import { getRatings } from "../../../db/ratingsRedis";
+import { cached, DAY } from "../../../db/cachingRedis";
 import BaseSearchLayout from "../../../layouts/BaseSearchLayout.astro";
+import type { MovieDetails } from "../../../types/tmdbApi/movieDetails";
 import { getImdbId } from "../../../utils/tmdb/imdbId";
+import { tmdbFetch } from "../../../utils/tmdbFetch";
 import MovieDetails from "./MovieDetails.astro";
 
 const { t } = Astro.locals;
 const { movieId } = Astro.params;
 const imdbId = await getImdbId(movieId, "movie");
 const ratings = await getRatings(imdbId);
+
+const getMovieDetails = async () => {
+  try {
+    const movieDetails = await cached({
+      cacheKey: `tmdb:movie:${movieId}:${Astro.currentLocale ?? "default"}`,
+      ttl: DAY,
+      queryFn: async () => {
+        const res = await tmdbFetch(`/movie/${movieId}`, {
+          locale: Astro.currentLocale,
+        });
+
+        if (!res.ok) {
+          return;
+        }
+
+        return (await res.json()) as MovieDetails;
+      },
+    });
+
+    if (!movieDetails) {
+      return { error: t("movie.notFound"), movieDetails: undefined };
+    }
+
+    return { error: undefined, movieDetails };
+  } catch (e) {
+    return { error: t("movie.notFound"), movieDetails: undefined };
+  }
+};
+
+const { movieDetails } = await getMovieDetails();
 ---
 
-<BaseSearchLayout>
+<BaseSearchLayout
+  ogImage={`/${Astro.currentLocale}/movie/og/${movieId}.png`}
+  ogTitle={movieDetails?.title}
+  ogType="video.movie"
+  ogUrl={`/${Astro.currentLocale}/movie/${movieId}`}
+>
   {!movieId && <p>{t("movie.notFound")}</p>}
   {
     !!movieId && (
