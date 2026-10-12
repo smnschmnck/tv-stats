@@ -1,6 +1,15 @@
 ---
 import { Font } from "astro:assets";
 import "../styles/global.css";
+
+interface Props {
+  ogTitle?: string;
+  ogType?: string;
+  ogUrl?: string;
+  ogImage?: string;
+}
+
+const { ogImage, ogTitle, ogType, ogUrl } = Astro.props;
 ---
 
 <html lang="en" class="h-full w-full">
@@ -10,6 +19,10 @@ import "../styles/global.css";
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <meta name="color-scheme" content="light dark" />
+    {ogTitle && <meta property="og:title" content={ogTitle} />}
+    {ogType && <meta property="og:type" content={ogType} />}
+    {ogUrl && <meta property="og:url" content={ogUrl} />}
+    {ogImage && <meta property="og:image" content={ogImage} />}
     <Font cssVariable="--font-inter" preload />
     <title>TV Stats</title>
     <script is:inline>

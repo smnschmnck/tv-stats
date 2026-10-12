@@ -2,9 +2,18 @@
 import BaseHeader from "../components/BaseHeader.astro";
 import SearchBarSmall from "../components/SearchBarSmall.astro";
 import RootLayout from "./RootLayout.astro";
+
+interface Props {
+  ogTitle?: string;
+  ogType?: string;
+  ogUrl?: string;
+  ogImage?: string;
+}
+
+const { ogImage, ogTitle, ogType, ogUrl } = Astro.props;
 ---
 
-<RootLayout>
+<RootLayout ogImage={ogImage} ogTitle={ogTitle} ogType={ogType} ogUrl={ogUrl}>
   <div class="flex min-h-full w-full flex-col">
     <BaseHeader>
       <div class="order-3 w-full md:order-0 md:w-lg">
