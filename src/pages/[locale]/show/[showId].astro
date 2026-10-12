@@ -57,7 +57,7 @@ const { error, showDetails } = await getShowDetails();
   ogImage={`${DOMAIN}/${Astro.currentLocale}/show/og/${showId}.png`}
   ogTitle={showDetails?.name}
   ogType="video.tv_show"
-  ogUrl={`${DOMAIN}/${Astro.currentLocale}/show/${showId}`}
+  ogUrl={`/${Astro.currentLocale}/show/${showId}`}
 >
   {!showId && <p>{t("show.notFound")}</p>}
   {
