@@ -7,6 +7,8 @@ import { tmdbFetch } from "../../../../utils/tmdbFetch";
 import { Clapperboard } from "lucide-solid";
 import { twMerge } from "tailwind-merge";
 import { getRatingClassName } from "../_utils/getRatingClassName";
+import { getImdbId } from "../../../../utils/tmdb/imdbId";
+import { getRatings } from "../../../../db/ratingsRedis";
 
 export const getOgImage = async ({
   showId,
@@ -17,6 +19,10 @@ export const getOgImage = async ({
   t: TFunction;
   currentLocale: string | undefined;
 }) => {
+  const imdbId = await getImdbId(showId);
+
+  const ratings = await getRatings(imdbId);
+
   const getShowDetails = async () => {
     try {
       const showDetails = await cached({
@@ -64,12 +70,12 @@ export const getOgImage = async ({
             <div
               tw={twMerge(
                 "min-w-18 min-h-18 max-w-18 max-h-18 rounded-xl text-3xl font-bold text-white flex justify-center items-center",
-                getRatingClassName(8.2),
+                getRatingClassName(ratings?.averageRating),
               )}
             >
-              8.2
+              {ratings?.averageRating}
             </div>
-            <span tw="text-3xl text-zinc-600">(323,312)</span>
+            <span tw="text-3xl text-zinc-600">({ratings?.numVotes})</span>
           </div>
           <span tw="text-5xl font-bold">{showDetails?.name ?? error}</span>
           <span tw="text-ellipsis h-38 text-2xl">{showDetails?.overview}</span>
