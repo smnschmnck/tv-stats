@@ -9,6 +9,7 @@ import { twMerge } from "tailwind-merge";
 import { getRatingClassName } from "../_utils/getRatingClassName";
 import { getImdbId } from "../../../../utils/tmdb/imdbId";
 import { getRatings } from "../../../../db/ratingsRedis";
+import { getLocale } from "../../../../i18n/utils";
 
 export const getOgImage = async ({
   showId,
@@ -53,6 +54,8 @@ export const getOgImage = async ({
 
   const { showDetails, error } = await getShowDetails();
 
+  const formatter = new Intl.NumberFormat(getLocale(currentLocale));
+
   const html = renderToString(() => (
     <div tw="w-full h-full flex flex-col justify-center px-12 gap-10 bg-white">
       <div tw="flex w-fit items-center gap-3 font-bold">
@@ -75,7 +78,9 @@ export const getOgImage = async ({
             >
               {ratings?.averageRating}
             </div>
-            <span tw="text-3xl text-zinc-600">({ratings?.numVotes})</span>
+            <span tw="text-3xl text-zinc-600">
+              ({formatter.format(ratings?.numVotes ?? 0)})
+            </span>
           </div>
           <span tw="text-5xl font-bold">{showDetails?.name ?? error}</span>
           <span tw="text-ellipsis h-38 text-2xl">{showDetails?.overview}</span>
