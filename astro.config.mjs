@@ -30,7 +30,6 @@ export default defineConfig({
       DOMAIN: envField.string({
         context: "server",
         access: "public",
-        url: true,
       }),
     },
   },
