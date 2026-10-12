@@ -54,7 +54,7 @@ const { error, showDetails } = await getShowDetails();
 ---
 
 <BaseSearchLayout
-  ogImage={`${DOMAIN}/${Astro.currentLocale}/show/og/${showId}.png`}
+  ogImage={`/${Astro.currentLocale}/show/og/${showId}.png`}
   ogTitle={showDetails?.name}
   ogType="video.tv_show"
   ogUrl={`/${Astro.currentLocale}/show/${showId}`}
