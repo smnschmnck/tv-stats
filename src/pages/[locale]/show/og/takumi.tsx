@@ -79,7 +79,7 @@ export const getOgImage = async ({
               {ratings?.averageRating}
             </div>
             <span tw="text-3xl text-zinc-600">
-              ({formatter.format(ratings?.numVotes ?? 0)})
+              {`(${formatter.format(ratings?.numVotes ?? 0)})`}
             </span>
           </div>
           <span tw="text-5xl font-bold">{showDetails?.name ?? error}</span>
